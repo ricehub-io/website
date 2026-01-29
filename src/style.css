@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Outfit:wght@100..900&family=Ranchers&display=swap");
+@import "tailwindcss";
+
+@font-face {
+    font-family: "mononoki";
+    src: url("fonts/mononoki/mononoki-Regular.otf");
+}
+
+@font-face {
+    font-family: "mononoki";
+    src: url("fonts/mononoki/mononoki-Italic.otf");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "mononoki";
+    src: url("fonts/mononoki/mononoki-Bold.otf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "mononoki";
+    src: url("fonts/mononoki/mononoki-BoldItalic.otf");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@theme {
+    --color-*: initial;
+
+    --font-outfit: "Outfit", sans-serif;
+    --font-mononoki: "mononoki", monospace;
+    --font-ibm-plex-mono: "IBM Plex Mono", monospace;
+    --font-ranchers: "Ranchers", sans-serif;
+
+    --ease-in-quint: cubic-bezier(0.64, 0, 0.78, 0);
+    --ease-in-out-quint: ubic-bezier(0.83, 0, 0.17, 1);
+    --animate-scale: scale 500ms ease-out;
+
+    @keyframes scale {
+        30% {
+            scale: 110%;
+        }
+
+        70% {
+            scale: 100%;
+        }
+    }
+
+    /* https://github.com/tahayvr/themery.nvim/blob/main/lua/themery/colors.lua */
+    --color-dark-background: #0d0d0d;
+    --color-background: #121212;
+    --color-bright-background: #212121;
+    --color-foreground: #eaeaea;
+    --color-gray: #8a8a8d;
+    --color-bright-gray: #bebebe;
+    --color-primary: #00d6d1;
+    --color-accent: #ff7deb;
+
+    --color-red: #ff3e55;
+    --color-orange: #ffd447;
+    --color-blue: #5a7cff;
+}
+/*
+to override the default theme define a new class with variables, e.g.:
+
+.theme-nord {
+    --color-primary: #ff00ff;
+    etc etc
+}
+*/
+
+html,
+body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-outfit);
+}
+
+.rice-page {
+    width: min(70%, 1000px);
+}

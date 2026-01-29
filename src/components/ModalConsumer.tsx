@@ -1,0 +1,19 @@
+import { useContext } from "preact/hooks";
+import { AppState } from "../lib/appState";
+import { LoginModal } from "./LoginModal";
+import { RegisterModal } from "./RegisterModal";
+
+export function ModalConsumer() {
+    const { currentModal } = useContext(AppState);
+
+    return (
+        currentModal.value !== null && (
+            <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center bg-background/50">
+                <div className="bg-dark-background px-12 py-6 rounded-xl border-2 border-gray/30">
+                    {currentModal.value === "login" && <LoginModal />}
+                    {currentModal.value === "register" && <RegisterModal />}
+                </div>
+            </div>
+        )
+    );
+}
