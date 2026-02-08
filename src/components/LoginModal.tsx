@@ -1,6 +1,6 @@
 import { useContext } from "preact/compat";
 import { addNotification, AppState } from "../lib/appState";
-import { API_URL } from "../lib/consts";
+import { API_URL } from "../lib/api";
 import { LoginResponse } from "../lib/models";
 import { FormInput } from "./FormInput";
 import { FormButton } from "./FormButton";
@@ -15,6 +15,7 @@ async function login(
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
+        credentials: "include",
     });
 
     const data = await res.json();
@@ -41,6 +42,11 @@ export function LoginModal() {
             accessToken.value = body.accessToken;
             user.value = body.user;
             target.reset();
+            addNotification(
+                "Login",
+                "You successfully logged into an account!",
+                "info",
+            );
         } catch (err) {
             const errMsg = (err as Error).message;
             addNotification("Login failed", errMsg, "error");

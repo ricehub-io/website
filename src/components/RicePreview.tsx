@@ -3,7 +3,7 @@ import { PartialRice } from "../lib/models";
 import { DownloadIcon } from "./icons/DownloadIcon";
 import { StarIcon } from "./icons/StarIcon";
 import { useLocation } from "preact-iso";
-import { API_URL } from "../lib/consts";
+import { API_URL } from "../lib/api";
 import { useContext, useEffect } from "preact/hooks";
 import { AppState } from "../lib/appState";
 import { apiFetch } from "../lib/api";

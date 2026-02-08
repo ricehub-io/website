@@ -1,10 +1,10 @@
-import { accessToken } from "./appState";
+import { accessToken, addNotification } from "./appState";
 
-const API_URL = "http://localhost:3000";
+export const API_URL = "http://127.0.0.1:3000";
 
-type FetchMethod = "get" | "post" | "delete";
+type FetchMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
-async function refreshToken(): Promise<string> {
+export async function refreshToken(): Promise<string | null> {
     const res = await fetch(`${API_URL}/auth/refresh`, {
         method: "post",
         headers: {
@@ -13,33 +13,45 @@ async function refreshToken(): Promise<string> {
         credentials: "include",
     });
 
-    const data = await res.json();
-    // TODO: check for error
+    if (!res.ok) {
+        if (res.status === 429) {
+            addNotification("API", "You are being rate limited", "error");
+        }
 
+        return null;
+    }
+
+    const data = await res.json();
     return data.accessToken;
 }
 
 export async function apiFetch<T>(
     method: FetchMethod,
     endpoint: string,
+    body?: any,
 ): Promise<[number, T]> {
     const res = await fetch(`${API_URL}${endpoint}`, {
         method,
         headers: {
             "Content-Type": "application/json",
-            Authorization: accessToken.value ?? null,
+            Authorization: accessToken.value ? `Bearer ${accessToken.value}` : null,
         },
+        body,
     });
 
     // check for expired token
-    if (res.status === 403) {
-        const accessToken = await refreshToken();
-        console.log(accessToken);
-        // return apiFetch(method, endpoint);
-        return;
+    // if (res.status === 403) {
+    //     const token = await refreshToken();
+    //     console.log("updated access token");
+    //     accessToken.value = token;
+    //     return apiFetch(method, endpoint, body);
+    // }
+
+    let resBody: any = await res.text();
+    if (resBody.length > 0) {
+        resBody = JSON.parse(resBody);
     }
 
-    const resBody = await res.json();
     if (!res.ok) {
         throw new Error(resBody.error || "Failed to reach API");
     }

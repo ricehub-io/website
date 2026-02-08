@@ -38,11 +38,23 @@ export function Header() {
                 <Link url="/" text="Home" />
                 {accessToken.value === null ? (
                     <>
-                        <TextButton text="Login" onClick={() => (currentModal.value = "login")} />
-                        <TextButton text="Register" onClick={() => (currentModal.value = "register")} />
+                        <TextButton
+                            text="Login"
+                            onClick={() =>
+                                (currentModal.value = "login")
+                            }
+                        />
+                        <TextButton
+                            text="Register"
+                            onClick={() =>
+                                (currentModal.value = "register")
+                            }
+                        />
                     </>
                 ) : (
-                    <Link url="/account" text="Account" />
+                    <>
+                        <Link url="/account" text="Account" />
+                    </>
                 )}
                 <Link url="https://github.com" external>
                     <GithubIcon />
@@ -79,7 +91,11 @@ function SearchBar({ placeholder }: SearchBarProps) {
     return (
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 bg-bright-background px-2 py-2 rounded-lg transition-colors duration-300 ease-out border-2 border-transparent focus-within:border-primary">
             <MagnifyingGlassIcon />
-            <input className="outline-none placeholder:text-gray" type="text" placeholder={placeholder} />
+            <input
+                className="outline-none placeholder:text-gray"
+                type="text"
+                placeholder={placeholder}
+            />
         </div>
     );
 }

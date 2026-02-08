@@ -2,11 +2,13 @@ import { useContext, useEffect } from "preact/hooks";
 import { AppNotification, PartialRice } from "../lib/models";
 import { effect, Signal, useSignal } from "@preact/signals";
 import { RicePreview } from "../components/RicePreview";
-import { API_URL } from "../lib/consts";
+import { API_URL } from "../lib/api";
 import { Placeholder } from "../components/Placeholder";
 import { addNotification, AppState } from "../lib/appState";
 
-async function getRices(accessToken?: string): Promise<PartialRice[]> {
+async function getRices(
+    accessToken?: string,
+): Promise<PartialRice[]> {
     try {
         const res = await fetch(`${API_URL}/rices`, {
             headers:
@@ -24,7 +26,11 @@ async function getRices(accessToken?: string): Promise<PartialRice[]> {
 
         return data;
     } catch (err) {
-        addNotification("API unreachable", "API is currently unavailable, please try again later", "error");
+        addNotification(
+            "API unreachable",
+            "API is currently unavailable, please try again later",
+            "error",
+        );
         return [];
     }
 }
@@ -34,7 +40,9 @@ export default function HomePage() {
     const rices = useSignal<PartialRice[]>([]);
 
     useEffect(() => {
-        getRices(accessToken.value).then((res) => (rices.value = res));
+        getRices(accessToken.value).then(
+            (res) => (rices.value = res),
+        );
     }, [accessToken.value]);
 
     return (

@@ -2,6 +2,7 @@ import { useContext } from "preact/hooks";
 import { AppState } from "../lib/appState";
 import { LoginModal } from "./LoginModal";
 import { RegisterModal } from "./RegisterModal";
+import ChangeDisplayNameModal from "./modals/ChangeDisplayNameModal";
 
 export function ModalConsumer() {
     const { currentModal } = useContext(AppState);
@@ -12,6 +13,9 @@ export function ModalConsumer() {
                 <div className="bg-dark-background px-12 py-6 rounded-xl border-2 border-gray/30">
                     {currentModal.value === "login" && <LoginModal />}
                     {currentModal.value === "register" && <RegisterModal />}
+                    {currentModal.value === "changeDisplayName" && (
+                        <ChangeDisplayNameModal />
+                    )}
                 </div>
             </div>
         )

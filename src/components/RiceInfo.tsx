@@ -1,6 +1,6 @@
 import { useSignal } from "@preact/signals";
 import { Dotfiles, Rice } from "../lib/models";
-import { API_URL } from "../lib/consts";
+import { API_URL } from "../lib/api";
 import { StarIcon } from "./icons/StarIcon";
 import { DownloadIcon } from "./icons/DownloadIcon";
 import { FolderArrowIcon } from "./icons/FolderArrowIcon";
@@ -40,7 +40,9 @@ export function RiceInfo({
                         onClick={onStar}
                     >
                         <StarIcon solid={isStarred.value} />
-                        <p className={`transition-colors duration-300 ${isStarred.value && "text-accent"}`}>
+                        <p
+                            className={`transition-colors duration-300 ${isStarred.value && "text-accent"}`}
+                        >
                             {stars}
                         </p>
                     </div>
@@ -62,7 +64,12 @@ export function RiceInfo({
             <div className="grid grid-cols-2 gap-2">
                 {previews.map((url, index) => (
                     <div className="aspect-video">
-                        <img className="w-full h-full object-cover" key={index} src={url} alt="preview" />
+                        <img
+                            className="w-full h-full object-cover"
+                            key={index}
+                            src={url}
+                            alt="preview"
+                        />
                     </div>
                 ))}
             </div>
@@ -71,7 +78,10 @@ export function RiceInfo({
     );
 }
 
-function RiceDotfiles({ onDownload, updatedAt }: { onDownload: () => void } & Dotfiles) {
+function RiceDotfiles({
+    onDownload,
+    updatedAt,
+}: { onDownload: () => void } & Dotfiles) {
     return (
         <div
             className="flex items-center justify-between bg-dark-background px-4 py-3 rounded-lg border-2 border-transparent transition-colors duration-300 select-none hover:bg-bright-background hover:cursor-pointer hover:border-accent"

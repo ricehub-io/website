@@ -3,7 +3,7 @@ import { useRoute } from "preact-iso";
 import { Rice } from "../lib/models";
 import { RiceInfo } from "../components/RiceInfo";
 import { useEffect } from "preact/hooks";
-import { API_URL } from "../lib/consts";
+import { API_URL } from "../lib/api";
 import { Placeholder } from "../components/Placeholder";
 
 export default function RicePage() {
@@ -20,7 +20,11 @@ export default function RicePage() {
 
     return (
         <div className="rice-page mx-auto my-8 flex flex-col gap-6">
-            {riceInfo.value !== undefined ? <RiceInfo {...riceInfo.value} /> : <Placeholders />}
+            {riceInfo.value !== undefined ? (
+                <RiceInfo {...riceInfo.value} />
+            ) : (
+                <Placeholders />
+            )}
         </div>
     );
 }

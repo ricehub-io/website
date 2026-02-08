@@ -10,16 +10,8 @@ import { AppState, createAppState } from "./lib/appState";
 import { ModalConsumer } from "./components/ModalConsumer";
 import { NotificationConsumer } from "./components/NotificationConsumer";
 import { AccountPage } from "./pages/account";
-
-/*
-To do:
-- add dropdown to select sorting mode
-- search bar functionality
-- add account management page
-- add rice management page
-- `create rice` modal or page idk
-- catch api errors from routes like RicePage, HomePage (e.g rice not found or too many requests in `/`)
-*/
+import { useContext, useEffect } from "preact/hooks";
+import { refreshToken } from "./lib/api";
 
 export function App() {
     // const [theme, setTheme] = useState<"default" | "everforest">("default");
@@ -35,8 +27,14 @@ export function App() {
                 <main className="m-4">
                     <Router>
                         <Route path="/" component={HomePage} />
-                        <Route path="/:username/:slug" component={RicePage} />
-                        <Route path="/account" component={AccountPage} />
+                        <Route
+                            path="/:username/:slug"
+                            component={RicePage}
+                        />
+                        <Route
+                            path="/account"
+                            component={AccountPage}
+                        />
                         <Route default component={NotFoundPage} />
                     </Router>
                     <ModalConsumer />
