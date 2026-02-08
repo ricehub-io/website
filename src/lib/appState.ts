@@ -47,9 +47,9 @@ export function createAppState(): StateValues {
                 const body = await res.json();
                 user.value = body;
             }
-
-            userLoading.value = false;
         }
+
+        userLoading.value = false;
     };
     fetchUser();
     

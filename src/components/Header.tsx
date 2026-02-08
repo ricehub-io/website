@@ -4,6 +4,7 @@ import { MagnifyingGlassIcon } from "./icons/MagnifyingGlassIcon";
 import { useLocation } from "preact-iso";
 import { useContext } from "preact/hooks";
 import { AppState } from "../lib/appState";
+import { API_URL } from "../lib/api";
 
 interface LinkProps {
     url: string;
@@ -23,7 +24,16 @@ interface SearchBarProps {
 
 export function Header() {
     const { route } = useLocation();
-    const { currentModal, accessToken } = useContext(AppState);
+    const { currentModal, user, accessToken } = useContext(AppState);
+
+    const logOut = () => {
+        fetch(`${API_URL}/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+        });
+        accessToken.value = null;
+        user.value = null;
+    };
 
     return (
         <header className="flex justify-between items-center bg-dark-background px-6 py-3">
@@ -40,20 +50,17 @@ export function Header() {
                     <>
                         <TextButton
                             text="Login"
-                            onClick={() =>
-                                (currentModal.value = "login")
-                            }
+                            onClick={() => (currentModal.value = "login")}
                         />
                         <TextButton
                             text="Register"
-                            onClick={() =>
-                                (currentModal.value = "register")
-                            }
+                            onClick={() => (currentModal.value = "register")}
                         />
                     </>
                 ) : (
                     <>
                         <Link url="/account" text="Account" />
+                        <TextButton text="Log Out" onClick={logOut} />
                     </>
                 )}
                 <Link url="https://github.com" external>
