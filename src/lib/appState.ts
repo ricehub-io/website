@@ -8,7 +8,7 @@ import {
 import { API_URL, refreshToken } from "./api";
 import { jwtDecode } from "jwt-decode";
 
-type ModalType = "login" | "register" | "changeDisplayName" | null;
+type ModalType = "login" | "register" | "changeDisplayName" | "changePassword" | null;
 
 interface StateValues {
     currentModal: Signal<ModalType>;

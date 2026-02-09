@@ -51,7 +51,12 @@ export function AccountPage() {
                                 (currentModal.value = "changeDisplayName")
                             }
                         />
-                        <Button label="Change password" />
+                        <Button
+                            label="Change password"
+                            onClick={() =>
+                                (currentModal.value = "changePassword")
+                            }
+                        />
                         <Button label="Change avatar" />
                         <Button label="Delete account" red />
                     </div>
