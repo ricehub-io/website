@@ -1,13 +1,13 @@
 import { useContext } from "preact/compat";
-import { addNotification, AppState } from "../lib/appState";
-import { API_URL } from "../lib/api";
-import { LoginResponse } from "../lib/models";
-import { FormInput } from "./FormInput";
-import { FormButton } from "./FormButton";
+import { addNotification, AppState } from "../../lib/appState";
+import { API_URL } from "../../lib/api";
+import { LoginResponse } from "../../lib/models";
+import { FormInput } from "../FormInput";
+import { FormButton } from "../FormButton";
 
 async function login(
     username: string,
-    password: string,
+    password: string
 ): Promise<LoginResponse> {
     const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
@@ -26,7 +26,7 @@ async function login(
     return data;
 }
 
-export function LoginModal() {
+export default function LoginModal() {
     const { currentModal, accessToken, user } = useContext(AppState);
 
     const onSubmit = async (e: SubmitEvent) => {
@@ -45,7 +45,7 @@ export function LoginModal() {
             addNotification(
                 "Login",
                 "You successfully logged into an account!",
-                "info",
+                "info"
             );
         } catch (err) {
             const errMsg = (err as Error).message;
@@ -59,9 +59,7 @@ export function LoginModal() {
             onSubmit={onSubmit}
             onReset={() => (currentModal.value = null)}
         >
-            <h1 className="text-center font-extrabold text-3xl mb-4">
-                Login
-            </h1>
+            <h1 className="text-center font-extrabold text-3xl mb-4">Login</h1>
             <div>
                 <FormInput
                     label="Username"

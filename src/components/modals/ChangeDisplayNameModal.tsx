@@ -13,7 +13,6 @@ export default function ChangeDisplayNameModal() {
         const formData = new FormData(target);
 
         const displayName = formData.get("displayName") as string;
-        target.reset();
 
         try {
             const [status, body] = await apiFetch(
@@ -34,6 +33,7 @@ export default function ChangeDisplayNameModal() {
                     "Your display name has been changed",
                     "info"
                 );
+                target.reset();
             }
         } catch (e) {
             if (e instanceof Error) {

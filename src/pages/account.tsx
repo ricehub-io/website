@@ -3,7 +3,7 @@ import { AppState } from "../lib/appState";
 import { useLocation } from "preact-iso";
 import moment from "moment";
 
-export function AccountPage() {
+export default function AccountPage() {
     const { route } = useLocation();
     const { currentModal, user, userLoading } = useContext(AppState);
 
@@ -61,6 +61,12 @@ export function AccountPage() {
                             label="Change avatar"
                             onClick={() =>
                                 (currentModal.value = "changeAvatar")
+                            }
+                        />
+                        <Button
+                            label="Delete avatar"
+                            onClick={() =>
+                                (currentModal.value = "deleteAvatar")
                             }
                         />
                         <Button

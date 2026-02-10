@@ -1,39 +1,40 @@
 import { useContext } from "preact/hooks";
 import { FormButton } from "../FormButton";
+import { FormInput } from "../FormInput";
 import { addNotification, AppState } from "../../lib/appState";
-import { apiFetch } from "../../lib/api";
+import { API_URL, apiFetch } from "../../lib/api";
+import { useLocation } from "preact-iso";
 
-export default function ChangeAvatarModal() {
+export default function DeleteAvatarModal() {
     const { currentModal, user } = useContext(AppState);
 
     const onSubmit = async (e: SubmitEvent) => {
         e.preventDefault();
         const target = e.currentTarget as HTMLFormElement;
-        const formData = new FormData(target);
 
         try {
             const [status, body] = await apiFetch<{ avatarUrl: string }>(
-                "POST",
-                `/users/${user.value.id}/avatar`,
-                formData
+                "DELETE",
+                `/users/${user.value.id}/avatar`
             );
-            if (status === 201) {
-                target.reset();
+
+            if (status === 200) {
                 user.value = {
                     ...user.value,
                     avatarUrl: body.avatarUrl,
                 };
                 addNotification(
                     "Avatar",
-                    "Your avatar has been changed",
+                    "Your avatar has been deleted",
                     "info"
                 );
+                target.reset();
             }
         } catch (e) {
             if (e instanceof Error) {
                 addNotification(
                     "Avatar",
-                    `Failed to change: ${e.message}`,
+                    `Failed to delete: ${e.message}`,
                     "error"
                 );
             }
@@ -42,20 +43,12 @@ export default function ChangeAvatarModal() {
 
     return (
         <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
-            <label className="block mb-2" htmlFor="file">
-                Upload new avatar
-            </label>
-            <input
-                className="avatar-input block cursor-pointer w-full bg-bright-background p-4 rounded-md mb-2"
-                type="file"
-                name="file"
-                id="file"
-                accept="image/jpeg, image/png"
-            />
-
+            <p className="mb-6 text-lg leading-5 mx-2">
+                Are you sure you want to delete your current avatar?
+            </p>
             <div className="flex gap-2">
-                <FormButton label="Cancel" type="reset" />
-                <FormButton label="Confirm" type="submit" />
+                <FormButton label="No" type="reset" />
+                <FormButton label="Yes" type="submit" />
             </div>
         </form>
     );

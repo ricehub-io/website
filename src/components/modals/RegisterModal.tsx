@@ -1,9 +1,9 @@
 import { useContext } from "preact/hooks";
-import { FormButton } from "./FormButton";
-import { FormInput } from "./FormInput";
-import { addNotification, AppState } from "../lib/appState";
+import { FormButton } from "../FormButton";
+import { FormInput } from "../FormInput";
+import { addNotification, AppState } from "../../lib/appState";
 import { useSignal } from "@preact/signals";
-import { API_URL } from "../lib/api";
+import { API_URL } from "../../lib/api";
 
 interface FormError {
     source: "username" | "displayName" | "password";
@@ -13,7 +13,7 @@ interface FormError {
 async function register(
     username: string,
     displayName: string,
-    password: string,
+    password: string
 ) {
     try {
         const res = await fetch(`${API_URL}/auth/register`, {
@@ -37,7 +37,7 @@ async function register(
     }
 }
 
-export function RegisterModal() {
+export default function RegisterModal() {
     const { currentModal, notifications } = useContext(AppState);
     const formError = useSignal<FormError>(null);
 
@@ -61,15 +61,11 @@ export function RegisterModal() {
         const displayName = formData.get("displayName").toString();
 
         try {
-            await register(
-                username,
-                displayName,
-                password.toString(),
-            );
+            await register(username, displayName, password.toString());
             addNotification(
                 "Registered",
                 "You have been successfully registered!",
-                "info",
+                "info"
             );
             target.reset();
         } catch (err) {

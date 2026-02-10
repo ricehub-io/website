@@ -21,31 +21,33 @@ export async function refreshToken(): Promise<string | null> {
         return null;
     }
 
-    const data = await res.json();
-    return data.accessToken;
+    const body = await res.json();
+    return body.accessToken;
 }
 
 export async function apiFetch<T>(
     method: FetchMethod,
     endpoint: string,
-    body?: any,
+    body?: any
 ): Promise<[number, T]> {
     const res = await fetch(`${API_URL}${endpoint}`, {
         method,
         headers: {
             // "Content-Type": "application/json",
-            Authorization: accessToken.value ? `Bearer ${accessToken.value}` : null,
+            Authorization: accessToken.value
+                ? `Bearer ${accessToken.value}`
+                : null,
         },
         body,
     });
 
-    // check for expired token
-    // if (res.status === 403) {
-    //     const token = await refreshToken();
-    //     console.log("updated access token");
-    //     accessToken.value = token;
-    //     return apiFetch(method, endpoint, body);
-    // }
+    // check for expired access token
+    if (res.status === 403) {
+        const token = await refreshToken();
+        console.log(`refreshed access token: ${token}`);
+        accessToken.value = token;
+        return apiFetch(method, endpoint, body);
+    }
 
     let resBody: any = await res.text();
     if (resBody.length > 0) {

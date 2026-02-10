@@ -9,7 +9,7 @@ import RicePage from "./pages/rice";
 import { AppState, createAppState } from "./lib/appState";
 import { ModalConsumer } from "./components/ModalConsumer";
 import { NotificationConsumer } from "./components/NotificationConsumer";
-import { AccountPage } from "./pages/account";
+import AccountPage from "./pages/account";
 
 export function App() {
     // const [theme, setTheme] = useState<"default" | "everforest">("default");

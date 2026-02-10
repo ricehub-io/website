@@ -10,6 +10,7 @@ type ModalType =
     | "changeDisplayName"
     | "changePassword"
     | "changeAvatar"
+    | "deleteAvatar"
     | "deleteAccount"
     | null;
 
