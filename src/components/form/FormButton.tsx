@@ -6,7 +6,7 @@ interface FormButtonProps {
 export function FormButton({ label, type }: FormButtonProps) {
     return (
         <input
-            className="w-full bg-bright-background py-3 rounded-md transition-colors duration-300 hover:cursor-pointer hover:bg-gray/30"
+            className="w-full mt-2 font-bold text-xl bg-bright-background py-3 rounded-md transition-colors duration-300 hover:cursor-pointer hover:bg-gray/30"
             type={type}
             value={label}
         />

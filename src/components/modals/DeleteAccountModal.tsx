@@ -1,6 +1,6 @@
 import { useContext } from "preact/hooks";
-import { FormButton } from "../FormButton";
-import { FormInput } from "../FormInput";
+import { FormButton } from "../form/FormButton";
+import { FormInput } from "../form/FormInput";
 import { addNotification, AppState } from "../../lib/appState";
 import { API_URL, apiFetch } from "../../lib/api";
 import { useLocation } from "preact-iso";

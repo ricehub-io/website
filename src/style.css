@@ -80,3 +80,11 @@ body {
 .rice-page {
     width: min(70%, 1000px);
 }
+
+.new-rice-content {
+    width: min(70%, 500px);
+}
+
+.preview-container {
+    flex: 0 0 auto;
+}

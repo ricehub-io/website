@@ -59,6 +59,7 @@ export function Header() {
                     </>
                 ) : (
                     <>
+                        <Link url="/new-rice" text="New Rice" />
                         <Link url="/account" text="Account" />
                         <TextButton text="Log Out" onClick={logOut} />
                     </>

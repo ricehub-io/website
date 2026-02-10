@@ -1,5 +1,5 @@
 import { useContext } from "preact/hooks";
-import { FormButton } from "../FormButton";
+import { FormButton } from "../form/FormButton";
 import { addNotification, AppState } from "../../lib/appState";
 import { apiFetch } from "../../lib/api";
 
