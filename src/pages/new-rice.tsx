@@ -69,9 +69,12 @@ function ImageCarouselUpload() {
                     <PhotoIcon />
                 </div> */}
                 {images.value.map((image, index) => (
-                    <div key={index} className="preview-container relative">
+                    <div
+                        key={index}
+                        className="preview-container relative border-3 rounded-lg border-bright-background"
+                    >
                         <img
-                            className="w-86"
+                            className="w-86 rounded-md"
                             src={URL.createObjectURL(image)}
                             alt="screenshot"
                         />
