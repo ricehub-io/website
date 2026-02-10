@@ -4,6 +4,8 @@ import { LoginModal } from "./LoginModal";
 import { RegisterModal } from "./RegisterModal";
 import ChangeDisplayNameModal from "./modals/ChangeDisplayNameModal";
 import ChangePasswordModal from "./modals/ChangePasswordModal";
+import DeleteAccountModal from "./modals/DeleteAccountModal";
+import ChangeAvatarModal from "./modals/ChangeAvatarModal";
 
 export function ModalConsumer() {
     const { currentModal } = useContext(AppState);
@@ -19,6 +21,12 @@ export function ModalConsumer() {
                     )}
                     {currentModal.value === "changePassword" && (
                         <ChangePasswordModal />
+                    )}
+                    {currentModal.value === "deleteAccount" && (
+                        <DeleteAccountModal />
+                    )}
+                    {currentModal.value === "changeAvatar" && (
+                        <ChangeAvatarModal />
                     )}
                 </div>
             </div>

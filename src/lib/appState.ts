@@ -1,14 +1,17 @@
 import { signal, Signal } from "@preact/signals";
 import { createContext } from "preact";
-import {
-    AppNotification,
-    NotificationSeverity,
-    User,
-} from "./models";
+import { AppNotification, NotificationSeverity, User } from "./models";
 import { API_URL, refreshToken } from "./api";
 import { jwtDecode } from "jwt-decode";
 
-type ModalType = "login" | "register" | "changeDisplayName" | "changePassword" | null;
+type ModalType =
+    | "login"
+    | "register"
+    | "changeDisplayName"
+    | "changePassword"
+    | "changeAvatar"
+    | "deleteAccount"
+    | null;
 
 interface StateValues {
     currentModal: Signal<ModalType>;
@@ -28,18 +31,16 @@ export function createAppState(): StateValues {
     const userLoading = signal(true);
 
     const fetchUser = async () => {
-        console.log("fetching user data from refresh token");
         const token = await refreshToken();
         if (token) {
             const { sub } = jwtDecode(token);
-
             accessToken.value = token;
-            
+
             const res = await fetch(`${API_URL}/users/${sub}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
@@ -52,14 +53,14 @@ export function createAppState(): StateValues {
         userLoading.value = false;
     };
     fetchUser();
-    
+
     return { currentModal, notifications, accessToken, user, userLoading };
 }
 
 export function addNotification(
     title: string,
     message: string,
-    severity: NotificationSeverity,
+    severity: NotificationSeverity
 ) {
     const newIndex = notifications.value.length;
     notifications.value = [
@@ -70,7 +71,7 @@ export function addNotification(
     setTimeout(() => {
         // TODO: add fade out animation
         notifications.value = notifications.value.filter(
-            (_, index) => newIndex !== index,
+            (_, index) => newIndex !== index
         );
     }, 7500);
 }

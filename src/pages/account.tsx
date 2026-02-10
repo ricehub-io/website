@@ -11,10 +11,10 @@ export function AccountPage() {
         if (user.value === null && !userLoading.value) {
             route("/", true);
         }
-    }, [userLoading]);
+    }, [userLoading.value]);
 
     return (
-        user.value !== null && (
+        user.value && (
             <div className="flex gap-4 mx-12 py-4">
                 <div className="flex-1">
                     <SectionTitle text="Details" />
@@ -57,8 +57,19 @@ export function AccountPage() {
                                 (currentModal.value = "changePassword")
                             }
                         />
-                        <Button label="Change avatar" />
-                        <Button label="Delete account" red />
+                        <Button
+                            label="Change avatar"
+                            onClick={() =>
+                                (currentModal.value = "changeAvatar")
+                            }
+                        />
+                        <Button
+                            label="Delete account"
+                            red
+                            onClick={() =>
+                                (currentModal.value = "deleteAccount")
+                            }
+                        />
                     </div>
                 </div>
             </div>

@@ -33,7 +33,7 @@ export async function apiFetch<T>(
     const res = await fetch(`${API_URL}${endpoint}`, {
         method,
         headers: {
-            "Content-Type": "application/json",
+            // "Content-Type": "application/json",
             Authorization: accessToken.value ? `Bearer ${accessToken.value}` : null,
         },
         body,

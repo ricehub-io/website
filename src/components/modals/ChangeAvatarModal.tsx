@@ -1,10 +1,9 @@
 import { useContext } from "preact/hooks";
 import { FormButton } from "../FormButton";
-import { FormInput } from "../FormInput";
 import { addNotification, AppState } from "../../lib/appState";
 import { apiFetch } from "../../lib/api";
 
-export default function ChangeDisplayNameModal() {
+export default function ChangeAvatarModal() {
     const { currentModal, user } = useContext(AppState);
 
     const onSubmit = async (e: SubmitEvent) => {
@@ -12,33 +11,28 @@ export default function ChangeDisplayNameModal() {
         const target = e.currentTarget as HTMLFormElement;
         const formData = new FormData(target);
 
-        const displayName = formData.get("displayName") as string;
-        target.reset();
-
         try {
-            const [status, body] = await apiFetch(
-                "PATCH",
-                `/users/${user.value.id}/displayName`,
-                JSON.stringify({
-                    displayName,
-                })
+            const [status, body] = await apiFetch<{ avatarUrl: string }>(
+                "POST",
+                `/users/${user.value.id}/avatar`,
+                formData
             );
-
-            if (status === 204) {
+            if (status === 201) {
+                target.reset();
                 user.value = {
                     ...user.value,
-                    displayName,
+                    avatarUrl: body.avatarUrl,
                 };
                 addNotification(
-                    "Display Name",
-                    "Your display name has been changed",
+                    "Avatar",
+                    "Your avatar has been changed",
                     "info"
                 );
             }
         } catch (e) {
             if (e instanceof Error) {
                 addNotification(
-                    "Display Name",
+                    "Avatar",
                     `Failed to change: ${e.message}`,
                     "error"
                 );
@@ -47,13 +41,22 @@ export default function ChangeDisplayNameModal() {
     };
 
     return (
-        <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
-            <FormInput
-                label="New Display Name"
-                name="displayName"
-                type="text"
-                placeholder="BlueApple923"
+        <form
+            className="max-w-84"
+            onSubmit={onSubmit}
+            onReset={() => (currentModal.value = null)}
+        >
+            <label className="block mb-2" htmlFor="file">
+                Upload new avatar
+            </label>
+            <input
+                className="avatar-input block cursor-pointer w-full bg-bright-background p-4 rounded-md mb-2"
+                type="file"
+                name="file"
+                id="file"
+                accept="image/jpeg, image/png"
             />
+
             <div className="flex gap-2">
                 <FormButton label="Cancel" type="reset" />
                 <FormButton label="Confirm" type="submit" />
