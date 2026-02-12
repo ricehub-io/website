@@ -8,7 +8,6 @@ type FetchMethod =
     | "POST"
     | "post"
     | "PATCH"
-    | "patch"
     | "DELETE"
     | "delete";
 

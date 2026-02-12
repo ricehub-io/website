@@ -62,12 +62,12 @@ export function RiceInfo({
                 </p>
             </div>
             <div className="grid grid-cols-2 gap-2">
-                {previews.map((url, index) => (
+                {previews.map((preview) => (
                     <div className="aspect-video">
                         <img
                             className="w-full h-full object-cover"
-                            key={index}
-                            src={url}
+                            key={preview.id}
+                            src={preview.url}
                             alt="preview"
                         />
                     </div>

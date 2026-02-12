@@ -6,7 +6,7 @@ import { WarningIcon } from "./icons/WarningIcon";
 import { ErrorIcon } from "./icons/ErrorIcon";
 import { For } from "@preact/signals/utils";
 
-export function NotificationConsumer() {
+export default function NotificationConsumer() {
     const { notifications } = useContext(AppState);
 
     return (

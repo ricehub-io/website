@@ -3,8 +3,9 @@ import FormLabel from "./FormLabel";
 interface FormInputProps {
     label: string;
     name: string;
-    placeholder?: string;
     type: "text" | "password";
+    value?: string;
+    placeholder?: string;
     errorMsg?: string;
     onInput?: () => void;
 }
@@ -12,8 +13,9 @@ interface FormInputProps {
 export function FormInput({
     label,
     name,
-    placeholder,
     type,
+    value,
+    placeholder,
     errorMsg,
     onInput,
 }: FormInputProps) {
@@ -30,6 +32,7 @@ export function FormInput({
                 placeholder={placeholder}
                 required
                 onInput={onInput}
+                value={value}
             />
             {errorMsg && (
                 <p className="text-red text-sm mt-0.5 whitespace-normal break-words w-full">

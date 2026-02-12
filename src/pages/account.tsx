@@ -25,7 +25,6 @@ export default function AccountPage() {
             return;
         }
 
-        console.log("fetching user rices");
         const _ohmy = async () => {
             const [status, body] = await apiFetch<PartialRice[]>(
                 "get",

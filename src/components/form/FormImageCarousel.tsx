@@ -98,7 +98,6 @@ export default function FormImageCarousel({ label, name }: Props) {
                     id={name}
                     accept="image/png, image/jpeg"
                     onChange={onFileSelect}
-                    required
                 />
             </div>
         </div>

@@ -8,7 +8,7 @@ import DeleteAccountModal from "./modals/DeleteAccountModal";
 import ChangeAvatarModal from "./modals/ChangeAvatarModal";
 import DeleteAvatarModal from "./modals/DeleteAvatarModal";
 
-export function ModalConsumer() {
+export default function ModalConsumer() {
     const { currentModal } = useContext(AppState);
 
     return (

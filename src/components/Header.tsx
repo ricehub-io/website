@@ -22,7 +22,7 @@ interface SearchBarProps {
     placeholder: string;
 }
 
-export function Header() {
+export default function Header() {
     const { route } = useLocation();
     const { currentModal, user, accessToken } = useContext(AppState);
 
@@ -64,7 +64,7 @@ export function Header() {
                         <TextButton text="Log Out" onClick={logOut} />
                     </>
                 )}
-                <Link url="https://github.com" external>
+                <Link url="https://github.com/the-ricehub" external>
                     <GithubIcon />
                 </Link>
             </div>

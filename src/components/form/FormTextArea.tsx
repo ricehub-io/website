@@ -3,9 +3,10 @@ import FormLabel from "./FormLabel";
 interface Props {
     name: string;
     label: string;
+    value?: string;
 }
 
-export default function FormTextArea({ name, label }: Props) {
+export default function FormTextArea({ name, label, value }: Props) {
     return (
         <div>
             <FormLabel label={label} htmlFor={name} />
@@ -15,6 +16,7 @@ export default function FormTextArea({ name, label }: Props) {
                 id={name}
                 rows={15}
                 required
+                value={value}
             />
         </div>
     );

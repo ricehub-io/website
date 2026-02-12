@@ -4,8 +4,9 @@ import { DownloadIcon } from "./icons/DownloadIcon";
 import { StarIcon } from "./icons/StarIcon";
 import { useLocation } from "preact-iso";
 import { useContext, useEffect } from "preact/hooks";
-import { AppState } from "../lib/appState";
 import { apiFetch } from "../lib/api";
+import { AppState } from "../lib/appState";
+import PencilSquareIcon from "./icons/PencilSquareIcon";
 
 export default function RicePreview({
     id,
@@ -18,7 +19,7 @@ export default function RicePreview({
     ...props
 }: PartialRice) {
     const { route } = useLocation();
-    const { accessToken } = useContext(AppState);
+    const { user } = useContext(AppState);
 
     const starCount = useSignal(props.stars);
     const isStarred = useSignal(props.isStarred);
@@ -52,10 +53,15 @@ export default function RicePreview({
         }
     };
 
+    const onEditClick = (e: Event) => {
+        e.stopPropagation();
+        route(`/edit-rice/${id}`);
+    };
+
     return (
         <div
             key={slug}
-            className="bg-bright-background rounded-md transition-colors duration-1000 ease-in-out-quint outline-transparent outline-offset-4 hover:cursor-pointer hover:outline-accent hover:outline-2"
+            className="relative bg-bright-background rounded-md transition-colors duration-1000 ease-in-out-quint outline-transparent outline-offset-4 hover:cursor-pointer hover:outline-accent hover:outline-2"
             onClick={onPreviewClick}
         >
             <div className="aspect-video overflow-hidden box-content p-1">
@@ -92,6 +98,14 @@ export default function RicePreview({
                     </div>
                 </div>
             </div>
+            {user.value !== null && username === user.value.username && (
+                <button
+                    className="absolute right-4 top-4 bg-bright-background p-2 border cursor-pointer border-gray/40 rounded-lg transition-colors hover:bg-gray/20 hover:border-gray/60"
+                    onClick={onEditClick}
+                >
+                    <PencilSquareIcon />
+                </button>
+            )}
         </div>
     );
 }

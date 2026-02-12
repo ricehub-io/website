@@ -17,6 +17,11 @@ export interface Dotfiles {
     updatedAt: Date;
 }
 
+export interface RicePreview {
+    id: string;
+    url: string;
+}
+
 export interface Rice {
     id: string;
     title: string;
@@ -24,7 +29,7 @@ export interface Rice {
     description: string;
     downloads: number;
     stars: number;
-    previews: string[];
+    previews: RicePreview[];
     dotfiles: Dotfiles;
     createdAt: Date;
     updatedAt: Date;
