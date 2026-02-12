@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "preact/hooks";
 import { PartialRice } from "../lib/models";
 import { useSignal } from "@preact/signals";
-import { RicePreview } from "../components/RicePreview";
+import RicePreview from "../components/RicePreview";
 import { API_URL } from "../lib/api";
 import { Placeholder } from "../components/Placeholder";
 import { addNotification, AppState } from "../lib/appState";

@@ -2,7 +2,15 @@ import { accessToken, addNotification } from "./appState";
 
 export const API_URL = "http://127.0.0.1:3000";
 
-type FetchMethod = "GET" | "POST" | "PATCH" | "DELETE";
+type FetchMethod =
+    | "GET"
+    | "get"
+    | "POST"
+    | "post"
+    | "PATCH"
+    | "patch"
+    | "DELETE"
+    | "delete";
 
 export async function refreshToken(): Promise<string | null> {
     const res = await fetch(`${API_URL}/auth/refresh`, {
@@ -33,7 +41,6 @@ export async function apiFetch<T>(
     const res = await fetch(`${API_URL}${endpoint}`, {
         method,
         headers: {
-            // "Content-Type": "application/json",
             Authorization: accessToken.value
                 ? `Bearer ${accessToken.value}`
                 : null,
@@ -41,7 +48,6 @@ export async function apiFetch<T>(
         body,
     });
 
-    // check for expired access token
     if (res.status === 403) {
         const token = await refreshToken();
         console.log(`refreshed access token: ${token}`);

@@ -32,7 +32,7 @@ export default function FormFileUpload({ name, accept }: Props) {
             <FormLabel label="Dotfiles" />
             {selectedFile.value !== null ? (
                 <div className="bg-bright-background flex items-center gap-4 px-6 py-4 rounded-lg">
-                    <div className="bg-blue/50 p-2 rounded-lg">
+                    <div className="bg-gray/40 p-2 rounded-lg">
                         <DocumentIcon />
                     </div>
                     <div>
@@ -43,7 +43,7 @@ export default function FormFileUpload({ name, accept }: Props) {
                     </div>
                     <button
                         onClick={removeFile}
-                        className="ml-auto bg-red/60 p-2 rounded-lg cursor-pointer transition-colors hover:text-foreground/70 hover:bg-red/40"
+                        className="ml-auto bg-red/40 p-2 rounded-md border-red/60 border cursor-pointer transition-colors hover:text-foreground/70 hover:bg-red/40"
                     >
                         <TrashIcon />
                     </button>
@@ -53,14 +53,6 @@ export default function FormFileUpload({ name, accept }: Props) {
                     className="flex items-center justify-center border-2 border-dashed p-8 border-bright-background rounded-lg cursor-pointer transition-colors hover:border-gray/30 hover:bg-bright-background/30 group"
                     htmlFor={name}
                 >
-                    <input
-                        className="hidden"
-                        type="file"
-                        name={name}
-                        id={name}
-                        onChange={onFileSelect}
-                        accept={accept}
-                    />
                     <span className="bg-bright-background px-6 py-3 rounded-md transition-colors group-hover:bg-gray/20">
                         Choose a file
                     </span>
@@ -68,6 +60,14 @@ export default function FormFileUpload({ name, accept }: Props) {
                     <span>drag it here</span>
                 </label>
             )}
+            <input
+                className="hidden"
+                type="file"
+                name={name}
+                id={name}
+                onChange={onFileSelect}
+                accept={accept}
+            />
         </div>
     );
 }

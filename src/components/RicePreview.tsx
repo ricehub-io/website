@@ -3,12 +3,11 @@ import { PartialRice } from "../lib/models";
 import { DownloadIcon } from "./icons/DownloadIcon";
 import { StarIcon } from "./icons/StarIcon";
 import { useLocation } from "preact-iso";
-import { API_URL } from "../lib/api";
 import { useContext, useEffect } from "preact/hooks";
 import { AppState } from "../lib/appState";
 import { apiFetch } from "../lib/api";
 
-export function RicePreview({
+export default function RicePreview({
     id,
     slug,
     username,
@@ -42,10 +41,7 @@ export function RicePreview({
         //     },
         // });
 
-        const [status, _] = await apiFetch(
-            "post",
-            `/rices/${id}/star`,
-        );
+        const [status, _] = await apiFetch("post", `/rices/${id}/star`);
 
         if (status === 201) {
             starCount.value += 1;

@@ -6,7 +6,7 @@ export default function PhotoIcon() {
             viewBox="0 0 24 24"
             stroke-width={1.5}
             stroke="currentColor"
-            class="size-24"
+            class="size-36"
         >
             <path
                 stroke-linecap="round"

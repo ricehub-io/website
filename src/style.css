@@ -85,6 +85,6 @@ body {
     width: min(70%, 500px);
 }
 
-.preview-container {
+.carousel-image-container {
     flex: 0 0 auto;
 }

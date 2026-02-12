@@ -69,6 +69,8 @@ export function addNotification(
         ...notifications.value,
     ];
 
+    // TODO: use a cleanup thread that periodically iterates through all notifications
+    // beacuse they sometimes get bugged and never fade out
     setTimeout(() => {
         // TODO: add fade out animation
         notifications.value = notifications.value.filter(
