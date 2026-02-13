@@ -3,6 +3,7 @@ import { createContext } from "preact";
 import { AppNotification, NotificationSeverity, User } from "./models";
 import { API_URL, refreshToken } from "./api";
 import { jwtDecode } from "jwt-decode";
+import { v4 as uuidv4 } from "uuid";
 
 type ModalType =
     | "login"
@@ -24,7 +25,7 @@ interface StateValues {
 
 export const AppState = createContext<StateValues>(null);
 
-const notifications = signal([]);
+const notifications = signal<AppNotification[]>([]);
 export const accessToken = signal(null);
 export function createAppState(): StateValues {
     const currentModal = signal(null);
@@ -63,18 +64,16 @@ export function addNotification(
     message: string,
     severity: NotificationSeverity
 ) {
-    const newIndex = notifications.value.length;
+    const id = uuidv4();
     notifications.value = [
-        { title, message, severity },
+        { id, title, message, severity },
         ...notifications.value,
     ];
 
-    // TODO: use a cleanup thread that periodically iterates through all notifications
-    // beacuse they sometimes get bugged and never fade out
     setTimeout(() => {
         // TODO: add fade out animation
         notifications.value = notifications.value.filter(
-            (_, index) => newIndex !== index
+            (notif) => notif.id !== id
         );
     }, 7500);
 }

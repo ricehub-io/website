@@ -78,7 +78,7 @@ export default function FormImageCarousel({ label, name }: Props) {
                         </div>
                     ))
                 ) : (
-                    <div className="flex items-center justify-center rounded-lg text-gray bg-bright-background w-87 border-2 border-gray/50 aspect-video">
+                    <div className="flex items-center justify-center rounded-lg text-gray bg-bright-background w-86 border-2 border-gray/50 aspect-video">
                         <PhotoIcon />
                     </div>
                 )}
@@ -98,6 +98,7 @@ export default function FormImageCarousel({ label, name }: Props) {
                     id={name}
                     accept="image/png, image/jpeg"
                     onChange={onFileSelect}
+                    required
                 />
             </div>
         </div>

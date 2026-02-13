@@ -10,9 +10,9 @@ export default function NotificationConsumer() {
     const { notifications } = useContext(AppState);
 
     return (
-        <div className="absolute right-6 top-16 max-w-114">
+        <div className="fixed right-6 top-16 max-w-114">
             <For each={notifications}>
-                {(notif, index) => <Notification key={index} {...notif} />}
+                {(notif) => <Notification key={notif.id} {...notif} />}
             </For>
         </div>
     );

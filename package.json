@@ -14,7 +14,8 @@
 		"moment": "^2.30.1",
 		"preact": "^10.26.9",
 		"preact-iso": "^2.10.0",
-		"tailwindcss": "^4.1.13"
+		"tailwindcss": "^4.1.13",
+		"uuid": "^13.0.0"
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.10.2",

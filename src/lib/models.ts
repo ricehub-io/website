@@ -53,6 +53,7 @@ export interface LoginResponse {
 export type NotificationSeverity = "info" | "warning" | "error";
 
 export interface AppNotification {
+    id: string;
     title: string;
     message: string;
     severity: NotificationSeverity;
