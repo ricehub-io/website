@@ -31,6 +31,7 @@ export interface Rice {
     stars: number;
     previews: RicePreview[];
     dotfiles: Dotfiles;
+    author: User;
     createdAt: Date;
     updatedAt: Date;
 }

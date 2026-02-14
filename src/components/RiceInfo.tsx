@@ -6,6 +6,8 @@ import { DownloadIcon } from "./icons/DownloadIcon";
 import { FolderArrowIcon } from "./icons/FolderArrowIcon";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import PencilIcon from "./icons/PencilIcon";
+import { useLocation } from "preact-iso";
 
 dayjs.extend(relativeTime);
 
@@ -17,9 +19,11 @@ export function RiceInfo({
     stars,
     downloads,
     dotfiles,
+    author,
     createdAt,
     updatedAt,
 }: Rice) {
+    const { route } = useLocation();
     const isStarred = useSignal(false);
 
     const onStar = () => {
@@ -30,13 +34,21 @@ export function RiceInfo({
         window.open(`${API_URL}/rices/${id}/dotfiles`);
     };
 
+    const onEdit = () => {
+        route(`/edit-rice/${id}`);
+    };
+
     return (
         <>
             <div className="flex items-center justify-between">
                 <h1 className="text-4xl font-bold">{title}</h1>
                 <div className="flex gap-2">
+                    <div className="flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg">
+                        <DownloadIcon />
+                        <p>{downloads}</p>
+                    </div>
                     <div
-                        className="flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg hover:cursor-pointer"
+                        className="flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg transition-colors hover:cursor-pointer hover:bg-gray/30"
                         onClick={onStar}
                     >
                         <StarIcon solid={isStarred.value} />
@@ -46,32 +58,58 @@ export function RiceInfo({
                             {stars}
                         </p>
                     </div>
-                    <div className="flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg">
-                        <DownloadIcon />
-                        <p>{downloads}</p>
+                    <button
+                        className="flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg transition-colors hover:cursor-pointer hover:bg-gray/30"
+                        onClick={onEdit}
+                    >
+                        <PencilIcon />
+                        <p>Edit</p>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <p className="whitespace-pre-line bg-bright-background p-4 rounded-lg mb-2">
+                    {description}
+                </p>
+                <div className="flex items-center justify-between bg-bright-background p-4 rounded-lg">
+                    <div className="flex items-center gap-3">
+                        <img
+                            className="w-16 rounded-lg"
+                            src={author.avatarUrl}
+                            alt="Author's avatar"
+                        />
+                        <div>
+                            <p className="text-xl font-medium">
+                                {author.displayName}
+                            </p>
+                            <p className="text-gray">@{author.username}</p>
+                        </div>
+                    </div>
+                    <div className="text-right">
+                        <p>
+                            Created <b>{dayjs(createdAt).fromNow()}</b>
+                        </p>
+                        <p>
+                            Last updated <b>{dayjs(updatedAt).fromNow()}</b>
+                        </p>
                     </div>
                 </div>
             </div>
-            <p className="whitespace-pre-line">{description}</p>
+            <div className="h-0.5 bg-bright-background/50 mx-2" />
             <div>
-                <p>
-                    Created <b>{dayjs(createdAt).fromNow()}</b>
-                </p>
-                <p>
-                    Last updated <b>{dayjs(updatedAt).fromNow()}</b>
-                </p>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-                {previews.map((preview) => (
-                    <div className="aspect-video">
-                        <img
-                            className="w-full h-full object-cover"
-                            key={preview.id}
-                            src={preview.url}
-                            alt="preview"
-                        />
-                    </div>
-                ))}
+                <h3 className="text-2xl font-bold mb-2">Screenshots</h3>
+                <div className="grid grid-cols-2 gap-2">
+                    {previews.map((preview) => (
+                        <div className="aspect-video">
+                            <img
+                                className="w-full h-full object-cover"
+                                key={preview.id}
+                                src={preview.url}
+                                alt="preview"
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
             <RiceDotfiles onDownload={onDownload} {...dotfiles} />
         </>
