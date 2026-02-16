@@ -1,0 +1,28 @@
+name: Deploy to VPS
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v5
+
+            - name: Build website
+              run: |
+                  npm install
+                  npm run build
+
+            - name: Copy build to VPS
+              uses: appleboy/scp-action@1
+              with:
+                  host: ${{ secrets.VPS_HOST }}
+                  username: ${{ secrets.VPS_USER }}
+                  key: ${{ secrets.VPS_SSH_KEY }}
+                  source: "dist/*"
+                  target: "/var/www/ricehub"
