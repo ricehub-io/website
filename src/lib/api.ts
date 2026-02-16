@@ -1,7 +1,7 @@
 import { accessToken, addNotification } from "./appState";
 
 export const API_URL: string =
-    import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
+    window.__APP_CONFIG__?.API_URL ?? "http://127.0.0.1:3000";
 
 type FetchMethod =
     | "GET"
