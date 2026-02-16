@@ -2,5 +2,11 @@
     "tabWidth": 4,
     "singleQuote": false,
     "printWidth": 80,
-    "trailingComma": "es5"
+    "trailingComma": "es5",
+    "overrides": [
+        {
+            "files": ".github/**",
+            "options": { "tabWidth": 2 }
+        }
+    ]
 }
