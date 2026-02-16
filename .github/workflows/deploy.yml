@@ -9,6 +9,7 @@ on:
             - "public/**"
             - "package.json"
             - "vite.config.ts"
+            - ".github/**"
 
 jobs:
     deploy:
