@@ -4,6 +4,11 @@ on:
     push:
         branches:
             - main
+        paths:
+            - "src/**"
+            - "public/**"
+            - "package.json"
+            - "vite.config.ts"
 
 jobs:
     deploy:
