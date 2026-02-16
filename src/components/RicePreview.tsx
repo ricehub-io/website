@@ -42,7 +42,7 @@ export default function RicePreview({
         //     },
         // });
 
-        const [status, _] = await apiFetch("post", `/rices/${id}/star`);
+        const [status, _] = await apiFetch("POST", `/rices/${id}/star`);
 
         if (status === 201) {
             starCount.value += 1;

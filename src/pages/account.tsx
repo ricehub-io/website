@@ -27,7 +27,7 @@ export default function AccountPage() {
 
         const _ohmy = async () => {
             const [status, body] = await apiFetch<PartialRice[]>(
-                "get",
+                "GET",
                 `/users/${user.value.id}/rices`
             );
             if (status === HttpStatus.Ok) {

@@ -3,14 +3,7 @@ import { accessToken, addNotification } from "./appState";
 export const API_URL: string =
     window.__APP_CONFIG__?.API_URL ?? "http://127.0.0.1:3000";
 
-type FetchMethod =
-    | "GET"
-    | "get"
-    | "POST"
-    | "post"
-    | "PATCH"
-    | "DELETE"
-    | "delete";
+type FetchMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
 export async function refreshToken(): Promise<string | null> {
     const res = await fetch(`${API_URL}/auth/refresh`, {

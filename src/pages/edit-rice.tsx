@@ -30,7 +30,7 @@ export default function EditRicePage() {
     const submitted = useSignal(false);
 
     useEffect(() => {
-        apiFetch<Rice>("get", `/rices/${riceId}`).then(([status, body]) => {
+        apiFetch<Rice>("GET", `/rices/${riceId}`).then(([status, body]) => {
             if (status === HttpStatus.Ok) {
                 rice.value = body;
             }
