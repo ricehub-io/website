@@ -8,7 +8,6 @@ on:
 jobs:
     deploy:
         runs-on: ubuntu-latest
-
         steps:
             - name: Checkout repo
               uses: actions/checkout@v5
@@ -18,8 +17,8 @@ jobs:
                   npm install
                   npm run build
 
-            - name: Copy build to VPS
-              uses: appleboy/scp-action@1
+            - name: Copy files via SSH
+              uses: appleboy/scp-action@v1
               with:
                   host: ${{ secrets.VPS_HOST }}
                   username: ${{ secrets.VPS_USER }}
