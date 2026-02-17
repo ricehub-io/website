@@ -7,6 +7,9 @@ import { useContext, useEffect } from "preact/hooks";
 import { apiFetch } from "../lib/api";
 import { AppState } from "../lib/appState";
 import PencilSquareIcon from "./icons/PencilSquareIcon";
+import { HttpStatus } from "../lib/enums";
+import { JSX } from "preact/jsx-runtime";
+import TrashIcon from "./icons/TrashIcon";
 
 export default function RicePreview({
     id,
@@ -19,7 +22,7 @@ export default function RicePreview({
     ...props
 }: PartialRice) {
     const { route } = useLocation();
-    const { user } = useContext(AppState);
+    const { user, currentModal, currentRiceId } = useContext(AppState);
 
     const starCount = useSignal(props.stars);
     const isStarred = useSignal(props.isStarred);
@@ -44,19 +47,20 @@ export default function RicePreview({
 
         const [status, _] = await apiFetch("POST", `/rices/${id}/star`);
 
-        if (status === 201) {
+        if (status === HttpStatus.Created) {
             starCount.value += 1;
             isStarred.value = true;
-        } else if (status === 204) {
+        } else if (status === HttpStatus.NoContent) {
             starCount.value -= 1;
             isStarred.value = false;
         }
     };
 
-    const onEditClick = (e: Event) => {
-        e.stopPropagation();
-        route(`/edit-rice/${id}`);
+    const onDelete = () => {
+        currentRiceId.value = id;
+        currentModal.value = "deleteRice";
     };
+    const onEdit = () => route(`/edit-rice/${id}`);
 
     return (
         <div
@@ -99,13 +103,36 @@ export default function RicePreview({
                 </div>
             </div>
             {user.value !== null && username === user.value.username && (
-                <button
-                    className="absolute right-4 top-4 bg-bright-background p-2 border cursor-pointer border-gray/40 rounded-lg transition-colors hover:bg-gray/20 hover:border-gray/60"
-                    onClick={onEditClick}
-                >
-                    <PencilSquareIcon />
-                </button>
+                <div className="absolute right-4 top-4">
+                    <FloatingButton icon={<TrashIcon />} onClick={onDelete} />
+                    <FloatingButton
+                        icon={<PencilSquareIcon />}
+                        onClick={onEdit}
+                    />
+                </div>
             )}
         </div>
+    );
+}
+
+function FloatingButton({
+    icon,
+    onClick: _onClick,
+}: {
+    icon: JSX.Element;
+    onClick: () => void;
+}) {
+    const onClick = (e: Event) => {
+        e.stopPropagation();
+        _onClick();
+    };
+
+    return (
+        <button
+            className="bg-bright-background p-2 border cursor-pointer border-gray/40 rounded-lg transition-colors hover:bg-gray/20 hover:border-gray/60 ml-2"
+            onClick={onClick}
+        >
+            {icon}
+        </button>
     );
 }

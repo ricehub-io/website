@@ -3,6 +3,7 @@ import { FormButton } from "../form/FormButton";
 import { FormInput } from "../form/FormInput";
 import { addNotification, AppState } from "../../lib/appState";
 import { apiFetch } from "../../lib/api";
+import { HttpStatus } from "../../lib/enums";
 
 export default function ChangeDisplayNameModal() {
     const { currentModal, user } = useContext(AppState);
@@ -23,7 +24,7 @@ export default function ChangeDisplayNameModal() {
                 })
             );
 
-            if (status === 204) {
+            if (status === HttpStatus.NoContent) {
                 user.value = {
                     ...user.value,
                     displayName,

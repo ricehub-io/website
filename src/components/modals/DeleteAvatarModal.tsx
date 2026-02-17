@@ -4,6 +4,7 @@ import { FormInput } from "../form/FormInput";
 import { addNotification, AppState } from "../../lib/appState";
 import { API_URL, apiFetch } from "../../lib/api";
 import { useLocation } from "preact-iso";
+import { HttpStatus } from "../../lib/enums";
 
 export default function DeleteAvatarModal() {
     const { currentModal, user } = useContext(AppState);
@@ -18,7 +19,7 @@ export default function DeleteAvatarModal() {
                 `/users/${user.value.id}/avatar`
             );
 
-            if (status === 200) {
+            if (status === HttpStatus.Ok) {
                 user.value = {
                     ...user.value,
                     avatarUrl: body.avatarUrl,
@@ -43,7 +44,7 @@ export default function DeleteAvatarModal() {
 
     return (
         <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
-            <p className="mb-6 text-lg leading-5 mx-2">
+            <p className="mb-2 text-lg leading-5 mx-2">
                 Are you sure you want to delete your current avatar?
             </p>
             <div className="flex gap-2">

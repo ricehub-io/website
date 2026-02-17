@@ -2,6 +2,7 @@ import { useContext } from "preact/hooks";
 import { FormButton } from "../form/FormButton";
 import { addNotification, AppState } from "../../lib/appState";
 import { apiFetch } from "../../lib/api";
+import { HttpStatus } from "../../lib/enums";
 
 export default function ChangeAvatarModal() {
     const { currentModal, user } = useContext(AppState);
@@ -17,7 +18,7 @@ export default function ChangeAvatarModal() {
                 `/users/${user.value.id}/avatar`,
                 formData
             );
-            if (status === 201) {
+            if (status === HttpStatus.Created) {
                 target.reset();
                 user.value = {
                     ...user.value,

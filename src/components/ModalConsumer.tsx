@@ -1,4 +1,4 @@
-import { useContext } from "preact/hooks";
+import { useContext, useEffect } from "preact/hooks";
 import { AppState } from "../lib/appState";
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
@@ -7,13 +7,20 @@ import ChangePasswordModal from "./modals/ChangePasswordModal";
 import DeleteAccountModal from "./modals/DeleteAccountModal";
 import ChangeAvatarModal from "./modals/ChangeAvatarModal";
 import DeleteAvatarModal from "./modals/DeleteAvatarModal";
+import DeleteRiceModal from "./modals/DeleteRiceModal";
 
 export default function ModalConsumer() {
     const { currentModal } = useContext(AppState);
 
+    // disable page scrolling when modal is open
+    useEffect(() => {
+        document.body.style.overflow =
+            currentModal.value === null ? "visible" : "hidden";
+    }, [currentModal.value]);
+
     return (
         currentModal.value !== null && (
-            <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center bg-background/50">
+            <div className="fixed left-0 top-0 w-full h-full flex items-center justify-center bg-background/50">
                 <div className="bg-dark-background px-12 py-6 rounded-xl border-2 border-gray/30 max-w-96">
                     {currentModal.value === "login" && <LoginModal />}
                     {currentModal.value === "register" && <RegisterModal />}
@@ -32,6 +39,7 @@ export default function ModalConsumer() {
                     {currentModal.value === "deleteAccount" && (
                         <DeleteAccountModal />
                     )}
+                    {currentModal.value === "deleteRice" && <DeleteRiceModal />}
                 </div>
             </div>
         )

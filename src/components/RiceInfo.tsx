@@ -8,6 +8,11 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PencilIcon from "./icons/PencilIcon";
 import { useLocation } from "preact-iso";
+import { JSX } from "preact/jsx-runtime";
+import TrashIcon from "./icons/TrashIcon";
+import { useContext } from "preact/hooks";
+import { AppState } from "../lib/appState";
+import { ComponentChildren } from "preact";
 
 dayjs.extend(relativeTime);
 
@@ -24,19 +29,17 @@ export function RiceInfo({
     updatedAt,
 }: Rice) {
     const { route } = useLocation();
+    const { user, currentModal, currentRiceId } = useContext(AppState);
+
     const isStarred = useSignal(false);
 
-    const onStar = () => {
-        isStarred.value = !isStarred.value;
+    const onStar = () => (isStarred.value = !isStarred.value);
+    const onEdit = () => route(`/edit-rice/${id}`);
+    const onDelete = () => {
+        currentRiceId.value = id;
+        currentModal.value = "deleteRice";
     };
-
-    const onDownload = () => {
-        window.open(`${API_URL}/rices/${id}/dotfiles`);
-    };
-
-    const onEdit = () => {
-        route(`/edit-rice/${id}`);
-    };
+    const onDownload = () => window.open(`${API_URL}/rices/${id}/dotfiles`);
 
     return (
         <>
@@ -47,24 +50,26 @@ export function RiceInfo({
                         <DownloadIcon />
                         <p>{downloads}</p>
                     </div>
-                    <div
-                        className="flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg transition-colors hover:cursor-pointer hover:bg-gray/30"
+                    <HeaderButton
+                        className={`transition-colors duration-300 ${isStarred.value && "text-accent"}`}
+                        icon={<StarIcon solid={isStarred.value} />}
+                        content={stars}
                         onClick={onStar}
-                    >
-                        <StarIcon solid={isStarred.value} />
-                        <p
-                            className={`transition-colors duration-300 ${isStarred.value && "text-accent"}`}
-                        >
-                            {stars}
-                        </p>
-                    </div>
-                    <button
-                        className="flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg transition-colors hover:cursor-pointer hover:bg-gray/30"
-                        onClick={onEdit}
-                    >
-                        <PencilIcon />
-                        <p>Edit</p>
-                    </button>
+                    />
+                    {author.id === user.value.id && (
+                        <>
+                            <HeaderButton
+                                icon={<PencilIcon />}
+                                content="Edit"
+                                onClick={onEdit}
+                            />
+                            <HeaderButton
+                                icon={<TrashIcon />}
+                                content="Delete"
+                                onClick={onDelete}
+                            />
+                        </>
+                    )}
                 </div>
             </div>
             <div>
@@ -142,5 +147,27 @@ function RiceDotfiles({
                 </p>
             </div>
         </div>
+    );
+}
+
+function HeaderButton({
+    onClick,
+    content,
+    icon,
+    ...props
+}: {
+    onClick: () => void;
+    content: ComponentChildren;
+    icon: JSX.Element;
+    className?: string;
+}) {
+    return (
+        <button
+            className={`${props.className} flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg transition-colors hover:cursor-pointer hover:bg-gray/30`}
+            onClick={onClick}
+        >
+            {icon}
+            <p>{content}</p>
+        </button>
     );
 }

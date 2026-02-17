@@ -1,4 +1,6 @@
+import { jwtDecode } from "jwt-decode";
 import { accessToken, addNotification } from "./appState";
+import { HttpStatus } from "./enums";
 
 export const API_URL: string =
     window.__APP_CONFIG__?.API_URL ?? "http://127.0.0.1:3000";
@@ -15,7 +17,7 @@ export async function refreshToken(): Promise<string | null> {
     });
 
     if (!res.ok) {
-        if (res.status === 429) {
+        if (res.status === HttpStatus.TooManyRequests) {
             addNotification("API", "You are being rate limited", "error");
         }
 
@@ -30,7 +32,19 @@ export async function apiFetch<T>(
     method: FetchMethod,
     endpoint: string,
     body?: any
-): Promise<[number, T]> {
+): Promise<[HttpStatus, T]> {
+    // I think it's better to decode access token before sending request
+    // and check if it's expired on client instead of waiting for 403 from API
+    // because then we can't differentiate between 403 from expired token vs
+    // 403 because user can't access the resource causing request loop
+    const { exp } = jwtDecode(accessToken.value);
+    if (Date.now() >= exp) {
+        // token has expired
+        console.log("refreshing access token");
+        const token = await refreshToken();
+        accessToken.value = token;
+    }
+
     const res = await fetch(`${API_URL}${endpoint}`, {
         method,
         headers: {
@@ -40,13 +54,6 @@ export async function apiFetch<T>(
         },
         body,
     });
-
-    if (res.status === 403) {
-        const token = await refreshToken();
-        console.log(`refreshed access token: ${token}`);
-        accessToken.value = token;
-        return apiFetch(method, endpoint, body);
-    }
 
     let resBody: any = await res.text();
     if (resBody.length > 0) {

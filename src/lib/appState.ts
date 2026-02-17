@@ -13,6 +13,7 @@ type ModalType =
     | "changeAvatar"
     | "deleteAvatar"
     | "deleteAccount"
+    | "deleteRice"
     | null;
 
 interface StateValues {
@@ -21,6 +22,7 @@ interface StateValues {
     accessToken: Signal<string>;
     user: Signal<User>;
     userLoading: Signal<boolean>;
+    currentRiceId: Signal<string>; // used in DeleteRiceModal to know which one user wants to delete XD
 }
 
 export const AppState = createContext<StateValues>(null);
@@ -31,6 +33,7 @@ export function createAppState(): StateValues {
     const currentModal = signal(null);
     const user = signal(null);
     const userLoading = signal(true);
+    const currentRiceId = signal(null);
 
     const fetchUser = async () => {
         const token = await refreshToken();
@@ -56,7 +59,14 @@ export function createAppState(): StateValues {
     };
     fetchUser();
 
-    return { currentModal, notifications, accessToken, user, userLoading };
+    return {
+        currentModal,
+        notifications,
+        accessToken,
+        user,
+        userLoading,
+        currentRiceId,
+    };
 }
 
 export function addNotification(

@@ -4,6 +4,7 @@ import { FormInput } from "../form/FormInput";
 import { addNotification, AppState } from "../../lib/appState";
 import { API_URL, apiFetch } from "../../lib/api";
 import { useLocation } from "preact-iso";
+import { HttpStatus } from "../../lib/enums";
 
 export default function DeleteAccountModal() {
     const { route } = useLocation();
@@ -24,7 +25,7 @@ export default function DeleteAccountModal() {
                     password,
                 })
             );
-            if (status === 204) {
+            if (status === HttpStatus.NoContent) {
                 addNotification(
                     "Account",
                     "Your account has been deleted",
