@@ -1,0 +1,176 @@
+import { useContext, useEffect } from "preact/hooks";
+import { apiFetch } from "../lib/api";
+import { Signal, useSignal } from "@preact/signals";
+import { CommentWithUser, RawComment } from "../lib/models";
+import { addNotification, AppState } from "../lib/appState";
+import moment from "moment";
+import { HttpStatus } from "../lib/enums";
+import TrashIcon from "./icons/TrashIcon";
+
+interface CommentSectionProps {
+    riceId: string;
+}
+
+export default function CommentSection({ riceId }: CommentSectionProps) {
+    const { accessToken } = useContext(AppState);
+
+    const comments = useSignal<CommentWithUser[]>([]);
+
+    useEffect(() => {
+        apiFetch<CommentWithUser[]>("GET", `/rices/${riceId}/comments`)
+            .then(([_, body]) => (comments.value = body))
+            .catch((e) => {
+                if (e instanceof Error) {
+                    addNotification(
+                        "API",
+                        `Failed to fetch comments: ${e.message}`,
+                        "error"
+                    );
+                }
+            });
+    }, []);
+
+    return (
+        <div>
+            {accessToken.value !== null && (
+                <CommentCreator riceId={riceId} comments={comments} />
+            )}
+            <div className="flex flex-col gap-2">
+                {comments.value.map((c) => (
+                    <Comment key={c.commentId} {...c} comments={comments} />
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function CommentCreator({
+    riceId,
+    comments,
+}: {
+    riceId: string;
+    comments: Signal<CommentWithUser[]>;
+}) {
+    const { user } = useContext(AppState);
+
+    const postComment = async (e: SubmitEvent) => {
+        e.preventDefault();
+        const target = e.currentTarget as HTMLFormElement;
+        const formData = new FormData(target);
+
+        try {
+            const [status, comment] = await apiFetch<RawComment>(
+                "POST",
+                "/comments",
+                JSON.stringify({
+                    riceId,
+                    content: formData.get("content") as string,
+                })
+            );
+
+            if (status !== HttpStatus.Created) {
+                throw new Error(
+                    "Unexpected error occured when trying to post a comment. Please try again later."
+                );
+            }
+
+            target.reset();
+            comments.value = [
+                {
+                    commentId: comment.id,
+                    content: comment.content,
+                    createdAt: comment.createdAt,
+                    updatedAt: comment.updatedAt,
+                    displayName: user.value.displayName,
+                    username: user.value.username,
+                    avatar: user.value.avatarUrl,
+                },
+                ...comments.value,
+            ];
+        } catch (e) {
+            if (e instanceof Error) {
+                addNotification("Comment", e.message, "error");
+            }
+        }
+    };
+
+    return (
+        <form onSubmit={postComment} className="mb-6 flex flex-col gap-2">
+            <textarea
+                className="resize-none bg-bright-background/50 rounded-lg border-2 border-gray/20 p-4 outline-none text-lg transition-colors duration-500 focus:border-gray/50 focus:bg-bright-background/80"
+                name="content"
+                id="content"
+                placeholder="Write a review"
+                rows={4}
+                required
+            />
+            <input
+                className="ml-auto bg-blue px-8 py-2 rounded-md font-bold text-lg cursor-pointer transition-colors hover:bg-blue/70 hover:text-foreground/70"
+                type="submit"
+                value="Post"
+            />
+        </form>
+    );
+}
+
+function Comment({
+    commentId,
+    content,
+    avatar,
+    displayName,
+    username,
+    createdAt,
+    comments,
+}: CommentWithUser & { comments: Signal<CommentWithUser[]> }) {
+    const { user } = useContext(AppState);
+
+    const deleteComment = async () => {
+        try {
+            const [status, _] = await apiFetch(
+                "DELETE",
+                `/comments/${commentId}`
+            );
+            if (status !== HttpStatus.NoContent) {
+                throw new Error(
+                    "Something went wrong, please try again later."
+                );
+            }
+
+            comments.value = comments.value.filter(
+                (c) => c.commentId !== commentId
+            );
+        } catch (e) {
+            if (e instanceof Error) {
+                addNotification("Oh No!", e.message, "error");
+            }
+        }
+    };
+
+    return (
+        <div className="flex gap-4 bg-bright-background p-4 rounded-lg">
+            <div className="w-16">
+                <img className="rounded-md" src={avatar} alt="avatar" />
+            </div>
+            <div className="flex-1">
+                <div className="flex items-center gap-1 -mt-1">
+                    <p className="font-medium text-lg">{displayName}</p>
+                    <p className="text-gray">(@{username})</p>
+                    <p className="ml-auto">{moment(createdAt).fromNow()}</p>
+                </div>
+                <div>
+                    <p>{content}</p>
+                </div>
+            </div>
+            {user.value !== null && user.value.username === username && (
+                <div className="flex border-l-2 border-gray/20 pl-4">
+                    <button
+                        onClick={deleteComment}
+                        className="bg-red/40 border border-red/60 p-2 rounded-md cursor-pointer transition-colors hover:bg-red/20"
+                    >
+                        <TrashIcon />
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+}

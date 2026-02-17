@@ -13,6 +13,7 @@ import TrashIcon from "./icons/TrashIcon";
 import { useContext } from "preact/hooks";
 import { AppState } from "../lib/appState";
 import { ComponentChildren } from "preact";
+import CommentSection from "./CommentSection";
 
 dayjs.extend(relativeTime);
 
@@ -56,7 +57,7 @@ export function RiceInfo({
                         content={stars}
                         onClick={onStar}
                     />
-                    {author.id === user.value.id && (
+                    {user.value !== null && author.id === user.value.id && (
                         <>
                             <HeaderButton
                                 icon={<PencilIcon />}
@@ -100,9 +101,9 @@ export function RiceInfo({
                     </div>
                 </div>
             </div>
-            <div className="h-0.5 bg-bright-background/50 mx-2" />
+            <Separator />
             <div>
-                <h3 className="text-2xl font-bold mb-2">Screenshots</h3>
+                <SectionTitle title="Screenshots" />
                 <div className="grid grid-cols-2 gap-2">
                     {previews.map((preview) => (
                         <div className="aspect-video">
@@ -117,8 +118,19 @@ export function RiceInfo({
                 </div>
             </div>
             <RiceDotfiles onDownload={onDownload} {...dotfiles} />
+            <Separator />
+            <div>
+                <SectionTitle title="Comments" />
+                <CommentSection riceId={id} />
+            </div>
         </>
     );
+}
+
+const Separator = () => <div className="h-0.5 bg-bright-background/50 mx-2" />;
+
+function SectionTitle({ title }: { title: string }) {
+    return <h3 className="text-2xl font-bold mb-2">{title}</h3>;
 }
 
 function RiceDotfiles({

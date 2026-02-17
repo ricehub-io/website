@@ -45,6 +45,26 @@ export interface User {
     updatedAt: Date;
 }
 
+export interface RawComment {
+    id: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface CommentWithUser {
+    // comment specific
+    commentId: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: Date;
+
+    // user specific
+    displayName: string;
+    username: string;
+    avatar: string;
+}
+
 export interface LoginResponse {
     accessToken: string;
     user: User;

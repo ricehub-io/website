@@ -38,7 +38,8 @@ export async function apiFetch<T>(
     // because then we can't differentiate between 403 from expired token vs
     // 403 because user can't access the resource causing request loop
     const { exp } = jwtDecode(accessToken.value);
-    if (Date.now() >= exp) {
+    const timestampNow = Math.round(Date.now() / 1000);
+    if (timestampNow >= exp) {
         // token has expired
         console.log("refreshing access token");
         const token = await refreshToken();
