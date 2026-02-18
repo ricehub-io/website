@@ -10,7 +10,7 @@ import PencilIcon from "./icons/PencilIcon";
 import { useLocation } from "preact-iso";
 import { JSX } from "preact/jsx-runtime";
 import TrashIcon from "./icons/TrashIcon";
-import { useContext, useEffect } from "preact/hooks";
+import { useContext, useEffect, useRef } from "preact/hooks";
 import { addNotification, AppState } from "../lib/appState";
 import { ComponentChildren } from "preact";
 import CommentSection from "./CommentSection";
@@ -167,12 +167,21 @@ function HeaderButton({
 
 function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
     const zoom = useSignal<string>(null); // holds preview URL if any image is zoomed
+    const imageRef = useRef<HTMLDivElement>(); // reference to container holding the zoomed image
 
     // disable page scrolling when zoomed
     useEffect(() => {
         document.body.style.overflow =
             zoom.value !== null ? "hidden" : "visible";
     }, [zoom.value]);
+
+    const mouseClicked = (e: MouseEvent) => {
+        if (!imageRef.current || imageRef.current.contains(e.target as Node)) {
+            return;
+        }
+        // clicked outside the image
+        zoom.value = null;
+    };
 
     const keyPressed = ({ key }: KeyboardEvent) => {
         if (zoom.value === null) {
@@ -183,6 +192,14 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
             zoom.value = null;
         }
     };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", mouseClicked);
+
+        return () => {
+            document.removeEventListener("mousedown", mouseClicked);
+        };
+    }, []);
 
     // TODO: automatically remove listener if zoom is null
     useEffect(() => {
@@ -211,14 +228,8 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
                 ))}
             </div>
             {zoom.value !== null && (
-                <div
-                    className="fixed left-0 top-0 flex items-center justify-center bg-background/70 w-full h-full"
-                    onKeyDown={() => console.log("halo")}
-                >
-                    <div
-                        className="relative select-none"
-                        onKeyDown={() => console.log("mhm")}
-                    >
+                <div className="fixed left-0 top-0 flex items-center justify-center bg-background/70 w-full h-full">
+                    <div ref={imageRef} className="relative select-none">
                         <button
                             className="absolute right-4 top-4 bg-red/40 p-1 border border-red/60 rounded-lg cursor-pointer transition-colors hover:bg-red/20"
                             onClick={() => (zoom.value = null)}
