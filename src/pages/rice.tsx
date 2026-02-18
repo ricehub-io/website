@@ -3,24 +3,33 @@ import { useRoute } from "preact-iso";
 import { Rice } from "../lib/models";
 import { RiceInfo } from "../components/RiceInfo";
 import { useEffect } from "preact/hooks";
-import { API_URL } from "../lib/api";
+import { API_URL, apiFetch } from "../lib/api";
 import { Placeholder } from "../components/Placeholder";
+import { accessToken, addNotification } from "../lib/appState";
 
 export default function RicePage() {
     const route = useRoute();
     const { username, slug } = route.params;
 
-    const riceInfo = useSignal<Rice>();
+    const riceInfo = useSignal<Rice>(null);
 
     useEffect(() => {
-        fetch(`${API_URL}/users/${username}/rices/${slug}`)
-            .then((res) => res.json())
-            .then((res) => (riceInfo.value = res));
-    }, [username, slug]);
+        apiFetch<Rice>("GET", `/users/${username}/rices/${slug}`)
+            .then(([_, body]) => (riceInfo.value = body))
+            .catch((e) => {
+                if (e instanceof Error) {
+                    addNotification(
+                        "API",
+                        `Unexpected error occured when fetching rice data: ${e.message}`,
+                        "error"
+                    );
+                }
+            });
+    }, [username, slug, accessToken.value]);
 
     return (
         <div className="rice-page mx-auto my-8 flex flex-col gap-6">
-            {riceInfo.value !== undefined ? (
+            {riceInfo.value !== null ? (
                 <RiceInfo {...riceInfo.value} />
             ) : (
                 <Placeholders />

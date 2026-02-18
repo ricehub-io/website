@@ -4,7 +4,7 @@ import { DownloadIcon } from "./icons/DownloadIcon";
 import { StarIcon } from "./icons/StarIcon";
 import { useLocation } from "preact-iso";
 import { useContext, useEffect } from "preact/hooks";
-import { apiFetch } from "../lib/api";
+import { apiFetch, FetchMethod } from "../lib/api";
 import { AppState } from "../lib/appState";
 import PencilSquareIcon from "./icons/PencilSquareIcon";
 import { HttpStatus } from "../lib/enums";
@@ -37,15 +37,9 @@ export default function RicePreview({
 
     const onStar = async (e: MouseEvent) => {
         e.stopPropagation();
-        // const res = await fetch(`${API_URL}/rices/${id}/star`, {
-        //     method: isStarred.value ? "DELETE" : "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         Authorization: `Bearer ${accessToken.value}`,
-        //     },
-        // });
 
-        const [status, _] = await apiFetch("POST", `/rices/${id}/star`);
+        const method: FetchMethod = isStarred.value ? "DELETE" : "POST";
+        const [status, _] = await apiFetch(method, `/rices/${id}/star`);
 
         if (status === HttpStatus.Created) {
             starCount.value += 1;

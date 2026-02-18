@@ -154,7 +154,7 @@ function Comment({
             <div className="flex-1">
                 <div className="flex items-center gap-1 -mt-1">
                     <p className="font-medium text-lg">{displayName}</p>
-                    <p className="text-gray">(@{username})</p>
+                    <p className="text-gray font-light">(@{username})</p>
                     <p className="ml-auto">{moment(createdAt).fromNow()}</p>
                 </div>
                 <div>

@@ -29,6 +29,7 @@ export interface Rice {
     description: string;
     downloads: number;
     stars: number;
+    isStarred: boolean;
     previews: RicePreview[];
     dotfiles: Dotfiles;
     author: User;
