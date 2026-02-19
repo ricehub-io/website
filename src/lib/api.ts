@@ -61,7 +61,11 @@ export async function apiFetch<T>(
     }
 
     if (!res.ok) {
-        throw new Error(resBody.error || "Failed to reach API");
+        const err =
+            (resBody.errors !== undefined && resBody.errors[0]) ||
+            resBody.error ||
+            "Failed to reach API";
+        throw new Error(err);
     }
 
     return [res.status, resBody];

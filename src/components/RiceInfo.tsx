@@ -97,7 +97,7 @@ export function RiceInfo({
             </div>
             <div>
                 <div
-                    className="markdown-content whitespace-pre-line bg-bright-background p-4 rounded-lg mb-2"
+                    className="markdown-content bg-bright-background p-6 rounded-lg mb-2"
                     dangerouslySetInnerHTML={{
                         __html: sanitizeMarkdownInput(description),
                     }}

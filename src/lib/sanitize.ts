@@ -15,24 +15,39 @@ const sanitizeConfig: Config = {
         "ul",
         "ol",
         "li",
+        "pre",
+        "br",
         "code",
         "hr",
         "s",
+        "blockquote",
+        "strong",
+        "p",
+        "kbd",
+        "em",
     ],
-    ALLOWED_ATTR: ["href", "target", "title", "class"],
+    ALLOWED_ATTR: ["href", "target", "title", "class", "rel"],
 };
 
 // force links to contain target="_blank" so they open in new tabs :3
 marked.use({
     renderer: {
         link({ href, text, title }) {
-            return `<a href="${href}" title="${title}" target="_blank" rel="noreferrer noopener">${text}</a>`;
+            return `<a href="${href}" ${title !== undefined && title !== null && `title="${title}"`} target="_blank" rel="noreferrer noopener">${text}</a>`;
         },
     },
 });
 
 /** Sanitizes input and allows only specific tags, then parses the input as markdown and returns HTML */
 export function sanitizeMarkdownInput(input: string): string {
-    const rawHTML = marked.parse(input, { async: false });
-    return DOMPurify.sanitize(rawHTML, sanitizeConfig);
+    // replace literal "\n" with actual new lines
+    const markdownText = input.replace(/\\n/g, "\n");
+
+    // parse markdown to HTML
+    const rawHTML = marked.parse(markdownText, { async: false });
+
+    // sanitize HTML so it cant be exploited >:(
+    const sanitized = DOMPurify.sanitize(rawHTML, sanitizeConfig);
+
+    return sanitized;
 }

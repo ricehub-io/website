@@ -31,11 +31,7 @@ export default function NewRicePage() {
             }
         } catch (e) {
             if (e instanceof Error) {
-                addNotification(
-                    "New Rice",
-                    `Failed to create a new rice: ${e.message}`,
-                    "error"
-                );
+                addNotification("Oh no...", e.message, "error");
             }
         }
     };
