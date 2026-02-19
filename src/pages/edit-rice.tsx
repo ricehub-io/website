@@ -15,6 +15,7 @@ import { addNotification, AppState } from "../lib/appState";
 import PlusIcon from "../components/icons/PlusIcon";
 import { ChangeEvent, createRef } from "preact/compat";
 import PhotoIcon from "../components/icons/PhotoIcon";
+import { formatBytes } from "../lib/math";
 
 const deletedPreviews = signal<string[]>([]);
 const rice = signal<Rice>(null);
@@ -48,7 +49,7 @@ export default function EditRicePage() {
             !newPreviews
         ) {
             addNotification(
-                "Edit Rice",
+                "Oh no!",
                 "At least one rice preview is required!",
                 "error"
             );
@@ -138,7 +139,11 @@ export default function EditRicePage() {
                                 </div>
                                 <div>
                                     <p className="font-medium">dotfiles.zip</p>
-                                    <p className="text-gray">? kB</p>
+                                    <p className="text-gray">
+                                        {formatBytes(
+                                            rice.value.dotfiles.fileSize
+                                        )}
+                                    </p>
                                 </div>
                                 <button
                                     onClick={() => (newDotfiles.value = true)}

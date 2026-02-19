@@ -13,6 +13,7 @@ export interface PartialRice {
 
 export interface Dotfiles {
     filePath: string;
+    fileSize: number;
     createdAt: Date;
     updatedAt: Date;
 }
