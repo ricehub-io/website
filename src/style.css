@@ -144,7 +144,7 @@ body {
 }
 
 .markdown-content ul li {
-    @apply mb-4;
+    @apply mb-2;
 }
 
 .markdown-content ul li p {
