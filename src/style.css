@@ -88,3 +88,8 @@ body {
 .carousel-image-container {
     flex: 0 0 auto;
 }
+
+/* markdown style */
+.markdown-content a {
+    @apply text-blue underline hover:text-blue/70;
+}

@@ -16,6 +16,7 @@ import { ComponentChildren } from "preact";
 import CommentSection from "./CommentSection";
 import { HttpStatus } from "../lib/enums";
 import XMarkIcon from "./icons/XMarkIcon";
+import { sanitizeMarkdownInput } from "../lib/sanitize";
 
 dayjs.extend(relativeTime);
 
@@ -95,9 +96,12 @@ export function RiceInfo({
                 </div>
             </div>
             <div>
-                <p className="whitespace-pre-line bg-bright-background p-4 rounded-lg mb-2">
-                    {description}
-                </p>
+                <div
+                    className="markdown-content whitespace-pre-line bg-bright-background p-4 rounded-lg mb-2"
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizeMarkdownInput(description),
+                    }}
+                />
                 <div className="flex items-center justify-between bg-bright-background p-4 rounded-lg">
                     <div className="flex items-center gap-3">
                         <img
