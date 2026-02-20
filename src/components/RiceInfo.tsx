@@ -1,4 +1,4 @@
-import { useSignal } from "@preact/signals";
+import { useComputed, useSignal } from "@preact/signals";
 import { Dotfiles, Rice, RicePreview } from "../lib/models";
 import { API_URL, apiFetch } from "../lib/api";
 import { StarIcon } from "./icons/StarIcon";
@@ -17,6 +17,7 @@ import CommentSection from "./CommentSection";
 import { HttpStatus } from "../lib/enums";
 import XMarkIcon from "./icons/XMarkIcon";
 import { sanitizeMarkdownInput } from "../lib/sanitize";
+import FlagIcon from "./icons/FlagIcon";
 
 dayjs.extend(relativeTime);
 
@@ -34,8 +35,11 @@ export function RiceInfo({
     updatedAt,
 }: Rice) {
     const { route } = useLocation();
-    const { user, currentModal, currentRiceId } = useContext(AppState);
+    const { user, currentModal, currentRiceId, report } = useContext(AppState);
 
+    const isAuthor = useComputed(
+        () => user.value !== null && user.value.id === author.id
+    );
     const isStarred = useSignal(_isStarred);
     const starCount = useSignal(stars);
 
@@ -63,23 +67,34 @@ export function RiceInfo({
         currentModal.value = "deleteRice";
     };
     const onDownload = () => window.open(`${API_URL}/rices/${id}/dotfiles`);
+    const openReportModal = () => {
+        report.value = {
+            resourceType: "rice",
+            resourceId: id,
+        };
+        currentModal.value = "createReport";
+    };
 
     return (
         <>
             <div className="flex items-center justify-between">
                 <h1 className="text-4xl font-bold">{title}</h1>
                 <div className="flex gap-2">
-                    <div className="flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg">
-                        <DownloadIcon />
-                        <p>{downloads}</p>
-                    </div>
+                    {!isAuthor.value && (
+                        <HeaderButton
+                            icon={<FlagIcon />}
+                            content="Report"
+                            onClick={openReportModal}
+                        />
+                    )}
+                    <HeaderButton icon={<DownloadIcon />} content={downloads} />
                     <HeaderButton
                         className={`transition-colors duration-300 ${isStarred.value && "text-accent"}`}
                         icon={<StarIcon solid={isStarred.value} />}
                         content={starCount.value}
                         onClick={onStar}
                     />
-                    {user.value !== null && author.id === user.value.id && (
+                    {isAuthor.value && (
                         <>
                             <HeaderButton
                                 icon={<PencilIcon />}
@@ -153,14 +168,14 @@ function HeaderButton({
     icon,
     ...props
 }: {
-    onClick: () => void;
+    onClick?: () => void;
     content: ComponentChildren;
     icon: JSX.Element;
     className?: string;
 }) {
     return (
         <button
-            className={`${props.className} flex items-center gap-1 bg-bright-background px-2 py-1 rounded-lg transition-colors hover:cursor-pointer hover:bg-gray/30`}
+            className={`${props.className} flex items-center gap-1 bg-bright-background px-3 py-1 rounded-lg ${onClick !== undefined ? "transition-colors hover:cursor-pointer hover:bg-gray/30" : ""}`}
             onClick={onClick}
         >
             {icon}

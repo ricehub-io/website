@@ -4,6 +4,7 @@ import { API_URL } from "../../lib/api";
 import { LoginResponse } from "../../lib/models";
 import { FormInput } from "../form/FormInput";
 import { FormButton } from "../form/FormButton";
+import FormTitle from "../form/FormTitle";
 
 async function login(
     username: string,
@@ -59,7 +60,7 @@ export default function LoginModal() {
             onSubmit={onSubmit}
             onReset={() => (currentModal.value = null)}
         >
-            <h1 className="text-center font-extrabold text-3xl mb-4">Login</h1>
+            <FormTitle text="Login" />
             <div>
                 <FormInput
                     label="Username"

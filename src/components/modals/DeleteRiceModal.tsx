@@ -22,25 +22,29 @@ export default function DeleteRiceModal() {
                 "DELETE",
                 `/rices/${currentRiceId.value}`
             );
-            if (status === HttpStatus.NoContent) {
-                target.reset();
-                currentRiceId.value = null;
-                addNotification("Rice", "Rice has been deleted", "info");
-                route("/", true);
+            if (status !== HttpStatus.NoContent) {
+                throw new Error(
+                    "Unexpected error occured when trying to delete rice! Please try again later."
+                );
             }
+
+            target.reset();
+            route("/", true);
+            addNotification("Rice", "Rice has been deleted", "info");
         } catch (e) {
             if (e instanceof Error) {
-                addNotification(
-                    "Rice",
-                    `Failed to delete: ${e.message}`,
-                    "error"
-                );
+                addNotification("Something went wrong", e.message, "error");
             }
         }
     };
 
+    const closeModal = () => {
+        currentModal.value = null;
+        currentRiceId.value = null;
+    };
+
     return (
-        <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
+        <form onSubmit={onSubmit} onReset={closeModal}>
             <div className="text-lg leading-5 mx-2 mb-2">
                 <p>Are you sure you want to delete this rice?</p>
                 <b>This action is irreversible.</b>

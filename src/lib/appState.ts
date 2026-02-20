@@ -14,7 +14,13 @@ type ModalType =
     | "deleteAvatar"
     | "deleteAccount"
     | "deleteRice"
+    | "createReport"
     | null;
+
+interface ReportContext {
+    resourceType: "rice" | "comment";
+    resourceId: string;
+}
 
 interface StateValues {
     currentModal: Signal<ModalType>;
@@ -22,7 +28,11 @@ interface StateValues {
     accessToken: Signal<string>;
     user: Signal<User>;
     userLoading: Signal<boolean>;
-    currentRiceId: Signal<string>; // used in DeleteRiceModal to know which one user wants to delete XD
+
+    // TODO: create an interface for this like i did with report context
+    currentRiceId: Signal<string>; // used in DeleteRiceModal to know which one user wants to delete
+
+    report: Signal<ReportContext>;
 }
 
 export const AppState = createContext<StateValues>(null);
@@ -34,6 +44,7 @@ export function createAppState(): StateValues {
     const user = signal(null);
     const userLoading = signal(true);
     const currentRiceId = signal(null);
+    const report = signal(null);
 
     const fetchUser = async () => {
         const token = await refreshToken();
@@ -66,6 +77,7 @@ export function createAppState(): StateValues {
         user,
         userLoading,
         currentRiceId,
+        report,
     };
 }
 

@@ -1,11 +1,12 @@
 import { useContext, useEffect } from "preact/hooks";
 import { apiFetch } from "../lib/api";
-import { Signal, useSignal } from "@preact/signals";
+import { Signal, useComputed, useSignal } from "@preact/signals";
 import { CommentWithUser, RawComment } from "../lib/models";
 import { addNotification, AppState } from "../lib/appState";
 import moment from "moment";
 import { HttpStatus } from "../lib/enums";
 import TrashIcon from "./icons/TrashIcon";
+import FlagIcon from "./icons/FlagIcon";
 
 interface CommentSectionProps {
     riceId: string;
@@ -122,7 +123,11 @@ function Comment({
     createdAt,
     comments,
 }: CommentWithUser & { comments: Signal<CommentWithUser[]> }) {
-    const { user } = useContext(AppState);
+    const { user, currentModal, report } = useContext(AppState);
+
+    const isAuthor = useComputed(
+        () => user.value !== null && user.value.username === username
+    );
 
     const deleteComment = async () => {
         try {
@@ -146,6 +151,14 @@ function Comment({
         }
     };
 
+    const reportComment = () => {
+        report.value = {
+            resourceType: "comment",
+            resourceId: commentId,
+        };
+        currentModal.value = "createReport";
+    };
+
     return (
         <div className="flex gap-4 bg-bright-background p-4 rounded-lg">
             <div className="w-16">
@@ -161,16 +174,23 @@ function Comment({
                     <p>{content}</p>
                 </div>
             </div>
-            {user.value !== null && user.value.username === username && (
-                <div className="flex border-l-2 border-gray/20 pl-4">
+            <div className="flex border-l-2 border-gray/20 pl-4">
+                {isAuthor.value ? (
                     <button
                         onClick={deleteComment}
                         className="bg-red/40 border border-red/60 p-2 rounded-md cursor-pointer transition-colors hover:bg-red/20"
                     >
                         <TrashIcon />
                     </button>
-                </div>
-            )}
+                ) : (
+                    <button
+                        onClick={reportComment}
+                        className="bg-dark-background-2/60 border border-gray/30 p-2 rounded-md cursor-pointer transition-colors hover:bg-gray/10 hover:text-red/70"
+                    >
+                        <FlagIcon />
+                    </button>
+                )}
+            </div>
         </div>
     );
 }

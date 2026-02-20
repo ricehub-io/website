@@ -72,6 +72,18 @@ export interface LoginResponse {
     user: User;
 }
 
+// RESPONSES
+export interface CreateReportRes {
+    reportId: string;
+}
+
+// REQUESTS
+export interface CreateReportReq {
+    reason: string;
+    riceId?: string;
+    commentId?: string;
+}
+
 // internal types
 export type NotificationSeverity = "info" | "warning" | "error";
 

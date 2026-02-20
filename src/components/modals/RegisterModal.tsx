@@ -4,6 +4,7 @@ import { FormInput } from "../form/FormInput";
 import { addNotification, AppState } from "../../lib/appState";
 import { useSignal } from "@preact/signals";
 import { API_URL } from "../../lib/api";
+import FormTitle from "../form/FormTitle";
 
 interface FormError {
     source: "username" | "displayName" | "password";
@@ -112,9 +113,7 @@ export default function RegisterModal() {
             onSubmit={onSubmit}
             onReset={() => (currentModal.value = null)}
         >
-            <h1 className="text-center font-extrabold text-3xl mb-4">
-                Register
-            </h1>
+            <FormTitle text="Register" />
             <div>
                 <FormInput
                     label="Username"
