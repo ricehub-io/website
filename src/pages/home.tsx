@@ -59,10 +59,6 @@ export default function HomePage() {
         sortBy.value = e.currentTarget.value as SortOption;
     };
 
-    useEffect(() => {
-        addNotification("Test", "Lorem ipsum dolor sit amet", "info");
-    }, []);
-
     return (
         <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
