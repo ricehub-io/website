@@ -64,6 +64,7 @@
     --color-red: #ff3e55;
     --color-orange: #ffd447;
     --color-blue: #5a7cff;
+    --color-light-blue: #8ba3ff;
 }
 /*
 to override the default theme define a new class with variables, e.g.:
@@ -79,6 +80,10 @@ body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-outfit);
+}
+
+.admin-page {
+    width: min(100%, 1200px);
 }
 
 .rice-page {

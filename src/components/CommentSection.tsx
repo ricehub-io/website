@@ -10,16 +10,23 @@ import FlagIcon from "./icons/FlagIcon";
 
 interface CommentSectionProps {
     riceId: string;
+    onLoad: () => void;
 }
 
-export default function CommentSection({ riceId }: CommentSectionProps) {
+export default function CommentSection({
+    riceId,
+    onLoad,
+}: CommentSectionProps) {
     const { accessToken } = useContext(AppState);
 
     const comments = useSignal<CommentWithUser[]>([]);
 
     useEffect(() => {
         apiFetch<CommentWithUser[]>("GET", `/rices/${riceId}/comments`)
-            .then(([_, body]) => (comments.value = body))
+            .then(([_, body]) => {
+                comments.value = body;
+                onLoad();
+            })
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(
@@ -160,7 +167,10 @@ function Comment({
     };
 
     return (
-        <div className="flex gap-4 bg-bright-background p-4 rounded-lg">
+        <div
+            className="flex gap-4 bg-bright-background p-4 rounded-lg"
+            id={commentId}
+        >
             <div className="w-16">
                 <img className="rounded-md" src={avatar} alt="avatar" />
             </div>

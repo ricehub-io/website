@@ -43,6 +43,28 @@ export function RiceInfo({
     const isStarred = useSignal(_isStarred);
     const starCount = useSignal(stars);
 
+    const commentsLoaded = useSignal(false);
+
+    // scroll to anchor if provided
+    const scrolledRef = useRef(false);
+    useEffect(() => {
+        if (
+            !document ||
+            !location.hash ||
+            scrolledRef.current ||
+            !commentsLoaded.value
+        ) {
+            return;
+        }
+
+        const id = location.hash.replace("#", "");
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+            scrolledRef.current = true;
+        }
+    }, [location, scrolledRef, commentsLoaded.value]);
+
     const onStar = async () => {
         try {
             const [status, _] = await apiFetch(
@@ -150,7 +172,10 @@ export function RiceInfo({
             <Separator />
             <div>
                 <SectionTitle title="Comments" />
-                <CommentSection riceId={id} />
+                <CommentSection
+                    riceId={id}
+                    onLoad={() => (commentsLoaded.value = true)}
+                />
             </div>
         </>
     );

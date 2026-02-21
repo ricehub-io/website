@@ -1,15 +1,12 @@
 import { useContext } from "preact/compat";
 import { addNotification, AppState } from "../../lib/appState";
 import { API_URL } from "../../lib/api";
-import { LoginResponse } from "../../lib/models";
+import { LoginRes } from "../../lib/models";
 import { FormInput } from "../form/FormInput";
 import { FormButton } from "../form/FormButton";
 import FormTitle from "../form/FormTitle";
 
-async function login(
-    username: string,
-    password: string
-): Promise<LoginResponse> {
+async function login(username: string, password: string): Promise<LoginRes> {
     const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {

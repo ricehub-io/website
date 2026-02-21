@@ -9,6 +9,7 @@ import ChangeAvatarModal from "./modals/ChangeAvatarModal";
 import DeleteAvatarModal from "./modals/DeleteAvatarModal";
 import DeleteRiceModal from "./modals/DeleteRiceModal";
 import CreateReportModal from "./modals/CreateReportModal";
+import DeleteResourceModal from "./modals/DeleteResourceModal";
 
 export default function ModalConsumer() {
     const { currentModal } = useContext(AppState);
@@ -43,6 +44,11 @@ export default function ModalConsumer() {
                     {currentModal.value === "deleteRice" && <DeleteRiceModal />}
                     {currentModal.value === "createReport" && (
                         <CreateReportModal />
+                    )}
+
+                    {/* admin-only modals */}
+                    {currentModal.value === "admin_deleteResource" && (
+                        <DeleteResourceModal />
                     )}
                 </div>
             </div>

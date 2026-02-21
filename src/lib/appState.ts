@@ -15,7 +15,10 @@ type ModalType =
     | "deleteAccount"
     | "deleteRice"
     | "createReport"
+    | "admin_deleteResource"
     | null;
+
+type CallbackFn = () => void;
 
 interface ReportContext {
     resourceType: "rice" | "comment";
@@ -29,10 +32,12 @@ interface StateValues {
     user: Signal<User>;
     userLoading: Signal<boolean>;
 
+    // modals signals
     // TODO: create an interface for this like i did with report context
     currentRiceId: Signal<string>; // used in DeleteRiceModal to know which one user wants to delete
-
     report: Signal<ReportContext>;
+    // this is awful
+    modalCallback: Signal<CallbackFn>;
 }
 
 export const AppState = createContext<StateValues>(null);
@@ -45,6 +50,7 @@ export function createAppState(): StateValues {
     const userLoading = signal(true);
     const currentRiceId = signal(null);
     const report = signal(null);
+    const modalCallback = signal(null);
 
     const fetchUser = async () => {
         const token = await refreshToken();
@@ -78,6 +84,7 @@ export function createAppState(): StateValues {
         userLoading,
         currentRiceId,
         report,
+        modalCallback,
     };
 }
 

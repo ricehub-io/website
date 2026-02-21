@@ -9,6 +9,7 @@ export interface PartialRice {
     stars: number;
     downloads: number;
     isStarred: boolean;
+    createdAt: Date;
 }
 
 export interface Dotfiles {
@@ -43,6 +44,7 @@ export interface User {
     username: string;
     displayName: string;
     avatarUrl: string;
+    isAdmin: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -67,9 +69,30 @@ export interface CommentWithUser {
     avatar: string;
 }
 
-export interface LoginResponse {
-    accessToken: string;
-    user: User;
+export interface RiceCommentWithSlug {
+    id: string;
+    riceId: string;
+    authorId: string;
+    content: string;
+    riceSlug: string;
+    riceAuthorUsername: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface ReportWithUser {
+    // report related
+    id: string;
+    reason: string;
+    riceId?: string;
+    commentId?: string;
+    isClosed: boolean;
+    createdAt: Date;
+
+    // user related
+    reporterId: string;
+    username: string;
+    displayName: string;
 }
 
 // RESPONSES
@@ -77,7 +100,18 @@ export interface CreateReportRes {
     reportId: string;
 }
 
+export interface LoginRes {
+    accessToken: string;
+    user: User;
+}
+
 // REQUESTS
+/*
+or:
+type CreateReportReq =
+  | { reason: string; riceId: string }
+  | { reason: string; commentId: string }
+*/
 export interface CreateReportReq {
     reason: string;
     riceId?: string;

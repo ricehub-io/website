@@ -12,6 +12,8 @@ import NotificationConsumer from "./components/NotificationConsumer";
 import AccountPage from "./pages/account";
 import NewRicePage from "./pages/new-rice";
 import EditRicePage from "./pages/edit-rice";
+import AdminPage from "./pages/admin";
+import AdminRoute from "./components/AdminRoute";
 
 export function App() {
     // const [theme, setTheme] = useState<"default" | "everforest">("default");
@@ -33,6 +35,7 @@ export function App() {
                             component={EditRicePage}
                         />
                         <Route path="/new-rice" component={NewRicePage} />
+                        <AdminRoute path="/admin" component={AdminPage} />
                         <Route path="/:username/:slug" component={RicePage} />
                         <Route default component={NotFoundPage} />
                     </Router>

@@ -34,7 +34,7 @@ async function getRices(accessToken?: string): Promise<PartialRice[]> {
 }
 
 export default function HomePage() {
-    const { accessToken } = useContext(AppState);
+    const { accessToken, user } = useContext(AppState);
     const rices = useSignal<PartialRice[]>([]);
 
     useEffect(() => {

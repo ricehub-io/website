@@ -18,10 +18,6 @@ interface TextButtonProps {
     onClick?: () => void;
 }
 
-interface SearchBarProps {
-    placeholder: string;
-}
-
 export default function Header() {
     const { route } = useLocation();
     const { currentModal, user, accessToken } = useContext(AppState);
@@ -36,14 +32,18 @@ export default function Header() {
     };
 
     return (
-        <header className="flex justify-between items-center bg-dark-background px-6 py-3">
+        <header className="bg-dark-background flex items-center justify-between px-6 py-3">
             <h1
                 onClick={() => route("/")}
-                className="font-extrabold font-ranchers text-4xl select-none hover:cursor-pointer"
+                onMouseDown={(e: MouseEvent) => {
+                    if (e.button === 1)
+                        window.open("/", "_blank", "rel=noopener noreferrer");
+                }}
+                className="font-ranchers text-4xl font-extrabold select-none hover:cursor-pointer"
             >
                 RiceHub
             </h1>
-            <SearchBar placeholder="Search for rices..." />
+            <SearchBar placeholder="Search for rices..." disabled />
             <div className="flex gap-6">
                 <Link url="/" text="Home" />
                 {accessToken.value === null ? (
@@ -75,7 +75,7 @@ export default function Header() {
 function TextButton({ text, onClick }: TextButtonProps) {
     return (
         <input
-            className="text-bright-gray transition-colors duration-500 hover:cursor-pointer hover:text-primary"
+            className="text-bright-gray hover:text-primary transition-colors duration-500 hover:cursor-pointer"
             type="button"
             value={text}
             onClick={onClick}
@@ -95,14 +95,21 @@ function Link({ url, text, children, external }: LinkProps) {
     );
 }
 
-function SearchBar({ placeholder }: SearchBarProps) {
+function SearchBar({
+    placeholder,
+    disabled,
+}: {
+    placeholder: string;
+    disabled?: boolean;
+}) {
     return (
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 bg-bright-background px-2 py-2 rounded-lg transition-colors duration-300 ease-out border-2 border-transparent focus-within:border-primary">
+        <div className="bg-bright-background focus-within:border-primary absolute left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-lg border-2 border-transparent px-2 py-2 transition-colors duration-300 ease-out has-disabled:cursor-not-allowed has-disabled:opacity-30">
             <MagnifyingGlassIcon />
             <input
-                className="outline-none placeholder:text-gray"
+                className="placeholder:text-gray outline-none disabled:cursor-not-allowed"
                 type="text"
                 placeholder={placeholder}
+                disabled={disabled}
             />
         </div>
     );
