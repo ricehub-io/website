@@ -14,6 +14,7 @@ import NewRicePage from "./pages/new-rice";
 import EditRicePage from "./pages/edit-rice";
 import AdminPage from "./pages/admin";
 import AdminRoute from "./components/AdminRoute";
+import ProfilePage from "./pages/profile";
 
 export function App() {
     // const [theme, setTheme] = useState<"default" | "everforest">("default");
@@ -36,6 +37,7 @@ export function App() {
                         />
                         <Route path="/new-rice" component={NewRicePage} />
                         <AdminRoute path="/admin" component={AdminPage} />
+                        <Route path="/:username" component={ProfilePage} />
                         <Route path="/:username/:slug" component={RicePage} />
                         <Route default component={NotFoundPage} />
                     </Router>

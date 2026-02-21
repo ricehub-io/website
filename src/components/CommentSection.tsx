@@ -105,7 +105,7 @@ function CommentCreator({
     return (
         <form onSubmit={postComment} className="mb-6 flex flex-col gap-2">
             <textarea
-                className="resize-none bg-bright-background/50 rounded-lg border-2 border-gray/20 p-4 outline-none text-lg transition-colors duration-500 focus:border-gray/50 focus:bg-bright-background/80"
+                className="bg-bright-background/50 border-gray/20 focus:border-gray/50 focus:bg-bright-background/80 resize-none rounded-lg border-2 p-4 text-lg transition-colors duration-500 outline-none"
                 name="content"
                 id="content"
                 placeholder="Write a review"
@@ -113,7 +113,7 @@ function CommentCreator({
                 required
             />
             <input
-                className="ml-auto bg-blue px-8 py-2 rounded-md font-bold text-lg cursor-pointer transition-colors hover:bg-blue/70 hover:text-foreground/70"
+                className="bg-blue hover:bg-blue/70 hover:text-foreground/70 ml-auto cursor-pointer rounded-md px-8 py-2 text-lg font-bold transition-colors"
                 type="submit"
                 value="Post"
             />
@@ -163,20 +163,25 @@ function Comment({
             resourceType: "comment",
             resourceId: commentId,
         };
-        currentModal.value = "createReport";
+        currentModal.value = "report";
     };
 
     return (
         <div
-            className="flex gap-4 bg-bright-background p-4 rounded-lg"
+            className="bg-bright-background flex gap-4 rounded-lg p-4"
             id={commentId}
         >
             <div className="w-16">
                 <img className="rounded-md" src={avatar} alt="avatar" />
             </div>
             <div className="flex-1">
-                <div className="flex items-center gap-1 -mt-1">
-                    <p className="font-medium text-lg">{displayName}</p>
+                <div className="-mt-1 flex items-center gap-1">
+                    <a
+                        className="hover:text-foreground/80 text-lg font-medium transition-colors hover:underline"
+                        href={`/${username}`}
+                    >
+                        {displayName}
+                    </a>
                     <p className="text-gray font-light">(@{username})</p>
                     <p className="ml-auto">{moment(createdAt).fromNow()}</p>
                 </div>
@@ -184,18 +189,18 @@ function Comment({
                     <p>{content}</p>
                 </div>
             </div>
-            <div className="flex border-l-2 border-gray/20 pl-4">
+            <div className="border-gray/20 flex border-l-2 pl-4">
                 {isAuthor.value ? (
                     <button
                         onClick={deleteComment}
-                        className="bg-red/40 border border-red/60 p-2 rounded-md cursor-pointer transition-colors hover:bg-red/20"
+                        className="bg-red/40 border-red/60 hover:bg-red/20 cursor-pointer rounded-md border p-2 transition-colors"
                     >
                         <TrashIcon />
                     </button>
                 ) : (
                     <button
                         onClick={reportComment}
-                        className="bg-dark-background-2/60 border border-gray/30 p-2 rounded-md cursor-pointer transition-colors hover:bg-gray/10 hover:text-red/70"
+                        className="bg-dark-background-2/60 border-gray/30 hover:bg-gray/10 hover:text-red/70 cursor-pointer rounded-md border p-2 transition-colors"
                     >
                         <FlagIcon />
                     </button>

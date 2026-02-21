@@ -82,12 +82,10 @@ body {
     font-family: var(--font-outfit);
 }
 
-.admin-page {
+.rice-page,
+.admin-page,
+.profile-page {
     width: min(100%, 1200px);
-}
-
-.rice-page {
-    width: min(70%, 1000px);
 }
 
 .new-rice-content {
@@ -100,27 +98,27 @@ body {
 
 /* markdown style */
 .markdown-content a {
-    @apply text-blue underline hover:text-blue/70;
+    @apply text-blue hover:text-blue/70 underline;
 }
 
 .markdown-content h1 {
-    @apply font-bold text-4xl my-2 not-first:mt-6;
+    @apply my-2 text-4xl font-bold not-first:mt-6;
 }
 
 .markdown-content h2 {
-    @apply font-bold text-3xl my-2 not-first:mt-6;
+    @apply my-2 text-3xl font-bold not-first:mt-6;
 }
 
 .markdown-content h3 {
-    @apply font-bold text-2xl mb-2 not-first:mt-6;
+    @apply mb-2 text-2xl font-bold not-first:mt-6;
 }
 
 .markdown-content h4 {
-    @apply font-bold text-xl my-2 not-first:mt-4;
+    @apply my-2 text-xl font-bold not-first:mt-4;
 }
 
 .markdown-content pre {
-    @apply whitespace-break-spaces bg-background-2 px-4 py-2 rounded-md;
+    @apply bg-background-2 rounded-md px-4 py-2 whitespace-break-spaces;
 }
 
 .markdown-content code {
@@ -129,11 +127,11 @@ body {
 
 /* inline code block */
 .markdown-content code:not(pre code) {
-    @apply bg-background-2 px-1 py-0.5 rounded-md;
+    @apply bg-background-2 rounded-md px-1 py-0.5;
 }
 
 .markdown-content blockquote {
-    @apply text-gray border-l-4 border-gray px-4 py-2 my-2;
+    @apply text-gray border-gray my-2 border-l-4 px-4 py-2;
 }
 
 .markdown-content blockquote strong {
@@ -141,7 +139,7 @@ body {
 }
 
 .markdown-content ul {
-    @apply list-disc pl-6 mt-2;
+    @apply mt-2 list-disc pl-6;
 }
 
 .markdown-content ul ul {
@@ -161,5 +159,5 @@ body {
 }
 
 .markdown-content hr {
-    @apply border border-gray/20 my-4;
+    @apply border-gray/20 my-4 border;
 }

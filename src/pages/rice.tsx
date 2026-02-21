@@ -3,7 +3,7 @@ import { useRoute } from "preact-iso";
 import { Rice } from "../lib/models";
 import { RiceInfo } from "../components/RiceInfo";
 import { useEffect } from "preact/hooks";
-import { API_URL, apiFetch } from "../lib/api";
+import { apiFetch } from "../lib/api";
 import { Placeholder } from "../components/Placeholder";
 import { accessToken, addNotification } from "../lib/appState";
 

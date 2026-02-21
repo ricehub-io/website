@@ -94,7 +94,7 @@ export function RiceInfo({
             resourceType: "rice",
             resourceId: id,
         };
-        currentModal.value = "createReport";
+        currentModal.value = "report";
     };
 
     return (
@@ -134,12 +134,12 @@ export function RiceInfo({
             </div>
             <div>
                 <div
-                    className="markdown-content bg-bright-background p-6 rounded-lg mb-2"
+                    className="markdown-content bg-bright-background mb-2 rounded-lg p-6"
                     dangerouslySetInnerHTML={{
                         __html: sanitizeMarkdownInput(description),
                     }}
                 />
-                <div className="flex items-center justify-between bg-bright-background p-4 rounded-lg">
+                <div className="bg-bright-background flex items-center justify-between rounded-lg p-4">
                     <div className="flex items-center gap-3">
                         <img
                             className="w-16 rounded-lg"
@@ -147,9 +147,12 @@ export function RiceInfo({
                             alt="Author's avatar"
                         />
                         <div>
-                            <p className="text-xl font-medium">
+                            <a
+                                className="hover:text-foreground/80 text-xl font-medium transition-colors hover:underline"
+                                href={`/${author.username}`}
+                            >
                                 {author.displayName}
-                            </p>
+                            </a>
                             <p className="text-gray">@{author.username}</p>
                         </div>
                     </div>
@@ -181,10 +184,10 @@ export function RiceInfo({
     );
 }
 
-const Separator = () => <div className="h-0.5 bg-bright-background/50 mx-2" />;
+const Separator = () => <div className="bg-bright-background/50 mx-2 h-0.5" />;
 
 function SectionTitle({ title }: { title: string }) {
-    return <h3 className="text-2xl font-bold mb-2">{title}</h3>;
+    return <h3 className="mb-2 text-2xl font-bold">{title}</h3>;
 }
 
 function HeaderButton({
@@ -200,7 +203,7 @@ function HeaderButton({
 }) {
     return (
         <button
-            className={`${props.className} flex items-center gap-1 bg-bright-background px-3 py-1 rounded-lg ${onClick !== undefined ? "transition-colors hover:cursor-pointer hover:bg-gray/30" : ""}`}
+            className={`${props.className} bg-bright-background flex items-center gap-1 rounded-lg px-3 py-1 ${onClick !== undefined ? "hover:bg-gray/30 transition-colors hover:cursor-pointer" : ""}`}
             onClick={onClick}
         >
             {icon}
@@ -264,7 +267,7 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
                         onClick={() => (zoom.value = preview.url)}
                     >
                         <img
-                            className="w-full h-full object-cover"
+                            className="border-background-2 h-full w-full rounded-md border-2 object-cover"
                             src={preview.url}
                             alt="preview"
                         />
@@ -272,10 +275,10 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
                 ))}
             </div>
             {zoom.value !== null && (
-                <div className="fixed left-0 top-0 flex items-center justify-center bg-background/70 w-full h-full">
+                <div className="bg-background/70 fixed top-0 left-0 flex h-full w-full items-center justify-center">
                     <div ref={imageRef} className="relative select-none">
                         <button
-                            className="absolute right-4 top-4 bg-red/40 p-1 border border-red/60 rounded-lg cursor-pointer transition-colors hover:bg-red/20"
+                            className="bg-red/40 border-red/60 hover:bg-red/20 absolute top-4 right-4 cursor-pointer rounded-lg border p-1 transition-colors"
                             onClick={() => (zoom.value = null)}
                         >
                             <XMarkIcon />
@@ -298,7 +301,7 @@ function RiceDotfiles({
 }: { onDownload: () => void } & Dotfiles) {
     return (
         <div
-            className="flex items-center justify-between bg-dark-background px-4 py-3 rounded-lg border-2 border-transparent transition-colors duration-300 select-none hover:bg-bright-background hover:cursor-pointer hover:border-accent"
+            className="bg-dark-background hover:bg-bright-background hover:border-accent flex items-center justify-between rounded-lg border-2 border-transparent px-4 py-3 transition-colors duration-300 select-none hover:cursor-pointer"
             onClick={onDownload}
         >
             <div className="flex items-center gap-2">

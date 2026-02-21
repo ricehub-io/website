@@ -40,10 +40,10 @@ export default function AccountPage() {
     return (
         user.value && (
             <div className="mx-12 py-4">
-                <div className="flex gap-4 mb-6">
+                <div className="mb-6 flex gap-4">
                     <div className="flex-1">
                         <SectionTitle text="Details" />
-                        <div className="bg-bright-background p-8 rounded-lg">
+                        <div className="bg-bright-background rounded-lg p-8">
                             <UserDetail
                                 label="Display name"
                                 value={user.value.displayName}
@@ -61,15 +61,15 @@ export default function AccountPage() {
 
                             <UserDetailLabel label="Avatar" />
                             <img
-                                className="w-48"
+                                className="w-48 rounded-lg"
                                 src={user.value.avatarUrl}
                                 alt="user's avatar"
                             />
                         </div>
                     </div>
-                    <div className="flex-1 flex flex-col">
+                    <div className="flex flex-1 flex-col">
                         <SectionTitle text="Actions" />
-                        <div className="bg-bright-background p-8 rounded-lg h-full">
+                        <div className="bg-bright-background h-full rounded-lg p-8">
                             <Button
                                 label="Change display name"
                                 onClick={() =>
@@ -112,7 +112,7 @@ export default function AccountPage() {
 }
 
 function SectionTitle(props: { text: string }) {
-    return <h1 className="font-bold text-3xl mb-2">{props.text}</h1>;
+    return <h1 className="mb-2 text-3xl font-bold">{props.text}</h1>;
 }
 
 function UserDetailLabel({ label }: { label: string }) {
@@ -132,7 +132,7 @@ function Button(props: { label: string; red?: boolean; onClick?: () => {} }) {
     return (
         <input
             onClick={props.onClick}
-            className={`block ${props.red ? "bg-red" : "bg-blue"} px-8 py-3 mb-4 cursor-pointer rounded-md transition-colors text-lg font-bold ${props.red ? "hover:bg-red/70" : "hover:bg-blue/70"}`}
+            className={`block ${props.red ? "bg-red" : "bg-blue"} mb-4 cursor-pointer rounded-md px-8 py-3 text-lg font-bold transition-colors ${props.red ? "hover:bg-red/70" : "hover:bg-blue/70"}`}
             type="button"
             value={props.label}
         />
@@ -141,7 +141,7 @@ function Button(props: { label: string; red?: boolean; onClick?: () => {} }) {
 
 function RiceList({ rices }: { rices: PartialRice[] }) {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {rices.map((rice) => (
                 <RicePreview {...rice} />
             ))}
