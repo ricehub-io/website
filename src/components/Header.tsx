@@ -3,7 +3,7 @@ import { GithubIcon } from "./icons/GithubIcon";
 import { MagnifyingGlassIcon } from "./icons/MagnifyingGlassIcon";
 import { useLocation } from "preact-iso";
 import { useContext } from "preact/hooks";
-import { AppState } from "../lib/appState";
+import { addNotification, AppState } from "../lib/appState";
 import { API_URL } from "../lib/api";
 
 interface LinkProps {
@@ -29,6 +29,11 @@ export default function Header() {
         });
         accessToken.value = null;
         user.value = null;
+        addNotification(
+            "Log Out",
+            "You have been logged out of your account",
+            "info"
+        );
     };
 
     return (

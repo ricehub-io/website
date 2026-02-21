@@ -1,3 +1,5 @@
+import { RefObject } from "preact";
+
 // DTOs
 export interface PartialRice {
     id: string;
@@ -95,6 +97,17 @@ export interface ReportWithUser {
     displayName: string;
 }
 
+export interface ServiceStatistics {
+    userCount: number;
+    user24hCount: number;
+    riceCount: number;
+    rice24hCount: number;
+    commentCount: number;
+    comment24hCount: number;
+    reportCount: number;
+    openReportCount: number;
+}
+
 // RESPONSES
 export interface CreateReportRes {
     reportId: string;
@@ -126,4 +139,5 @@ export interface AppNotification {
     title: string;
     message: string;
     severity: NotificationSeverity;
+    htmlRef: RefObject<HTMLDivElement>;
 }

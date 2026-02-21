@@ -8,7 +8,7 @@ import DeleteAccountModal from "./modals/DeleteAccountModal";
 import ChangeAvatarModal from "./modals/ChangeAvatarModal";
 import DeleteAvatarModal from "./modals/DeleteAvatarModal";
 import DeleteRiceModal from "./modals/DeleteRiceModal";
-import CreateReportModal from "./modals/CreateReportModal";
+import ReportModal from "./modals/ReportModal";
 import DeleteResourceModal from "./modals/DeleteResourceModal";
 
 export default function ModalConsumer() {
@@ -22,8 +22,8 @@ export default function ModalConsumer() {
 
     return (
         currentModal.value !== null && (
-            <div className="fixed left-0 top-0 w-full h-full flex items-center justify-center bg-background/70">
-                <div className="bg-dark-background px-12 py-6 rounded-xl border-2 border-gray/30 w-150">
+            <div className="bg-background/70 fixed top-0 left-0 flex h-full w-full items-center justify-center">
+                <div className="bg-dark-background border-gray/30 w-150 rounded-xl border-2 px-12 py-6">
                     {currentModal.value === "login" && <LoginModal />}
                     {currentModal.value === "register" && <RegisterModal />}
                     {currentModal.value === "changeDisplayName" && (
@@ -42,9 +42,7 @@ export default function ModalConsumer() {
                         <DeleteAccountModal />
                     )}
                     {currentModal.value === "deleteRice" && <DeleteRiceModal />}
-                    {currentModal.value === "createReport" && (
-                        <CreateReportModal />
-                    )}
+                    {currentModal.value === "report" && <ReportModal />}
 
                     {/* admin-only modals */}
                     {currentModal.value === "admin_deleteResource" && (

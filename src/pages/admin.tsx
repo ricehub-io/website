@@ -1,5 +1,6 @@
 import ReportList from "../components/admin/ReportList";
 import ResourceList from "../components/admin/ResourceList";
+import Statistics from "../components/admin/Statistics";
 
 const REPORTS_REFRESH_INTERVAL = 60 * 1000; // 60s
 
@@ -12,9 +13,7 @@ export default function AdminPage() {
         <div className="admin-page mx-auto">
             <div className="mb-6">
                 <SectionTitle text="Statistics" />
-                <div className="bg-bright-background rounded-lg p-4">
-                    <p>TODO</p>
-                </div>
+                <Statistics />
             </div>
             <div className="flex w-full gap-6">
                 <div className="flex-1">

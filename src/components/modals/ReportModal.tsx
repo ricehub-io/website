@@ -7,7 +7,7 @@ import { apiFetch } from "../../lib/api";
 import { CreateReportReq, CreateReportRes } from "../../lib/models";
 import { HttpStatus } from "../../lib/enums";
 
-export default function CreateReportModal() {
+export default function ReportModal() {
     const { currentModal, report } = useContext(AppState);
 
     const sendReport = async (e: SubmitEvent) => {

@@ -47,11 +47,9 @@ export async function apiFetch<T>(
 
     const res = await fetch(`${API_URL}${endpoint}`, {
         method,
-        headers: {
-            Authorization: accessToken.value
-                ? `Bearer ${accessToken.value}`
-                : null,
-        },
+        ...(accessToken.value && {
+            headers: { Authorization: `Bearer ${accessToken.value}` },
+        }),
         body,
     });
 

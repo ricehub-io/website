@@ -1,9 +1,11 @@
 import { signal, Signal } from "@preact/signals";
-import { createContext } from "preact";
+import { createContext, createRef } from "preact";
 import { AppNotification, NotificationSeverity, User } from "./models";
 import { API_URL, refreshToken } from "./api";
 import { jwtDecode } from "jwt-decode";
 import { v4 as uuidv4 } from "uuid";
+import { useRef } from "preact/hooks";
+import { cssDurationToMs } from "./math";
 
 type ModalType =
     | "login"
@@ -14,7 +16,7 @@ type ModalType =
     | "deleteAvatar"
     | "deleteAccount"
     | "deleteRice"
-    | "createReport"
+    | "report"
     | "admin_deleteResource"
     | null;
 
@@ -95,14 +97,30 @@ export function addNotification(
 ) {
     const id = uuidv4();
     notifications.value = [
-        { id, title, message, severity },
+        { id, title, message, severity, htmlRef: createRef() },
         ...notifications.value,
     ];
 
     setTimeout(() => {
-        // TODO: add fade out animation
-        notifications.value = notifications.value.filter(
-            (notif) => notif.id !== id
-        );
+        const removeNotification = () => {
+            notifications.value = notifications.value.filter(
+                (notif) => notif.id !== id
+            );
+        };
+
+        const notif = notifications.value.find((n) => n.id === id);
+
+        if (!notif.htmlRef) {
+            removeNotification();
+            return;
+        }
+
+        const el = notif.htmlRef.current;
+        el.style.opacity = "0";
+
+        const styles = getComputedStyle(el);
+        const waitTime = cssDurationToMs(styles.transitionDuration);
+
+        setTimeout(removeNotification, waitTime);
     }, 7500);
 }

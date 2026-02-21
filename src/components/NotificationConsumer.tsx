@@ -10,7 +10,7 @@ export default function NotificationConsumer() {
     const { notifications } = useContext(AppState);
 
     return (
-        <div className="fixed right-6 top-16 max-w-114">
+        <div className="fixed top-16 right-6 max-w-114">
             <For each={notifications}>
                 {(notif) => <Notification key={notif.id} {...notif} />}
             </For>
@@ -18,12 +18,20 @@ export default function NotificationConsumer() {
     );
 }
 
-function Notification({ title, message, severity }: AppNotification) {
+function Notification({
+    id,
+    title,
+    message,
+    severity,
+    htmlRef,
+}: AppNotification) {
     return (
         <div
-            className={`flex items-center gap-3 bg-dark-background pl-4 pr-6 py-4 rounded-lg border-2 border-blue ${
+            ref={htmlRef}
+            className={`bg-dark-background border-blue flex items-center gap-3 rounded-lg border-2 py-4 pr-6 pl-4 transition-opacity duration-500 ${
                 severity === "error" && "border-red"
             } ${severity === "warning" && "border-orange"} not-last:mb-2`}
+            id={id}
         >
             <div className="w-12">
                 {severity === "info" && <InfoIcon />}
@@ -31,7 +39,7 @@ function Notification({ title, message, severity }: AppNotification) {
                 {severity === "error" && <ErrorIcon />}
             </div>
             <div>
-                <h3 className="font-bold mb-0.5">{title}</h3>
+                <h3 className="mb-0.5 font-bold">{title}</h3>
                 <p className="leading-5">{message}</p>
             </div>
         </div>

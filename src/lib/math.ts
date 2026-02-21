@@ -17,3 +17,15 @@ export function formatLocaleDate(date: Date): string {
         second: "2-digit",
     });
 }
+
+/** Parses CSS duration string (e.g. 1s, 500ms) to actual milliseconds */
+export function cssDurationToMs(dur: string): number {
+    return Math.max(
+        ...dur
+            .split(",")
+            .map((d) => d.trim())
+            .map((d) =>
+                d.endsWith("ms") ? parseFloat(d) : parseFloat(d) * 1000
+            )
+    );
+}

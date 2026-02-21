@@ -23,7 +23,7 @@ export default function AdminRoute(props: any) {
     // I need to rewrite authorization code (especially access token refreshing) tho make it better
     return userLoading.value ? (
         <p>Checking if you have access to this resource...</p>
-    ) : user.value.isAdmin ? (
+    ) : user.value !== null && user.value.isAdmin ? (
         <Route {...props} />
     ) : null;
 }
