@@ -7,6 +7,18 @@ export const API_URL: string =
 
 export type FetchMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
+export class ApiError extends Error {
+    public readonly statusCode: HttpStatus;
+
+    constructor(message: string, statusCode: HttpStatus) {
+        super(message);
+        this.name = "ApiError";
+        this.statusCode = statusCode;
+
+        Object.setPrototypeOf(this, ApiError.prototype);
+    }
+}
+
 export async function refreshToken(): Promise<string | null> {
     const res = await fetch(`${API_URL}/auth/refresh`, {
         method: "post",
@@ -63,7 +75,7 @@ export async function apiFetch<T>(
             (resBody.errors !== undefined && resBody.errors[0]) ||
             resBody.error ||
             "Failed to reach API";
-        throw new Error(err);
+        throw new ApiError(err, res.status);
     }
 
     return [res.status, resBody];

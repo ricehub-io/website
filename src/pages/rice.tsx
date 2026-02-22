@@ -3,29 +3,40 @@ import { useRoute } from "preact-iso";
 import { Rice } from "../lib/models";
 import { RiceInfo } from "../components/RiceInfo";
 import { useEffect } from "preact/hooks";
-import { apiFetch } from "../lib/api";
+import { ApiError, apiFetch } from "../lib/api";
 import { Placeholder } from "../components/Placeholder";
 import { accessToken, addNotification } from "../lib/appState";
+import { HttpStatus } from "../lib/enums";
+import NotFoundPage from "./_404";
 
 export default function RicePage() {
     const route = useRoute();
     const { username, slug } = route.params;
 
     const riceInfo = useSignal<Rice>(null);
+    const notFound = useSignal(false);
 
     useEffect(() => {
         apiFetch<Rice>("GET", `/users/${username}/rices/${slug}`)
             .then(([_, body]) => (riceInfo.value = body))
             .catch((e) => {
-                if (e instanceof Error) {
-                    addNotification(
-                        "API",
-                        `Unexpected error occured when fetching rice data: ${e.message}`,
-                        "error"
-                    );
+                if (e instanceof ApiError) {
+                    if (e.statusCode === HttpStatus.NotFound) {
+                        notFound.value = true;
+                    } else {
+                        addNotification(
+                            "Failed to fetch data",
+                            e.message,
+                            "error"
+                        );
+                    }
                 }
             });
     }, [username, slug, accessToken.value]);
+
+    if (notFound.value) {
+        return <NotFoundPage />;
+    }
 
     return (
         <div className="rice-page mx-auto my-8 flex flex-col gap-6">

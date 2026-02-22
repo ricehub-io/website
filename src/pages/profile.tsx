@@ -1,10 +1,12 @@
 import { useRoute } from "preact-iso";
 import { useEffect } from "preact/hooks";
-import { apiFetch } from "../lib/api";
+import { ApiError, apiFetch } from "../lib/api";
 import { useSignal } from "@preact/signals";
 import { PartialRice, User } from "../lib/models";
 import { addNotification } from "../lib/appState";
 import RicePreview from "../components/RicePreview";
+import { HttpStatus } from "../lib/enums";
+import NotFoundPage from "./_404";
 
 export default function ProfilePage() {
     const route = useRoute();
@@ -12,17 +14,22 @@ export default function ProfilePage() {
 
     const user = useSignal<User>(null);
     const userRices = useSignal<PartialRice[]>([]);
+    const notFound = useSignal(false);
 
     useEffect(() => {
         apiFetch<User>("GET", `/users?username=${username}`)
             .then(([_, body]) => (user.value = body))
             .catch((e) => {
-                if (e instanceof Error) {
-                    addNotification(
-                        "Failed to fetch user data",
-                        e.message,
-                        "error"
-                    );
+                if (e instanceof ApiError) {
+                    if (e.statusCode === HttpStatus.NotFound) {
+                        notFound.value = true;
+                    } else {
+                        addNotification(
+                            "Failed to fetch user data",
+                            e.message,
+                            "error"
+                        );
+                    }
                 }
             });
     }, [username]);
@@ -44,6 +51,10 @@ export default function ProfilePage() {
                 }
             });
     }, [user.value]);
+
+    if (notFound.value) {
+        return <NotFoundPage />;
+    }
 
     // TODO: add skeleton placeholders when waiting for API responses
     return (
