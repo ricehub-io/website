@@ -6,6 +6,9 @@
 		"noEmit": true,
 		"allowJs": true,
 		"checkJs": true,
+		"lib": [
+			"ES2021"
+		],
 
 		/* Preact Config */
 		"jsx": "react-jsx",

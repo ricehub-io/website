@@ -1,17 +1,9 @@
-import { ComponentChildren } from "preact";
-import { GithubIcon } from "./icons/GithubIcon";
 import { MagnifyingGlassIcon } from "./icons/MagnifyingGlassIcon";
 import { useLocation } from "preact-iso";
 import { useContext } from "preact/hooks";
 import { addNotification, AppState } from "../lib/appState";
 import { API_URL } from "../lib/api";
-
-interface LinkProps {
-    url: string;
-    text?: string;
-    children?: ComponentChildren;
-    external?: boolean;
-}
+import Link from "./Link";
 
 interface TextButtonProps {
     text: string;
@@ -19,6 +11,15 @@ interface TextButtonProps {
 }
 
 export default function Header() {
+    const HeaderLink = ({ text, url }: { text: string; url: string }) => (
+        <Link
+            content={text}
+            url={url}
+            inNewTab
+            className="text-bright-gray hover:text-blue transition-colors"
+        />
+    );
+
     const { route } = useLocation();
     const { currentModal, user, accessToken } = useContext(AppState);
 
@@ -50,7 +51,7 @@ export default function Header() {
             </h1>
             <SearchBar placeholder="Search for rices..." disabled />
             <div className="flex gap-6">
-                <Link url="/" text="Home" />
+                <HeaderLink url="/" text="Home" />
                 {accessToken.value === null ? (
                     <>
                         <TextButton
@@ -64,14 +65,11 @@ export default function Header() {
                     </>
                 ) : (
                     <>
-                        <Link url="/new-rice" text="New Rice" />
-                        <Link url="/account" text="Account" />
+                        <HeaderLink url="/new-rice" text="New Rice" />
+                        <HeaderLink url="/account" text="Account" />
                         <TextButton text="Log Out" onClick={logOut} />
                     </>
                 )}
-                <Link url="https://github.com/the-ricehub" external>
-                    <GithubIcon />
-                </Link>
             </div>
         </header>
     );
@@ -80,7 +78,7 @@ export default function Header() {
 function TextButton({ text, onClick }: TextButtonProps) {
     return (
         <input
-            className="text-bright-gray hover:text-primary transition-colors duration-500 hover:cursor-pointer"
+            className="text-bright-gray hover:text-blue transition-colors hover:cursor-pointer"
             type="button"
             value={text}
             onClick={onClick}
@@ -88,17 +86,17 @@ function TextButton({ text, onClick }: TextButtonProps) {
     );
 }
 
-function Link({ url, text, children, external }: LinkProps) {
-    return (
-        <a
-            className="text-bright-gray hover:text-primary transition-colors duration-500"
-            href={url}
-            target={external ? "_blank" : "_self"}
-        >
-            {text ?? children}
-        </a>
-    );
-}
+// function Link({ url, text, children, external }: LinkProps) {
+//     return (
+//         <a
+//             className="text-bright-gray hover:text-primary transition-colors duration-500"
+//             href={url}
+//             target={external ? "_blank" : "_self"}
+//         >
+//             {text ?? children}
+//         </a>
+//     );
+// }
 
 function SearchBar({
     placeholder,

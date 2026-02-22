@@ -80,12 +80,23 @@ body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-outfit);
+    min-height: 100vh;
+}
+
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .rice-page,
 .admin-page,
 .profile-page {
     width: min(100%, 1200px);
+}
+
+.legal-page {
+    width: min(80%, 600px);
 }
 
 .new-rice-content {
@@ -96,9 +107,13 @@ body {
     flex: 0 0 auto;
 }
 
+.contact-email {
+    @apply !text-blue/60 !decoration-solid !line-through;
+}
+
 /* markdown style */
 .markdown-content a {
-    @apply text-blue hover:text-blue/70 underline;
+    @apply text-blue decoration-wavy underline transition-colors hover:text-blue/80;
 }
 
 .markdown-content h1 {

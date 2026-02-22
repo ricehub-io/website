@@ -15,6 +15,9 @@ import EditRicePage from "./pages/edit-rice";
 import AdminPage from "./pages/admin";
 import AdminRoute from "./components/AdminRoute";
 import ProfilePage from "./pages/profile";
+import Footer from "./components/Footer";
+import PrivacyPolicyPage from "./pages/privacy-policy";
+import TermsOfServicePage from "./pages/terms-of-service";
 
 export function App() {
     // const [theme, setTheme] = useState<"default" | "everforest">("default");
@@ -27,7 +30,7 @@ export function App() {
         <LocationProvider>
             <AppState.Provider value={createAppState()}>
                 <Header />
-                <main className="m-4">
+                <main className="m-4 h-full flex-col">
                     <Router>
                         <Route path="/" component={HomePage} />
                         <Route path="/account" component={AccountPage} />
@@ -37,6 +40,14 @@ export function App() {
                         />
                         <Route path="/new-rice" component={NewRicePage} />
                         <AdminRoute path="/admin" component={AdminPage} />
+                        <Route
+                            path="/privacy-policy"
+                            component={PrivacyPolicyPage}
+                        />
+                        <Route
+                            path="/terms-of-service"
+                            component={TermsOfServicePage}
+                        />
                         <Route path="/:username" component={ProfilePage} />
                         <Route path="/:username/:slug" component={RicePage} />
                         <Route default component={NotFoundPage} />
@@ -44,6 +55,7 @@ export function App() {
                     <ModalConsumer />
                     <NotificationConsumer />
                 </main>
+                <Footer />
             </AppState.Provider>
         </LocationProvider>
     );

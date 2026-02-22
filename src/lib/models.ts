@@ -108,6 +108,16 @@ export interface ServiceStatistics {
     openReportCount: number;
 }
 
+export interface WebsiteVariable {
+    value: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface Link {
+    url: string;
+}
+
 // RESPONSES
 export interface CreateReportRes {
     reportId: string;
@@ -140,4 +150,8 @@ export interface AppNotification {
     message: string;
     severity: NotificationSeverity;
     htmlRef: RefObject<HTMLDivElement>;
+}
+
+export interface IconProps {
+    className?: string;
 }

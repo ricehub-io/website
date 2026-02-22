@@ -38,6 +38,18 @@ marked.use({
     },
 });
 
+// I had no idea how to name this XD
+/** Takes raw markdown (in theory, but can accept any string) as input and inserts custom variables provided by second argument */
+export function superChargeMarkdown(
+    input: string,
+    variables: Map<string, string>
+) {
+    variables.forEach((value, name) => {
+        input = input.replaceAll(`{{${name}}}`, value);
+    });
+    return input;
+}
+
 /** Sanitizes input and allows only specific tags, then parses the input as markdown and returns HTML */
 export function sanitizeMarkdownInput(input: string): string {
     // replace literal "\n" with actual new lines
