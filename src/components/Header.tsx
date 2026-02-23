@@ -15,7 +15,6 @@ export default function Header() {
         <Link
             content={text}
             url={url}
-            inNewTab
             className="text-bright-gray hover:text-blue transition-colors"
         />
     );
