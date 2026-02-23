@@ -55,7 +55,7 @@ export default function Footer() {
                 />
                 <FooterLink url="/privacy-policy" content="Privacy Policy" />
                 <FooterLink
-                    url={discord.value}
+                    url={github.value}
                     inNewTab
                     content={
                         <span className="flex items-center gap-1">
@@ -65,7 +65,7 @@ export default function Footer() {
                     }
                 />
                 <FooterLink
-                    url={github.value}
+                    url={discord.value}
                     inNewTab
                     content={
                         <span className="flex items-center gap-1">
