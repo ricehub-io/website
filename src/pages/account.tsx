@@ -14,11 +14,11 @@ export default function AccountPage() {
 
     const rices = useSignal<PartialRice[]>([]);
 
-    useEffect(() => {
-        if (user.value === null && !userLoading.value) {
-            route("/", true);
-        }
-    }, [userLoading.value]);
+    // useEffect(() => {
+    //     if (user.value === null && !userLoading.value) {
+    //         route("/", true);
+    //     }
+    // }, [userLoading.value]);
 
     useEffect(() => {
         if (user.value === null) {
