@@ -86,7 +86,7 @@ export default function HomePage() {
                 {/* sorting selection for small screens only */}
                 <div className="relative md:hidden">
                     <select
-                        className="peer bg-gray/20 pl-4 pr-8 py-2 rounded-md border cursor-pointer border-gray/60 appearance-none"
+                        className="peer bg-gray/20 pl-4 pr-8 py-2 rounded-md border cursor-pointer border-gray/60 outline-none appearance-none"
                         name="sortOption"
                         id="sortOption"
                         onChange={changeSorting}

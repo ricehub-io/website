@@ -18,6 +18,7 @@ import { HttpStatus } from "../lib/enums";
 import XMarkIcon from "./icons/XMarkIcon";
 import { sanitizeMarkdownInput } from "../lib/sanitize";
 import FlagIcon from "./icons/FlagIcon";
+import ExternalIcon from "./icons/ExternalIcon";
 
 dayjs.extend(relativeTime);
 
@@ -36,8 +37,6 @@ export function RiceInfo({
 }: Rice) {
     const { route } = useLocation();
     const { user, currentModal, currentRiceId, report } = useContext(AppState);
-
-    console.log(isStarred);
 
     const isAuthor = useComputed(
         () => user.value !== null && user.value.id === author.id
@@ -72,7 +71,6 @@ export function RiceInfo({
     }, [location, scrolledRef, commentsLoaded.value]);
 
     const onStar = async () => {
-        console.log("on star");
         try {
             const [status, _] = await apiFetch(
                 _isStarred.value ? "DELETE" : "POST",
@@ -106,11 +104,11 @@ export function RiceInfo({
 
     return (
         <>
-            <div className="flex flex-col md:flex-row gap-y-4 items-center justify-between">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
+            <div className="flex flex-col items-center justify-between gap-y-4 md:flex-row">
+                <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
                     {title}
                 </h1>
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2 text-sm sm:text-base">
                     {!isAuthor.value && (
                         <HeaderButton
                             icon={<FlagIcon />}
@@ -148,7 +146,7 @@ export function RiceInfo({
                         __html: sanitizeMarkdownInput(description),
                     }}
                 />
-                <div className="bg-bright-background flex items-center justify-between rounded-lg p-4">
+                <div className="bg-bright-background flex items-center justify-between rounded-lg p-4 text-sm sm:text-base">
                     <div className="flex items-center gap-3">
                         <img
                             className="w-16 rounded-lg"
@@ -157,7 +155,7 @@ export function RiceInfo({
                         />
                         <div>
                             <a
-                                className="hover:text-foreground/80 text-xl font-medium transition-colors hover:underline"
+                                className="hover:text-foreground/80 text-lg font-medium transition-colors hover:underline sm:text-xl"
                                 href={`/${author.username}`}
                             >
                                 {author.displayName}
@@ -196,7 +194,11 @@ export function RiceInfo({
 const Separator = () => <div className="bg-bright-background/50 mx-2 h-0.5" />;
 
 function SectionTitle({ title }: { title: string }) {
-    return <h3 className="mb-2 text-2xl font-bold">{title}</h3>;
+    return (
+        <h3 className="mb-2 text-2xl font-bold sm:text-3xl md:text-4xl">
+            {title}
+        </h3>
+    );
 }
 
 function HeaderButton({
@@ -268,7 +270,7 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
 
     return (
         <>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                 {previews.map((preview) => (
                     <div
                         key={preview.id}
@@ -287,16 +289,24 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
                 <div className="bg-background/70 fixed top-0 left-0 flex h-full w-full items-center justify-center">
                     <div ref={imageRef} className="relative select-none">
                         <button
-                            className="bg-red/40 border-red/60 hover:bg-red/20 absolute top-4 right-4 cursor-pointer rounded-lg border p-1 transition-colors"
+                            className="bg-red/40 border-red/60 hover:bg-red/20 absolute top-2 right-2 cursor-pointer rounded-md border p-1 transition-colors md:top-4 md:right-4 md:rounded-lg"
                             onClick={() => (zoom.value = null)}
                         >
-                            <XMarkIcon />
+                            <XMarkIcon className="!size-4 sm:!size-5 md:!size-6" />
                         </button>
                         <img
                             className="w-full"
                             src={zoom.value}
                             alt="zoomed preview"
                         />
+                        <a
+                            className="text-foreground/70 hover:text-foreground bg-dark-background/80 border-foreground/40 hover:bg-bright-background/80 absolute left-1/2 mt-2 flex -translate-x-1/2 items-center justify-center gap-1 rounded-md border px-2 py-1 text-sm whitespace-nowrap transition-colors sm:text-base md:text-lg"
+                            href={zoom.value}
+                            target="_blank"
+                        >
+                            <ExternalIcon className="!size-5 sm:!size-6 md:!size-7" />
+                            Open image in new tab
+                        </a>
                     </div>
                 </div>
             )}
@@ -316,12 +326,12 @@ function RiceDotfiles({
             <div className="flex items-center gap-2">
                 <FolderArrowIcon />
                 <input
-                    className="text-xl font-semibold hover:cursor-pointer"
+                    className="text-lg font-semibold hover:cursor-pointer sm:text-xl"
                     type="button"
                     value="Download"
                 />
             </div>
-            <div className="text-right">
+            <div className="text-right text-sm sm:text-base">
                 <p>
                     Size: <b>432.92 Kb</b>
                 </p>

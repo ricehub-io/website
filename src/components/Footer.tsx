@@ -1,11 +1,14 @@
 import { useEffect } from "preact/hooks";
-import { API_URL, apiFetch } from "../lib/api";
+import { apiFetch } from "../lib/api";
 import DiscordIcon from "./icons/DiscordIcon";
 import { GitHubIcon } from "./icons/GitHubIcon";
 import Link, { LinkProps } from "./Link";
 import { Signal, useSignal } from "@preact/signals";
 import { Link as LinkDTO } from "../lib/models";
 import { addNotification } from "../lib/appState";
+
+const VERSION_MAJOR: number = 1;
+const VERSION_MINOR: number = 2;
 
 export default function Footer() {
     const discord = useSignal("");
@@ -32,9 +35,11 @@ export default function Footer() {
     }, []);
 
     return (
-        <footer className="flex flex-col gap-y-4 lg:flex-row lg:py-3 items-center justify-between bg-dark-background mt-auto px-6 py-6 text-foreground/60">
+        <footer className="flex flex-col gap-y-4 lg:flex-row lg:py-3 items-center justify-between bg-dark-background mt-auto px-10 sm:px-6 py-6 text-foreground/60">
             <div>
-                <p className="inline">v1.0</p>
+                <p className="inline">
+                    v{VERSION_MAJOR}.{VERSION_MINOR}
+                </p>
                 <Bullet />
                 <p className="inline break-keep whitespace-nowrap">
                     made with love by{" "}

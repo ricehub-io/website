@@ -168,10 +168,10 @@ function Comment({
 
     return (
         <div
-            className="bg-bright-background flex gap-4 rounded-lg p-4"
+            className="bg-bright-background flex gap-4 rounded-lg p-2 md:p-4"
             id={commentId}
         >
-            <div className="w-16">
+            <div className="w-12 sm:w-16">
                 <img className="rounded-md" src={avatar} alt="avatar" />
             </div>
             <div className="flex-1">
