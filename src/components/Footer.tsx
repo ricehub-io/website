@@ -32,11 +32,11 @@ export default function Footer() {
     }, []);
 
     return (
-        <footer className="flex items-center justify-between bg-dark-background mt-auto px-6 py-3 text-foreground/60">
+        <footer className="flex flex-col gap-y-4 lg:flex-row lg:py-3 items-center justify-between bg-dark-background mt-auto px-6 py-6 text-foreground/60">
             <div>
                 <p className="inline">v1.0</p>
                 <Bullet />
-                <p className="inline">
+                <p className="inline break-keep whitespace-nowrap">
                     made with love by{" "}
                     <Link
                         url="https://github.com/golferjoe"
@@ -48,7 +48,7 @@ export default function Footer() {
                     </span>
                 </p>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap justify-center items-center gap-y-2 gap-x-6">
                 <FooterLink
                     url="/terms-of-service"
                     content="Terms of Service"

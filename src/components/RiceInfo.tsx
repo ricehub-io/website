@@ -27,7 +27,7 @@ export function RiceInfo({
     description,
     previews,
     stars,
-    isStarred: _isStarred,
+    isStarred,
     downloads,
     dotfiles,
     author,
@@ -37,13 +37,19 @@ export function RiceInfo({
     const { route } = useLocation();
     const { user, currentModal, currentRiceId, report } = useContext(AppState);
 
+    console.log(isStarred);
+
     const isAuthor = useComputed(
         () => user.value !== null && user.value.id === author.id
     );
-    const isStarred = useSignal(_isStarred);
+    const _isStarred = useSignal(isStarred);
     const starCount = useSignal(stars);
 
     const commentsLoaded = useSignal(false);
+
+    useEffect(() => {
+        _isStarred.value = isStarred;
+    }, [isStarred]);
 
     // scroll to anchor if provided
     const scrolledRef = useRef(false);
@@ -66,12 +72,13 @@ export function RiceInfo({
     }, [location, scrolledRef, commentsLoaded.value]);
 
     const onStar = async () => {
+        console.log("on star");
         try {
             const [status, _] = await apiFetch(
-                isStarred.value ? "DELETE" : "POST",
+                _isStarred.value ? "DELETE" : "POST",
                 `/rices/${id}/star`
             );
-            isStarred.value = !isStarred.value;
+            _isStarred.value = !_isStarred.value;
             starCount.value += status === HttpStatus.Created ? 1 : -1;
         } catch (e) {
             if (e instanceof Error) {
@@ -99,9 +106,11 @@ export function RiceInfo({
 
     return (
         <>
-            <div className="flex items-center justify-between">
-                <h1 className="text-4xl font-bold">{title}</h1>
-                <div className="flex gap-2">
+            <div className="flex flex-col md:flex-row gap-y-4 items-center justify-between">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
+                    {title}
+                </h1>
+                <div className="flex flex-wrap justify-center gap-2">
                     {!isAuthor.value && (
                         <HeaderButton
                             icon={<FlagIcon />}
@@ -111,8 +120,8 @@ export function RiceInfo({
                     )}
                     <HeaderButton icon={<DownloadIcon />} content={downloads} />
                     <HeaderButton
-                        className={`transition-colors duration-300 ${isStarred.value && "text-accent"}`}
-                        icon={<StarIcon solid={isStarred.value} />}
+                        className={`transition-colors duration-300 ${_isStarred.value && "text-accent"}`}
+                        icon={<StarIcon solid={_isStarred.value} />}
                         content={starCount.value}
                         onClick={onStar}
                     />

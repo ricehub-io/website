@@ -27,7 +27,7 @@ export default function AccountPage() {
 
     return (
         <div className="account-page mx-auto py-4">
-            <div className="mb-6 flex gap-4">
+            <div className="mb-6 flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                     <SectionTitle text="Details" />
                     <div className="bg-bright-background rounded-lg p-8">
@@ -118,7 +118,7 @@ function Button(props: { label: string; red?: boolean; onClick?: () => {} }) {
     return (
         <input
             onClick={props.onClick}
-            className={`block ${props.red ? "bg-red" : "bg-blue"} mb-4 cursor-pointer rounded-md px-8 py-3 text-lg font-bold transition-colors ${props.red ? "hover:bg-red/70" : "hover:bg-blue/70"}`}
+            className={`block ${props.red ? "bg-red" : "bg-blue"} mb-4 cursor-pointer rounded-md sm:px-8 px-4 py-3 text-lg font-bold transition-colors ${props.red ? "hover:bg-red/70" : "hover:bg-blue/70"}`}
             type="button"
             value={props.label}
         />

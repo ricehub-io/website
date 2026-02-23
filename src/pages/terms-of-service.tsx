@@ -60,8 +60,10 @@ export default function TermsOfServicePage() {
     return (
         data.value !== null && (
             <div className="legal-page mx-auto">
-                <h1 className="font-bold text-6xl">Terms of Service</h1>
-                <p className="text-gray my-2">
+                <h1 className="font-bold text-3xl sm:text-5xl md:text-6xl">
+                    Terms of Service
+                </h1>
+                <p className="text-gray my-2 text-sm sm:text-base md:text-lg">
                     Last updated:{" "}
                     {moment(data.value.updatedAt).format("MMMM Do, YYYY")}
                 </p>

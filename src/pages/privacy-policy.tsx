@@ -63,10 +63,11 @@ export default function PrivacyPolicyPage() {
     return (
         data.value !== null && (
             <div className="legal-page mx-auto">
-                <h1 className="font-bold text-6xl">Privacy Policy</h1>
-                <p className="text-gray my-2">
+                <h1 className="font-bold text-3xl sm:text-5xl md:text-6xl">
+                    Privacy Policy
+                </h1>
+                <p className="text-gray my-2 text-sm sm:text-base md:text-lg">
                     Last updated:{" "}
-                    {/* idk why i am using momentjs in one place and built-in date formatting in the other XD */}
                     {moment(data.value.updatedAt).format("MMMM Do, YYYY")}
                 </p>
                 <div className="w-full h-0.5 bg-bright-background mb-4" />

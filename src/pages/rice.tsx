@@ -2,16 +2,18 @@ import { useSignal } from "@preact/signals";
 import { useRoute } from "preact-iso";
 import { Rice } from "../lib/models";
 import { RiceInfo } from "../components/RiceInfo";
-import { useEffect } from "preact/hooks";
+import { useContext, useEffect } from "preact/hooks";
 import { ApiError, apiFetch } from "../lib/api";
 import { Placeholder } from "../components/Placeholder";
-import { accessToken, addNotification } from "../lib/appState";
+import { addNotification, AppState } from "../lib/appState";
 import { HttpStatus } from "../lib/enums";
 import NotFoundPage from "./_404";
 
 export default function RicePage() {
     const route = useRoute();
     const { username, slug } = route.params;
+
+    const { accessToken } = useContext(AppState);
 
     const riceInfo = useSignal<Rice>(null);
     const notFound = useSignal(false);

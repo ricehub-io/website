@@ -6,7 +6,9 @@ import { apiFetch } from "../lib/api";
 import { Placeholder } from "../components/Placeholder";
 import { addNotification, AppState } from "../lib/appState";
 import { RadioButton, RadioButtonProps } from "../components/RadioButton";
-import { TargetedEvent } from "preact/compat";
+import { ChangeEvent, TargetedEvent } from "preact/compat";
+import ChevronDownIcon from "../components/icons/ChevronDownIcon";
+import ChevronUpIcon from "../components/icons/ChevronUpIcon";
 
 const SORT_OPTIONS = [
     "recent",
@@ -55,7 +57,9 @@ export default function HomePage() {
 
     useEffect(fetchRices, [accessToken.value, sortBy.value]);
 
-    const changeSorting = (e: TargetedEvent<HTMLInputElement>) => {
+    const changeSorting = (
+        e: TargetedEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
         sortBy.value = e.currentTarget.value as SortOption;
     };
 
@@ -67,7 +71,8 @@ export default function HomePage() {
                         ? `Showing ${rices.value.length} results`
                         : "Fetching rices from API..."}
                 </p>
-                <div className="flex">
+                {/* sorting buttons for bigger screens */}
+                <div className="hidden md:flex">
                     {SORT_BUTTONS.map((props) => (
                         <RadioButton
                             key={props.value}
@@ -77,6 +82,26 @@ export default function HomePage() {
                             onChange={changeSorting}
                         />
                     ))}
+                </div>
+                {/* sorting selection for small screens only */}
+                <div className="relative md:hidden">
+                    <select
+                        className="peer bg-gray/20 pl-4 pr-8 py-2 rounded-md border cursor-pointer border-gray/60 appearance-none"
+                        name="sortOption"
+                        id="sortOption"
+                        onChange={changeSorting}
+                    >
+                        {SORT_BUTTONS.map(({ value, text }) => (
+                            <option
+                                value={value}
+                                selected={value === sortBy.value}
+                            >
+                                {text}
+                            </option>
+                        ))}
+                    </select>
+                    <ChevronDownIcon className="text-gray/80 absolute top-1/2 -translate-y-1/2 right-2.5 peer-focus:hidden" />
+                    <ChevronUpIcon className="text-gray/80 absolute top-1/2 -translate-y-1/2 right-2.5 hidden peer-focus:block" />
                 </div>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

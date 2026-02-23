@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import { v4 as uuidv4 } from "uuid";
 import { cssDurationToMs } from "./math";
 
-type ModalType =
+export type ModalType =
     | "login"
     | "register"
     | "changeDisplayName"

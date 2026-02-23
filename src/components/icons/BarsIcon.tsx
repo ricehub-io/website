@@ -1,6 +1,6 @@
 import { IconProps } from "../../lib/models";
 
-export default function XMarkIcon(props: IconProps) {
+export default function BarsIcon(props: IconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -8,12 +8,12 @@ export default function XMarkIcon(props: IconProps) {
             viewBox="0 0 24 24"
             stroke-width={1.5}
             stroke="currentColor"
-            class={`size-6 ${props.className}`}
+            class={`size-8 ${props.className}`}
         >
             <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                d="M6 18 18 6M6 6l12 12"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
             />
         </svg>
     );
