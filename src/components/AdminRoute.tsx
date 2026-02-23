@@ -1,5 +1,3 @@
-// TODO: creating something similar for authorized users
-
 import { useContext, useEffect } from "preact/hooks";
 import { AppState } from "../lib/appState";
 import { Route, useLocation } from "preact-iso";

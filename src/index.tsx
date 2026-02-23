@@ -18,6 +18,7 @@ import ProfilePage from "./pages/profile";
 import Footer from "./components/Footer";
 import PrivacyPolicyPage from "./pages/privacy-policy";
 import TermsOfServicePage from "./pages/terms-of-service";
+import AuthRoute from "./components/AuthRoute";
 
 export function App() {
     // const [theme, setTheme] = useState<"default" | "everforest">("default");
@@ -33,13 +34,12 @@ export function App() {
                 <main className="m-4 h-full flex-col">
                     <Router>
                         <Route path="/" component={HomePage} />
-                        <Route path="/account" component={AccountPage} />
-                        <Route
+                        <AuthRoute path="/account" component={AccountPage} />
+                        <AuthRoute
                             path="/edit-rice/:riceId"
                             component={EditRicePage}
                         />
-                        <Route path="/new-rice" component={NewRicePage} />
-                        <AdminRoute path="/admin" component={AdminPage} />
+                        <AuthRoute path="/new-rice" component={NewRicePage} />
                         <Route
                             path="/privacy-policy"
                             component={PrivacyPolicyPage}
@@ -48,6 +48,7 @@ export function App() {
                             path="/terms-of-service"
                             component={TermsOfServicePage}
                         />
+                        <AdminRoute path="/admin" component={AdminPage} />
                         <Route path="/:username" component={ProfilePage} />
                         <Route path="/:username/:slug" component={RicePage} />
                         <Route default component={NotFoundPage} />

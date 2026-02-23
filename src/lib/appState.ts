@@ -4,7 +4,6 @@ import { AppNotification, NotificationSeverity, User } from "./models";
 import { API_URL, refreshToken } from "./api";
 import { jwtDecode } from "jwt-decode";
 import { v4 as uuidv4 } from "uuid";
-import { useRef } from "preact/hooks";
 import { cssDurationToMs } from "./math";
 
 type ModalType =

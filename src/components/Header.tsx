@@ -38,7 +38,7 @@ export default function Header() {
     };
 
     return (
-        <header className="bg-dark-background flex items-center justify-between px-6 py-3">
+        <header className="bg-dark-background sticky top-0 flex items-center justify-between px-6 py-3">
             <h1
                 onClick={() => route("/")}
                 onMouseDown={(e: MouseEvent) => {

@@ -95,6 +95,10 @@ body {
     width: min(100%, 1200px);
 }
 
+.account-page {
+    width: min(80%, 1400px);
+}
+
 .legal-page {
     width: min(80%, 600px);
 }

@@ -5,6 +5,6 @@ To change the API URL you need to create a `config.js` file after building the w
 
 ```javascript
 window.__APP_CONFIG__ = {
-    API_URL: "https://api.ricehub.lol",
+    API_URL: "https://api.ricehub.io",
 };
 ```
