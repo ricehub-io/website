@@ -7,6 +7,9 @@ import moment from "moment";
 import { HttpStatus } from "../lib/enums";
 import TrashIcon from "./icons/TrashIcon";
 import FlagIcon from "./icons/FlagIcon";
+import Bullet from "./Bullet";
+import { Show } from "@preact/signals/utils";
+import { InputHTMLAttributes } from "preact/compat";
 
 interface CommentSectionProps {
     riceId: string;
@@ -103,9 +106,12 @@ function CommentCreator({
     };
 
     return (
-        <form onSubmit={postComment} className="mb-6 flex flex-col gap-2">
+        <form
+            onSubmit={postComment}
+            className="mb-6 flex flex-col gap-2 text-sm sm:text-base md:text-lg"
+        >
             <textarea
-                className="bg-bright-background/50 border-gray/20 focus:border-gray/50 focus:bg-bright-background/80 resize-none rounded-lg border-2 p-4 text-lg transition-colors duration-500 outline-none"
+                className="bg-bright-background/50 border-gray/20 focus:border-gray/50 focus:bg-bright-background/80 resize-none rounded-lg border-2 p-4 transition-colors duration-500 outline-none"
                 name="content"
                 id="content"
                 placeholder="Write a review"
@@ -113,7 +119,7 @@ function CommentCreator({
                 required
             />
             <input
-                className="bg-blue hover:bg-blue/70 hover:text-foreground/70 ml-auto cursor-pointer rounded-md px-8 py-2 text-lg font-bold transition-colors"
+                className="bg-blue hover:bg-blue/70 hover:text-foreground/70 ml-auto cursor-pointer rounded-md px-8 py-2 font-bold transition-colors"
                 type="submit"
                 value="Post"
             />
@@ -168,28 +174,47 @@ function Comment({
 
     return (
         <div
-            className="bg-bright-background flex gap-4 rounded-lg p-2 md:p-4"
+            className="bg-bright-background relative flex gap-2 rounded-lg p-3 md:p-4"
             id={commentId}
         >
             <div className="w-12 sm:w-16">
                 <img className="rounded-md" src={avatar} alt="avatar" />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 text-sm sm:text-base">
                 <div className="-mt-1 flex items-center gap-1">
                     <a
-                        className="hover:text-foreground/80 text-lg font-medium transition-colors hover:underline"
+                        className="hover:text-foreground/80 text-base font-medium transition-colors hover:underline sm:text-lg"
                         href={`/${username}`}
                     >
                         {displayName}
                     </a>
-                    <p className="text-gray font-light">(@{username})</p>
-                    <p className="ml-auto">{moment(createdAt).fromNow()}</p>
+                    <p className="text-gray hidden sm:block">(@{username})</p>
+                    <p className="text-gray ml-auto">
+                        {moment(createdAt).fromNow()}
+                    </p>
+                    {/* action buttons for small screens */}
+                    <div className="sm:hidden">
+                        <Bullet className="text-foreground/20 mr-1" />
+                        <Show
+                            when={isAuthor}
+                            fallback={
+                                <TextButton
+                                    value="Report"
+                                    onClick={reportComment}
+                                />
+                            }
+                        >
+                            <TextButton
+                                value="Delete"
+                                onClick={deleteComment}
+                            />
+                        </Show>
+                    </div>
                 </div>
-                <div>
-                    <p>{content}</p>
-                </div>
+                <p className="text-foreground/80">{content}</p>
             </div>
-            <div className="border-gray/20 flex border-l-2 pl-4">
+            {/* action buttons for bigger screens */}
+            <div className="border-gray/20 hidden border-l-2 pl-4 sm:flex">
                 {isAuthor.value ? (
                     <button
                         onClick={deleteComment}
@@ -209,3 +234,13 @@ function Comment({
         </div>
     );
 }
+
+const TextButton = (props: InputHTMLAttributes) => {
+    return (
+        <input
+            className="text-gray hover:text-bright-gray cursor-pointer transition-colors"
+            type="button"
+            {...props}
+        />
+    );
+};

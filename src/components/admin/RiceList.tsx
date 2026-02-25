@@ -3,6 +3,7 @@ import { PartialRice } from "../../lib/models";
 import { useEffect } from "preact/hooks";
 import { apiFetch } from "../../lib/api";
 import { formatLocaleDate } from "../../lib/math";
+import Bullet from "../Bullet";
 
 export default function RiceList() {
     const rices = useSignal<PartialRice[]>([]);
@@ -27,7 +28,6 @@ function RiceInfo({
     stars,
     downloads,
 }: PartialRice) {
-    const Bullet = () => <p className="text-foreground/30">&#9679;</p>;
     const ricePath = `/${username}/${slug}`;
 
     return (

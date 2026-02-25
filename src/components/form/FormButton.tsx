@@ -7,7 +7,7 @@ interface FormButtonProps {
 export function FormButton({ label, type, disabled }: FormButtonProps) {
     return (
         <input
-            className="w-full mt-2 font-bold text-xl bg-bright-background py-3 rounded-md transition-colors duration-300 hover:cursor-pointer hover:bg-gray/30 disabled:cursor-not-allowed disabled:text-gray disabled:bg-bright-background/50"
+            className="bg-bright-background hover:bg-gray/30 disabled:text-gray disabled:bg-bright-background/50 w-full rounded-md py-3 text-base font-medium transition-colors duration-300 hover:cursor-pointer disabled:cursor-not-allowed sm:text-lg md:text-xl"
             type={type}
             value={label}
             disabled={disabled}

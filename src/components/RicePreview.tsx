@@ -76,21 +76,26 @@ export default function RicePreview({
             </div>
             <div className="flex items-center px-3 pb-2">
                 <div>
-                    <h1 className="-mb-1 text-lg">{title}</h1>
-                    <p className="text-gray text-sm font-light">
+                    <h1 className="-mb-1 text-lg font-medium md:text-xl">
+                        {title}
+                    </h1>
+                    <p className="text-gray text-sm md:text-base">
                         by {displayName}
                     </p>
                 </div>
-                <div className="ml-auto flex gap-3 select-none">
+                <div className="ml-auto flex gap-2 select-none sm:gap-3">
                     <div className="flex items-center gap-1">
-                        <DownloadIcon />
+                        <DownloadIcon className="size-5 sm:size-6" />
                         <p>{downloads}</p>
                     </div>
                     <div
                         onClick={onStar}
                         className="flex items-center gap-0.5 transition-colors duration-300 hover:cursor-pointer"
                     >
-                        <StarIcon solid={isStarred.value} />
+                        <StarIcon
+                            solid={isStarred.value}
+                            className="!size-5 sm:!size-6"
+                        />
                         <p
                             className={`transition-colors duration-300 ${
                                 isStarred.value && "text-accent"
@@ -104,13 +109,15 @@ export default function RicePreview({
             {!hideActions &&
                 user.value !== null &&
                 username === user.value.username && (
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-2 right-2 md:top-3 md:right-3">
                         <FloatingButton
-                            icon={<TrashIcon />}
+                            icon={<TrashIcon className="size-5 sm:size-6" />}
                             onClick={onDelete}
                         />
                         <FloatingButton
-                            icon={<PencilSquareIcon />}
+                            icon={
+                                <PencilSquareIcon className="size-5 sm:size-6" />
+                            }
                             onClick={onEdit}
                         />
                     </div>
@@ -121,19 +128,19 @@ export default function RicePreview({
 
 function FloatingButton({
     icon,
-    onClick: _onClick,
+    ...props
 }: {
     icon: JSX.Element;
     onClick: () => void;
 }) {
     const onClick = (e: Event) => {
         e.stopPropagation();
-        _onClick();
+        props.onClick();
     };
 
     return (
         <button
-            className="bg-bright-background border-gray/40 hover:bg-gray/20 hover:border-gray/60 ml-2 cursor-pointer rounded-lg border p-2 transition-colors"
+            className="bg-bright-background/80 border-gray/40 hover:bg-gray/20 hover:border-gray/60 hover:text-foreground/80 ml-1.5 cursor-pointer rounded-lg border p-2 transition-colors"
             onClick={onClick}
         >
             {icon}

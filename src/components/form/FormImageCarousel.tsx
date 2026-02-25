@@ -11,7 +11,7 @@ interface Props {
     name: string;
 }
 
-export default function FormImageCarousel({ label, name }: Props) {
+export function FormImageCarousel({ label, name }: Props) {
     const container = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLInputElement>(null);
     const images = useSignal<File[]>([]);
@@ -34,7 +34,9 @@ export default function FormImageCarousel({ label, name }: Props) {
         images.value = Array.from(target.files);
     };
 
-    const deleteImage = (targetIndex: number) => {
+    const deleteImage = (e: Event, targetIndex: number) => {
+        e.preventDefault();
+
         const newFiles = images.value.filter(
             (_, index) => index !== targetIndex
         );
@@ -50,45 +52,26 @@ export default function FormImageCarousel({ label, name }: Props) {
             <FormLabel label={label} />
             <div
                 ref={container}
-                className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-2 pr-4"
+                className="flex flex-nowrap items-center gap-2 overflow-x-auto pr-4 pb-2"
                 onMouseEnter={onContainerHover}
                 onMouseLeave={onContainerUnHover}
                 onWheel={horizontalScroll}
             >
                 {images.value.length > 0 ? (
                     images.value.map((image, index) => (
-                        <div
+                        <CarouselImage
                             key={index}
-                            className="carousel-image-container relative border-2 rounded-md border-gray/50"
-                        >
-                            <img
-                                className="w-86 rounded-lg"
-                                src={URL.createObjectURL(image)}
-                                alt={label}
-                            />
-                            <button
-                                className="absolute right-2 bottom-2 bg-red/40 border border-red/60 p-2 rounded-md cursor-pointer transition-colors hover:bg-red/20"
-                                onClick={(e: Event) => {
-                                    e.preventDefault();
-                                    deleteImage(index);
-                                }}
-                            >
-                                <TrashIcon />
-                            </button>
-                        </div>
+                            url={URL.createObjectURL(image)}
+                            onDelete={(e) => deleteImage(e, index)}
+                        />
                     ))
                 ) : (
-                    <div className="flex items-center justify-center rounded-lg text-gray bg-bright-background w-86 border-2 border-gray/50 aspect-video">
-                        <PhotoIcon />
+                    <div className="text-gray bg-bright-background border-gray/50 flex aspect-video h-30 items-center justify-center rounded-lg border-2 sm:h-40 md:h-50">
+                        <PhotoIcon className="size-24 sm:size-36" />
                     </div>
                 )}
 
-                <label
-                    className="flex bg-bright-background border border-gray/30 w-12 h-12 aspect-square rounded-lg items-center justify-center cursor-pointer transition-colors ml-2 hover:bg-bright-background/50 hover:text-foreground/70"
-                    htmlFor={name}
-                >
-                    <PlusIcon />
-                </label>
+                <CarouselPlusButton name={name} />
                 <input
                     ref={input}
                     className="hidden"
@@ -102,5 +85,40 @@ export default function FormImageCarousel({ label, name }: Props) {
                 />
             </div>
         </div>
+    );
+}
+
+export function CarouselImage({
+    url,
+    onDelete,
+}: {
+    url: string;
+    onDelete: (Event) => void;
+}) {
+    return (
+        <div className="carousel-image-container relative">
+            <img
+                className="h-30 rounded-md sm:h-40 md:h-50"
+                src={url}
+                alt="carousel's image"
+            />
+            <button
+                className="bg-red/40 border-red/60 hover:bg-red/20 absolute right-2 bottom-2 cursor-pointer rounded-md border p-2 transition-colors"
+                onClick={onDelete}
+            >
+                <TrashIcon className="size-5 sm:size-6" />
+            </button>
+        </div>
+    );
+}
+
+export function CarouselPlusButton({ name }: { name: string }) {
+    return (
+        <label
+            className="bg-bright-background border-gray/30 hover:bg-bright-background/50 hover:text-foreground/70 ml-1 cursor-pointer rounded-lg border p-2 transition-colors sm:ml-2 sm:p-3"
+            htmlFor={name}
+        >
+            <PlusIcon className="size-5 sm:size-6" />
+        </label>
     );
 }

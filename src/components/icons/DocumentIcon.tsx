@@ -1,4 +1,6 @@
-export default function DocumentIcon() {
+import { IconProps } from "../../lib/models";
+
+export default function DocumentIcon(props: IconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -7,6 +9,7 @@ export default function DocumentIcon() {
             stroke-width={1.5}
             stroke="currentColor"
             class="size-8"
+            {...props}
         >
             <path
                 stroke-linecap="round"

@@ -1,4 +1,6 @@
-export function DownloadIcon() {
+import { IconProps } from "../../lib/models";
+
+export function DownloadIcon(props: IconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -6,7 +8,8 @@ export function DownloadIcon() {
             viewBox="0 0 24 24"
             stroke-width={1.5}
             stroke="currentColor"
-            className="size-6"
+            class="size-6"
+            {...props}
         >
             <path
                 stroke-linecap="round"

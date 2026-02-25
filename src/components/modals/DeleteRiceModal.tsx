@@ -45,11 +45,11 @@ export default function DeleteRiceModal() {
 
     return (
         <form onSubmit={onSubmit} onReset={closeModal}>
-            <div className="text-lg leading-5 mx-2 mb-2">
+            <div className="mx-2 text-base leading-5 sm:text-lg">
                 <p>Are you sure you want to delete this rice?</p>
                 <b>This action is irreversible.</b>
             </div>
-            <div className="flex gap-2">
+            <div className="mt-2 flex gap-2">
                 <FormButton label="No" type="reset" />
                 <FormButton label="Yes" type="submit" />
             </div>

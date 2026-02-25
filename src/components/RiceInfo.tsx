@@ -19,6 +19,7 @@ import XMarkIcon from "./icons/XMarkIcon";
 import { sanitizeMarkdownInput } from "../lib/sanitize";
 import FlagIcon from "./icons/FlagIcon";
 import ExternalIcon from "./icons/ExternalIcon";
+import SectionTitle from "./SectionTitle";
 
 dayjs.extend(relativeTime);
 
@@ -175,13 +176,13 @@ export function RiceInfo({
             </div>
             <Separator />
             <div>
-                <SectionTitle title="Screenshots" />
+                <SectionTitle text="Screenshots" />
                 <RiceScreenshots previews={previews} />
             </div>
             <RiceDotfiles onDownload={onDownload} {...dotfiles} />
             <Separator />
             <div>
-                <SectionTitle title="Comments" />
+                <SectionTitle text="Comments" />
                 <CommentSection
                     riceId={id}
                     onLoad={() => (commentsLoaded.value = true)}
@@ -192,14 +193,6 @@ export function RiceInfo({
 }
 
 const Separator = () => <div className="bg-bright-background/50 mx-2 h-0.5" />;
-
-function SectionTitle({ title }: { title: string }) {
-    return (
-        <h3 className="mb-2 text-2xl font-bold sm:text-3xl md:text-4xl">
-            {title}
-        </h3>
-    );
-}
 
 function HeaderButton({
     onClick,

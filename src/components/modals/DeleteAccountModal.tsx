@@ -18,7 +18,7 @@ export default function DeleteAccountModal() {
         const password = formData.get("password");
 
         try {
-            const [status, body] = await apiFetch(
+            const [status, _] = await apiFetch(
                 "DELETE",
                 `/users/${user.value.id}`,
                 JSON.stringify({
@@ -45,24 +45,22 @@ export default function DeleteAccountModal() {
             }
         } catch (e) {
             if (e instanceof Error) {
-                addNotification(
-                    "Account",
-                    `Failed to delete: ${e.message}`,
-                    "error"
-                );
+                addNotification("Something went wrong", e.message, "error");
             }
         }
     };
 
     return (
         <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
-            <FormInput
-                label="Password"
-                name="password"
-                type="password"
-                placeholder="************"
-            />
-            <div className="flex gap-2">
+            <div>
+                <FormInput
+                    label="Password"
+                    name="password"
+                    type="password"
+                    placeholder="************"
+                />
+            </div>
+            <div className="mt-2 flex gap-2">
                 <FormButton label="Cancel" type="reset" />
                 <FormButton label="Delete" type="submit" />
             </div>

@@ -3,6 +3,8 @@ import { FormButton } from "../form/FormButton";
 import { addNotification, AppState } from "../../lib/appState";
 import { apiFetch } from "../../lib/api";
 import { HttpStatus } from "../../lib/enums";
+import FormLabel from "../form/FormLabel";
+import { FormInput } from "../form/FormInput";
 
 export default function ChangeAvatarModal() {
     const { currentModal, user } = useContext(AppState);
@@ -43,18 +45,17 @@ export default function ChangeAvatarModal() {
 
     return (
         <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
-            <label className="block mb-2" htmlFor="file">
-                Upload new avatar
-            </label>
-            <input
-                className="avatar-input block cursor-pointer w-full bg-bright-background p-4 rounded-md mb-2"
-                type="file"
-                name="file"
-                id="file"
-                accept="image/jpeg, image/png"
-            />
-
-            <div className="flex gap-2">
+            <div>
+                <FormInput
+                    label="New avatar"
+                    type="file"
+                    name="file"
+                    id="file"
+                    accept="image/jpeg, image/png"
+                    className="cursor-pointer"
+                />
+            </div>
+            <div className="mt-2 flex gap-2">
                 <FormButton label="Cancel" type="reset" />
                 <FormButton label="Confirm" type="submit" />
             </div>

@@ -5,6 +5,7 @@ import { useSignal } from "@preact/signals";
 import { PartialRice } from "../lib/models";
 import RicePreview from "../components/RicePreview";
 import { apiFetch } from "../lib/api";
+import SectionTitle from "../components/SectionTitle";
 
 export default function AccountPage() {
     const { currentModal, user } = useContext(AppState);
@@ -26,8 +27,8 @@ export default function AccountPage() {
     }, []);
 
     return (
-        <div className="account-page mx-auto py-4">
-            <div className="mb-6 flex flex-col md:flex-row gap-4">
+        <div className="mx-auto w-full py-4 md:w-[min(80%,1400px)]">
+            <div className="mb-6 flex flex-col gap-4 md:flex-row">
                 <div className="flex-1">
                     <SectionTitle text="Details" />
                     <div className="bg-bright-background rounded-lg p-8">
@@ -48,7 +49,7 @@ export default function AccountPage() {
 
                         <UserDetailLabel label="Avatar" />
                         <img
-                            className="w-48 rounded-lg"
+                            className="w-32 rounded-lg sm:w-36 md:w-48"
                             src={user.value.avatarUrl}
                             alt="user's avatar"
                         />
@@ -97,10 +98,6 @@ export default function AccountPage() {
     );
 }
 
-function SectionTitle(props: { text: string }) {
-    return <h1 className="mb-2 text-3xl font-bold">{props.text}</h1>;
-}
-
 function UserDetailLabel({ label }: { label: string }) {
     return <p className="text-gray text-lg">{label}</p>;
 }
@@ -118,7 +115,7 @@ function Button(props: { label: string; red?: boolean; onClick?: () => {} }) {
     return (
         <input
             onClick={props.onClick}
-            className={`block ${props.red ? "bg-red" : "bg-blue"} mb-4 cursor-pointer rounded-md sm:px-8 px-4 py-3 text-lg font-bold transition-colors ${props.red ? "hover:bg-red/70" : "hover:bg-blue/70"}`}
+            className={`block ${props.red ? "bg-red" : "bg-blue"} mb-4 w-full cursor-pointer rounded-md px-4 py-3 text-lg font-bold transition-colors sm:px-8 md:w-64 ${props.red ? "hover:bg-red/70" : "hover:bg-blue/70"}`}
             type="button"
             value={props.label}
         />
@@ -127,7 +124,7 @@ function Button(props: { label: string; red?: boolean; onClick?: () => {} }) {
 
 function RiceList({ rices }: { rices: PartialRice[] }) {
     return (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 bg-bright-background p-4 rounded-lg">
+        <div className="bg-bright-background grid grid-cols-1 gap-4 rounded-lg p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {rices.map((rice) => (
                 <RicePreview {...rice} className="!bg-background-2" />
             ))}

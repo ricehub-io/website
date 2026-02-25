@@ -2,13 +2,14 @@ import { FormButton } from "../components/form/FormButton";
 import FormFileUpload from "../components/form/FormFileUpload";
 import { FormInput } from "../components/form/FormInput";
 import FormTextArea from "../components/form/FormTextArea";
-import FormImageCarousel from "../components/form/FormImageCarousel";
+import { FormImageCarousel } from "../components/form/FormImageCarousel";
 import { apiFetch } from "../lib/api";
 import { HttpStatus } from "../lib/enums";
 import { useLocation } from "preact-iso";
 import { useContext } from "preact/hooks";
 import { addNotification, AppState } from "../lib/appState";
 import { Rice } from "../lib/models";
+import PageTitle from "../components/PageTitle";
 
 export default function NewRicePage() {
     const { route } = useLocation();
@@ -31,17 +32,15 @@ export default function NewRicePage() {
             }
         } catch (e) {
             if (e instanceof Error) {
-                addNotification("Oh no...", e.message, "error");
+                addNotification("Something went wrong", e.message, "error");
             }
         }
     };
 
     return (
-        <div className="new-rice-content mx-auto bg-bright-background/40 box-content p-8 rounded-lg mt-6">
-            <h1 className="text-3xl font-bold mb-6 text-center">
-                Create a new rice
-            </h1>
-            <form onSubmit={onSubmit} className="flex flex-col gap-4">
+        <div className="bg-bright-background/40 box-border w-full rounded-lg p-6 sm:p-8 md:mx-auto md:mt-6 md:w-[min(70%,500px)]">
+            <PageTitle text="New Rice" className="mb-4 text-center" />
+            <form onSubmit={onSubmit} className="flex flex-col gap-2 md:gap-4">
                 <FormInput label="Title" name="title" type="text" />
                 <FormTextArea label="Description" name="description" />
                 <FormFileUpload name="dotfiles" accept=".zip" />

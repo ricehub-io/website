@@ -1,9 +1,7 @@
 import { useContext } from "preact/hooks";
 import { FormButton } from "../form/FormButton";
-import { FormInput } from "../form/FormInput";
 import { addNotification, AppState } from "../../lib/appState";
-import { API_URL, apiFetch } from "../../lib/api";
-import { useLocation } from "preact-iso";
+import { apiFetch } from "../../lib/api";
 import { HttpStatus } from "../../lib/enums";
 
 export default function DeleteAvatarModal() {
@@ -25,7 +23,7 @@ export default function DeleteAvatarModal() {
                     avatarUrl: body.avatarUrl,
                 };
                 addNotification(
-                    "Avatar",
+                    "Account",
                     "Your avatar has been deleted",
                     "info"
                 );
@@ -33,21 +31,17 @@ export default function DeleteAvatarModal() {
             }
         } catch (e) {
             if (e instanceof Error) {
-                addNotification(
-                    "Avatar",
-                    `Failed to delete: ${e.message}`,
-                    "error"
-                );
+                addNotification("Something went wrong", e.message, "error");
             }
         }
     };
 
     return (
         <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
-            <p className="mb-2 text-lg leading-5 mx-2">
+            <p className="mx-2 text-base leading-5 sm:text-lg">
                 Are you sure you want to delete your current avatar?
             </p>
-            <div className="flex gap-2">
+            <div className="mt-2 flex gap-2">
                 <FormButton label="No" type="reset" />
                 <FormButton label="Yes" type="submit" />
             </div>

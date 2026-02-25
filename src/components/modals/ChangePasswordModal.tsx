@@ -17,7 +17,7 @@ export default function ChangePasswordModal() {
         const newPassword = formData.get("newPassword");
 
         try {
-            const [status, body] = await apiFetch(
+            const [status, _] = await apiFetch(
                 "PATCH",
                 `/users/${user.value.id}/password`,
                 JSON.stringify({
@@ -46,19 +46,21 @@ export default function ChangePasswordModal() {
 
     return (
         <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
-            <FormInput
-                label="Current Password"
-                name="curPassword"
-                type="password"
-                placeholder="************"
-            />
-            <FormInput
-                label="New Password"
-                name="newPassword"
-                type="password"
-                placeholder="************"
-            />
-            <div className="flex gap-2">
+            <div>
+                <FormInput
+                    label="Current password"
+                    name="curPassword"
+                    type="password"
+                    placeholder="************"
+                />
+                <FormInput
+                    label="New password"
+                    name="newPassword"
+                    type="password"
+                    placeholder="************"
+                />
+            </div>
+            <div className="mt-2 flex gap-2">
                 <FormButton label="Cancel" type="reset" />
                 <FormButton label="Confirm" type="submit" />
             </div>

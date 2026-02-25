@@ -1,4 +1,6 @@
-export default function PencilSquareIcon() {
+import { IconProps } from "../../lib/models";
+
+export default function PencilSquareIcon(props: IconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -7,6 +9,7 @@ export default function PencilSquareIcon() {
             stroke-width={1.5}
             stroke="currentColor"
             class="size-6"
+            {...props}
         >
             <path
                 stroke-linecap="round"

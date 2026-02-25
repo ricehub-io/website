@@ -6,9 +6,10 @@ import Link, { LinkProps } from "./Link";
 import { Signal, useSignal } from "@preact/signals";
 import { Link as LinkDTO } from "../lib/models";
 import { addNotification } from "../lib/appState";
+import Bullet from "./Bullet";
 
 const VERSION_MAJOR: number = 1;
-const VERSION_MINOR: number = 2;
+const VERSION_MINOR: number = 3;
 
 export default function Footer() {
     const discord = useSignal("");
@@ -35,7 +36,7 @@ export default function Footer() {
     }, []);
 
     return (
-        <footer className="flex flex-col gap-y-4 lg:flex-row lg:py-3 items-center justify-between bg-dark-background mt-auto px-10 sm:px-6 py-6 text-foreground/60">
+        <footer className="bg-dark-background text-foreground/60 mt-auto flex flex-col items-center justify-between gap-y-4 px-10 py-6 sm:px-6 lg:flex-row lg:py-3">
             <div>
                 <p className="inline">
                     v{VERSION_MAJOR}.{VERSION_MINOR}
@@ -53,7 +54,7 @@ export default function Footer() {
                     </span>
                 </p>
             </div>
-            <div className="flex flex-wrap justify-center items-center gap-y-2 gap-x-6">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
                 <FooterLink
                     url="/terms-of-service"
                     content="Terms of Service"
@@ -85,6 +86,5 @@ export default function Footer() {
 }
 
 const FooterLink = (props: LinkProps) => (
-    <Link {...props} className="transition-colors hover:text-blue" />
+    <Link {...props} className="hover:text-blue transition-colors" />
 );
-const Bullet = () => <span className="text-foreground/20 mx-2">&#9679;</span>;

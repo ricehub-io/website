@@ -23,7 +23,7 @@ export default function ModalConsumer() {
     return (
         currentModal.value !== null && (
             <div className="bg-background/70 fixed top-0 left-0 flex h-full w-full items-center justify-center px-2 sm:px-0">
-                <div className="bg-dark-background border-gray/30 w-full md:w-150 rounded-xl border-2 px-12 py-6">
+                <div className="bg-dark-background border-gray/30 w-full rounded-xl border-2 px-12 py-6 sm:w-100 md:w-150">
                     {currentModal.value === "login" && <LoginModal />}
                     {currentModal.value === "register" && <RegisterModal />}
                     {currentModal.value === "changeDisplayName" && (

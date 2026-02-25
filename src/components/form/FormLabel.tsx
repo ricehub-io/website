@@ -5,7 +5,10 @@ interface Props {
 
 export default function FormLabel({ label, htmlFor }: Props) {
     return (
-        <label className="block text-xl mb-0.5" htmlFor={htmlFor}>
+        <label
+            className="mb-0.5 block text-base font-medium sm:text-lg"
+            htmlFor={htmlFor}
+        >
             {label}
         </label>
     );

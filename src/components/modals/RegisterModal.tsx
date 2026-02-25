@@ -39,7 +39,7 @@ async function register(
 }
 
 export default function RegisterModal() {
-    const { currentModal, notifications } = useContext(AppState);
+    const { currentModal } = useContext(AppState);
     const formError = useSignal<FormError>(null);
 
     const onSubmit = async (e: SubmitEvent) => {
@@ -109,7 +109,7 @@ export default function RegisterModal() {
 
     return (
         <form
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-2"
             onSubmit={onSubmit}
             onReset={() => (currentModal.value = null)}
         >

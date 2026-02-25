@@ -1,15 +1,20 @@
-interface IconProps {
+import { IconProps } from "../../lib/models";
+
+interface StarIconProps extends IconProps {
     solid?: boolean;
 }
 
-export function StarIcon({ solid }: IconProps) {
+export function StarIcon({ solid, ...props }: StarIconProps) {
     return (
         <svg
+            {...props}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            className={`size-6 transition-all duration-300 ${
-                solid ? "animate-scale stroke-accent fill-accent" : "fill-transparent"
-            }`}
+            className={`size-6 transition-colors duration-300 ${
+                solid
+                    ? "animate-scale stroke-accent fill-accent"
+                    : "fill-transparent"
+            } ${props.className}`}
             fill="currentColor"
             stroke="currentColor"
             stroke-width={1.5}

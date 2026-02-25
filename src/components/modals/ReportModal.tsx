@@ -55,14 +55,16 @@ export default function ReportModal() {
 
     return (
         <form onSubmit={sendReport} onReset={closeModal}>
-            <FormTitle text="Report" />
-            <FormTextArea
-                name="message"
-                placeholder="Describe the content or behavior you're reporting"
-                rows={5}
-                className="resize-none"
-            />
-            <div className="flex gap-2">
+            <FormTitle text="Report" className="mb-2" />
+            <div>
+                <FormTextArea
+                    name="message"
+                    placeholder="Describe the content or behavior you're reporting"
+                    rows={5}
+                    className="resize-none"
+                />
+            </div>
+            <div className="mt-2 flex gap-2">
                 <FormButton label="Cancel" type="reset" />
                 <FormButton label="Send" type="submit" />
             </div>

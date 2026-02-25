@@ -5,6 +5,7 @@ import { addNotification } from "../lib/appState";
 import { Link as LinkDTO, WebsiteVariable } from "../lib/models";
 import { sanitizeMarkdownInput, superChargeMarkdown } from "../lib/sanitize";
 import moment from "moment";
+import PageTitle from "../components/PageTitle";
 
 export default function TermsOfServicePage() {
     const discord = useSignal<string>(null);
@@ -60,14 +61,12 @@ export default function TermsOfServicePage() {
     return (
         data.value !== null && (
             <div className="legal-page mx-auto">
-                <h1 className="font-bold text-3xl sm:text-5xl md:text-6xl">
-                    Terms of Service
-                </h1>
+                <PageTitle text="Terms of Service" />
                 <p className="text-gray my-2 text-sm sm:text-base md:text-lg">
                     Last updated:{" "}
                     {moment(data.value.updatedAt).format("MMMM Do, YYYY")}
                 </p>
-                <div className="w-full h-0.5 bg-bright-background mb-4" />
+                <div className="bg-bright-background mb-4 h-0.5 w-full" />
                 <div
                     className="markdown-content"
                     dangerouslySetInnerHTML={{

@@ -95,16 +95,8 @@ body {
     width: min(100%, 1200px);
 }
 
-.account-page {
-    width: min(80%, 1400px);
-}
-
 .legal-page {
     width: min(80%, 600px);
-}
-
-.new-rice-content {
-    width: min(70%, 500px);
 }
 
 .carousel-image-container {
@@ -112,7 +104,7 @@ body {
 }
 
 .contact-email {
-    @apply !text-blue/60 !decoration-solid !line-through;
+    @apply !text-blue/60 !line-through !decoration-solid;
 }
 
 /* markdown style */
@@ -121,23 +113,23 @@ body {
 }
 
 .markdown-content a {
-    @apply text-blue decoration-wavy underline transition-colors hover:text-blue/80;
+    @apply text-blue hover:text-blue/80 underline decoration-wavy transition-colors;
 }
 
 .markdown-content h1 {
-    @apply my-2 text-2xl sm:text-3xl md:text-4xl font-bold not-first:mt-6;
+    @apply my-2 text-2xl font-bold not-first:mt-6 sm:text-3xl md:text-4xl;
 }
 
 .markdown-content h2 {
-    @apply my-2 text-xl sm:text-2xl md:text-3xl font-bold not-first:mt-6;
+    @apply my-2 text-xl font-bold not-first:mt-6 sm:text-2xl md:text-3xl;
 }
 
 .markdown-content h3 {
-    @apply mb-2 text-lg sm:text-xl md:text-2xl font-bold not-first:mt-6;
+    @apply mb-2 text-lg font-bold not-first:mt-6 sm:text-xl md:text-2xl;
 }
 
 .markdown-content pre {
-    @apply bg-background-2 rounded-md px-4 py-2 whitespace-break-spaces wrap-break-word;
+    @apply bg-background-2 rounded-md px-4 py-2 wrap-break-word whitespace-break-spaces;
 }
 
 .markdown-content code {
@@ -182,7 +174,7 @@ body {
 }
 
 .markdown-content kbd {
-    @apply bg-dark-background px-1 rounded-md text-accent box-border;
+    @apply bg-dark-background text-accent box-border rounded-md px-1;
 }
 
 .markdown-content a kbd {

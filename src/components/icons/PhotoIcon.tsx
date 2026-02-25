@@ -1,4 +1,6 @@
-export default function PhotoIcon() {
+import { IconProps } from "../../lib/models";
+
+export default function PhotoIcon(props: IconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -7,6 +9,7 @@ export default function PhotoIcon() {
             stroke-width={1.5}
             stroke="currentColor"
             class="size-36"
+            {...props}
         >
             <path
                 stroke-linecap="round"

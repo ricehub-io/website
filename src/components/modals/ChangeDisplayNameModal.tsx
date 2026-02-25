@@ -16,7 +16,7 @@ export default function ChangeDisplayNameModal() {
         const displayName = formData.get("displayName") as string;
 
         try {
-            const [status, body] = await apiFetch(
+            const [status, _] = await apiFetch(
                 "PATCH",
                 `/users/${user.value.id}/displayName`,
                 JSON.stringify({
@@ -49,13 +49,15 @@ export default function ChangeDisplayNameModal() {
 
     return (
         <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
-            <FormInput
-                label="New Display Name"
-                name="displayName"
-                type="text"
-                placeholder="BlueApple923"
-            />
-            <div className="flex gap-2">
+            <div>
+                <FormInput
+                    label="New display name"
+                    name="displayName"
+                    type="text"
+                    placeholder="BlueApple923"
+                />
+            </div>
+            <div className="mt-2 flex gap-2">
                 <FormButton label="Cancel" type="reset" />
                 <FormButton label="Confirm" type="submit" />
             </div>

@@ -16,6 +16,13 @@ import PlusIcon from "../components/icons/PlusIcon";
 import { ChangeEvent, createRef } from "preact/compat";
 import PhotoIcon from "../components/icons/PhotoIcon";
 import { formatBytes } from "../lib/math";
+import PageTitle from "../components/PageTitle";
+import FormTitle from "../components/form/FormTitle";
+import FilePreview from "../components/form/FilePreview";
+import {
+    CarouselImage,
+    CarouselPlusButton,
+} from "../components/form/FormImageCarousel";
 
 const deletedPreviews = signal<string[]>([]);
 const rice = signal<Rice>(null);
@@ -112,59 +119,49 @@ export default function EditRicePage() {
         temp();
     };
 
+    const onDotfilesDelete = () => (newDotfiles.value = true);
+
+    if (rice.value === null) {
+        return;
+    }
+
     return (
-        rice.value !== null && (
-            <div className="new-rice-content mx-auto bg-bright-background/40 box-content p-8 rounded-lg mt-6">
-                <h1 className="text-3xl font-bold mb-6 text-center">
-                    Edit rice
-                </h1>
-                <form onSubmit={onSubmit} className="flex flex-col gap-4">
-                    <FormInput
-                        label="Title"
-                        name="title"
-                        type="text"
-                        value={rice.value.title}
-                    />
-                    <FormTextArea
-                        label="Description"
-                        name="description"
-                        value={rice.value.description}
-                    />
-                    {!newDotfiles.value ? (
-                        <div>
-                            <FormLabel label="Dotfiles" />
-                            <div className="bg-bright-background flex items-center gap-4 px-6 py-4 rounded-lg">
-                                <div className="bg-gray/40 p-2 rounded-lg">
-                                    <DocumentIcon />
-                                </div>
-                                <div>
-                                    <p className="font-medium">dotfiles.zip</p>
-                                    <p className="text-gray">
-                                        {formatBytes(
-                                            rice.value.dotfiles.fileSize
-                                        )}
-                                    </p>
-                                </div>
-                                <button
-                                    onClick={() => (newDotfiles.value = true)}
-                                    className="ml-auto bg-red/40 p-2 rounded-md border-red/60 border cursor-pointer transition-colors hover:text-foreground/70 hover:bg-red/40"
-                                >
-                                    <TrashIcon />
-                                </button>
-                            </div>
-                        </div>
-                    ) : (
-                        <FormFileUpload name="dotfiles" accept=".zip" />
-                    )}
-                    <CustomCarousel />
-                    <FormButton
-                        label="Update"
-                        type="submit"
-                        disabled={submitted.value}
-                    />
-                </form>
-            </div>
-        )
+        <div className="bg-bright-background/40 mx-auto box-border w-full rounded-lg p-6 sm:p-8 md:mt-6 md:w-[min(70%,500px)]">
+            <PageTitle text="Edit Rice" className="mb-4 text-center" />
+            <form onSubmit={onSubmit} className="flex flex-col gap-2 md:gap-4">
+                <FormInput
+                    label="Title"
+                    name="title"
+                    type="text"
+                    value={rice.value.title}
+                />
+                <FormTextArea
+                    label="Description"
+                    name="description"
+                    value={rice.value.description}
+                />
+                {!newDotfiles.value ? (
+                    // show existing dotfiles
+                    <div>
+                        <FormLabel label="Dotfiles" />
+                        <FilePreview
+                            fileName="dotfiles.zip"
+                            fileSize={rice.value.dotfiles.fileSize}
+                            onDelete={onDotfilesDelete}
+                        />
+                    </div>
+                ) : (
+                    // no existing dotfiles, show input:file to user
+                    <FormFileUpload name="dotfiles" accept=".zip" />
+                )}
+                <CustomCarousel />
+                <FormButton
+                    label="Update"
+                    type="submit"
+                    disabled={submitted.value}
+                />
+            </form>
+        </div>
     );
 }
 
@@ -180,7 +177,9 @@ function CustomCarousel() {
         images.value = Array.from(target.files);
     };
 
-    const deleteImage = (targetIndex: number) => {
+    const deleteImage = (e: Event, targetIndex: number) => {
+        e.preventDefault();
+
         const newFiles = images.value.filter(
             (_, index) => index !== targetIndex
         );
@@ -191,7 +190,13 @@ function CustomCarousel() {
         images.value = newFiles;
     };
 
-    const deleteExistingPreview = (targetIndex: number, id: string) => {
+    const deleteExistingPreview = (
+        e: Event,
+        targetIndex: number,
+        id: string
+    ) => {
+        e.preventDefault();
+
         deletedPreviews.value.push(id);
         const newPreviews = rice.value.previews.filter(
             (_, index) => index !== targetIndex
@@ -219,71 +224,36 @@ function CustomCarousel() {
             <FormLabel label="Screenshots" />
             <div
                 ref={container}
-                className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-2 pr-4"
+                className="flex flex-nowrap items-center gap-2 overflow-x-auto pr-4 pb-2"
                 onMouseEnter={onContainerHover}
                 onMouseLeave={onContainerUnHover}
                 onWheel={horizontalScroll}
             >
                 {noPreviews.value ? (
-                    <div className="flex items-center justify-center rounded-lg text-gray bg-bright-background w-86 border-2 border-gray/50 aspect-video">
+                    <div className="text-gray bg-bright-background border-gray/50 flex aspect-video w-86 items-center justify-center rounded-lg border-2">
                         <PhotoIcon />
                     </div>
                 ) : (
                     <>
                         {rice.value.previews.map((preview, index) => (
-                            <div
+                            <CarouselImage
                                 key={preview.id}
-                                className="carousel-image-container relative border-2 rounded-md border-gray/50"
-                            >
-                                <img
-                                    className="w-86 rounded-lg"
-                                    src={preview.url}
-                                    alt="Rice Screenshot"
-                                />
-                                <button
-                                    className="absolute right-2 bottom-2 bg-red/40 border border-red/60 p-2 rounded-md cursor-pointer transition-colors hover:bg-red/20"
-                                    onClick={(e: Event) => {
-                                        e.preventDefault();
-                                        deleteExistingPreview(
-                                            index,
-                                            preview.id
-                                        );
-                                    }}
-                                >
-                                    <TrashIcon />
-                                </button>
-                            </div>
+                                url={preview.url}
+                                onDelete={(e) =>
+                                    deleteExistingPreview(e, index, preview.id)
+                                }
+                            />
                         ))}
                         {images.value.map((image, index) => (
-                            <div
-                                key={index}
-                                className="carousel-image-container relative border-2 rounded-md border-gray/50"
-                            >
-                                <img
-                                    className="w-86 rounded-lg"
-                                    src={URL.createObjectURL(image)}
-                                    alt="Rice Screenshot"
-                                />
-                                <button
-                                    className="absolute right-2 bottom-2 bg-red/40 border border-red/60 p-2 rounded-md cursor-pointer transition-colors hover:bg-red/20"
-                                    onClick={(e: Event) => {
-                                        e.preventDefault();
-                                        deleteImage(index);
-                                    }}
-                                >
-                                    <TrashIcon />
-                                </button>
-                            </div>
+                            <CarouselImage
+                                url={URL.createObjectURL(image)}
+                                onDelete={(e) => deleteImage(e, index)}
+                            />
                         ))}
                     </>
                 )}
 
-                <label
-                    className="flex bg-bright-background border border-gray/30 w-12 h-12 aspect-square rounded-lg items-center justify-center cursor-pointer transition-colors ml-2 hover:bg-bright-background/50 hover:text-foreground/70"
-                    htmlFor="previews[]"
-                >
-                    <PlusIcon />
-                </label>
+                <CarouselPlusButton name="previews[]" />
                 <input
                     ref={carouselInput}
                     className="hidden"
@@ -293,7 +263,6 @@ function CustomCarousel() {
                     id="previews[]"
                     accept="image/png, image/jpeg"
                     onChange={onFileSelect}
-                    onSubmit={() => console.log("submit previews")}
                 />
             </div>
         </div>
