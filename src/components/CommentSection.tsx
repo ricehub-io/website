@@ -8,7 +8,7 @@ import { HttpStatus } from "../lib/enums";
 import TrashIcon from "./icons/TrashIcon";
 import FlagIcon from "./icons/FlagIcon";
 import Bullet from "./Bullet";
-import { Show } from "@preact/signals/utils";
+import { For, Show } from "@preact/signals/utils";
 import { InputHTMLAttributes } from "preact/compat";
 
 interface CommentSectionProps {
@@ -47,9 +47,18 @@ export default function CommentSection({
                 <CommentCreator riceId={riceId} comments={comments} />
             )}
             <div className="flex flex-col gap-2">
-                {comments.value.map((c) => (
-                    <Comment key={c.commentId} {...c} comments={comments} />
-                ))}
+                <For
+                    each={comments}
+                    fallback={
+                        <p className="text-gray mt-1 text-base sm:text-lg">
+                            No comments found :(
+                        </p>
+                    }
+                >
+                    {(c) => (
+                        <Comment key={c.commentId} comments={comments} {...c} />
+                    )}
+                </For>
             </div>
         </div>
     );

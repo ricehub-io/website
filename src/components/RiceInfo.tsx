@@ -106,7 +106,7 @@ export function RiceInfo({
     return (
         <>
             <div className="flex flex-col items-center justify-between gap-y-4 md:flex-row">
-                <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
+                <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">
                     {title}
                 </h1>
                 <div className="flex flex-wrap justify-center gap-2 text-sm sm:text-base">
