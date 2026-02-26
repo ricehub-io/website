@@ -30,7 +30,7 @@ export default function Header() {
     };
 
     return (
-        <header className="bg-dark-background sticky top-0 flex items-center justify-between px-6 py-3 z-40">
+        <header className="bg-dark-background sticky top-0 z-40 flex items-center justify-between px-6 py-3">
             <h1
                 onClick={() => route("/")}
                 onMouseDown={(e: MouseEvent) => {
@@ -43,12 +43,12 @@ export default function Header() {
             </h1>
             <SearchBar placeholder="Search for rices..." disabled />
             {/* normal nav bar with clickable links */}
-            <div className="hidden md:flex gap-6">
+            <div className="hidden gap-6 md:flex">
                 <HeaderLinks />
             </div>
             {/* hamburger menu nav bar for small screens */}
             <button
-                className="md:hidden text-bright-gray cursor-pointer"
+                className="text-bright-gray cursor-pointer md:hidden"
                 onClick={openNavMenu}
             >
                 <BarsIcon className={navOpen.value ? "hidden" : "block"} />
@@ -57,7 +57,7 @@ export default function Header() {
                 />
             </button>
             <div
-                className={`${navOpen.value ? "flex" : "hidden"} absolute left-0 top-full bg-dark-background w-full border-t border-bright-background px-6 pb-4 pt-2 flex-col items-start gap-y-3 rounded-b-lg`}
+                className={`${navOpen.value ? "flex" : "hidden"} bg-dark-background border-bright-background absolute top-full left-0 w-full flex-col items-start gap-y-3 rounded-b-lg border-t px-6 pt-2 pb-4`}
             >
                 <HeaderLinks onLinkClicked={() => (navOpen.value = false)} />
             </div>
@@ -65,7 +65,11 @@ export default function Header() {
     );
 }
 
-const HeaderLinks = ({ onLinkClicked }: { onLinkClicked?: () => void }) => {
+const HeaderLinks = ({
+    onLinkClicked = () => {},
+}: {
+    onLinkClicked?: () => void;
+}) => {
     const { currentModal, user, accessToken } = useContext(AppState);
 
     const logOut = () => {
@@ -91,7 +95,7 @@ const HeaderLinks = ({ onLinkClicked }: { onLinkClicked?: () => void }) => {
     const HeaderLink = (props: LinkProps) => (
         <Link
             onClick={onLinkClicked}
-            className="text-bright-gray hover:text-blue text-lg md:text-base transition-colors"
+            className="text-bright-gray hover:text-blue text-lg transition-colors md:text-base"
             {...props}
         />
     );
@@ -124,7 +128,7 @@ const HeaderLinks = ({ onLinkClicked }: { onLinkClicked?: () => void }) => {
 function TextButton({ text, onClick }: TextButtonProps) {
     return (
         <input
-            className="text-bright-gray hover:text-blue text-lg md:text-base transition-colors hover:cursor-pointer"
+            className="text-bright-gray hover:text-blue text-lg transition-colors hover:cursor-pointer md:text-base"
             type="button"
             value={text}
             onClick={onClick}
@@ -140,7 +144,7 @@ function SearchBar({
     disabled?: boolean;
 }) {
     return (
-        <div className="hidden bg-bright-background focus-within:border-primary absolute left-1/2 lg:flex -translate-x-1/2 items-center gap-2 rounded-lg border-2 border-transparent px-2 py-2 transition-colors duration-300 ease-out has-disabled:cursor-not-allowed has-disabled:opacity-30">
+        <div className="bg-bright-background focus-within:border-primary absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-lg border-2 border-transparent px-2 py-2 transition-colors duration-300 ease-out has-disabled:cursor-not-allowed has-disabled:opacity-30 lg:flex">
             <MagnifyingGlassIcon />
             <input
                 className="placeholder:text-gray outline-none disabled:cursor-not-allowed"
