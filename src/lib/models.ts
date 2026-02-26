@@ -47,8 +47,14 @@ export interface User {
     displayName: string;
     avatarUrl: string;
     isAdmin: boolean;
+    isBanned: boolean;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface Profile {
+    user: User;
+    rices: PartialRice[];
 }
 
 export interface RawComment {
@@ -69,6 +75,7 @@ export interface CommentWithUser {
     displayName: string;
     username: string;
     avatar: string;
+    isBanned: boolean;
 }
 
 export interface RiceCommentWithSlug {

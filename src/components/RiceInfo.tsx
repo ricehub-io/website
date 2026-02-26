@@ -3,7 +3,6 @@ import { Dotfiles, Rice, RicePreview } from "../lib/models";
 import { API_URL, apiFetch } from "../lib/api";
 import { StarIcon } from "./icons/StarIcon";
 import { DownloadIcon } from "./icons/DownloadIcon";
-import { FolderArrowIcon } from "./icons/FolderArrowIcon";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PencilIcon from "./icons/PencilIcon";
@@ -20,6 +19,7 @@ import { sanitizeMarkdownInput } from "../lib/sanitize";
 import FlagIcon from "./icons/FlagIcon";
 import ExternalIcon from "./icons/ExternalIcon";
 import SectionTitle from "./SectionTitle";
+import { FolderArrowDownIcon, NoSymbolIcon } from "@heroicons/react/24/solid";
 
 dayjs.extend(relativeTime);
 
@@ -156,15 +156,18 @@ export function RiceInfo({
                         />
                         <div>
                             <a
-                                className="hover:text-foreground/80 text-lg font-medium transition-colors hover:underline sm:text-xl"
+                                className={`flex items-center gap-0.5 text-base font-medium transition-colors hover:underline sm:text-lg md:text-xl ${author.isBanned ? "text-foreground/70" : "hover:text-foreground/80"}`}
                                 href={`/${author.username}`}
                             >
+                                {author.isBanned && (
+                                    <NoSymbolIcon className="text-red/70 size-5 sm:size-6" />
+                                )}
                                 {author.displayName}
                             </a>
                             <p className="text-gray">@{author.username}</p>
                         </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right text-sm sm:text-base md:text-lg">
                         <p>
                             Created <b>{dayjs(createdAt).fromNow()}</b>
                         </p>
@@ -317,14 +320,14 @@ function RiceDotfiles({
             onClick={onDownload}
         >
             <div className="flex items-center gap-2">
-                <FolderArrowIcon />
+                <FolderArrowDownIcon className="size-8 sm:size-10" />
                 <input
                     className="text-lg font-semibold hover:cursor-pointer sm:text-xl"
                     type="button"
                     value="Download"
                 />
             </div>
-            <div className="text-right text-sm sm:text-base">
+            <div className="text-right text-sm sm:text-base md:text-lg">
                 <p>
                     Size: <b>432.92 Kb</b>
                 </p>

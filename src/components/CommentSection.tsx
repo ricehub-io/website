@@ -10,6 +10,7 @@ import FlagIcon from "./icons/FlagIcon";
 import Bullet from "./Bullet";
 import { For, Show } from "@preact/signals/utils";
 import { InputHTMLAttributes } from "preact/compat";
+import NoSymbolIcon from "@heroicons/react/24/solid/NoSymbolIcon";
 
 interface CommentSectionProps {
     riceId: string;
@@ -104,6 +105,7 @@ function CommentCreator({
                     displayName: user.value.displayName,
                     username: user.value.username,
                     avatar: user.value.avatarUrl,
+                    isBanned: user.value.isBanned,
                 },
                 ...comments.value,
             ];
@@ -140,6 +142,7 @@ function Comment({
     commentId,
     content,
     avatar,
+    isBanned,
     displayName,
     username,
     createdAt,
@@ -192,9 +195,12 @@ function Comment({
             <div className="flex-1 text-sm sm:text-base">
                 <div className="-mt-1 flex items-center gap-1">
                     <a
-                        className="hover:text-foreground/80 text-base font-medium transition-colors hover:underline sm:text-lg"
+                        className={`flex items-center gap-0.5 text-base font-medium transition-colors hover:underline sm:text-lg ${isBanned ? "text-foreground/70" : "hover:text-foreground/80"}`}
                         href={`/${username}`}
                     >
+                        {isBanned && (
+                            <NoSymbolIcon className="text-red/70 size-4 sm:size-5" />
+                        )}
                         {displayName}
                     </a>
                     <p className="text-gray hidden sm:block">(@{username})</p>

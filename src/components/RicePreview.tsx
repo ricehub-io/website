@@ -64,7 +64,7 @@ export default function RicePreview({
 
     return (
         <div
-            className={`bg-bright-background ease-in-out-quint hover:outline-accent relative rounded-md outline-offset-4 outline-transparent transition-colors duration-500 hover:cursor-pointer hover:outline-2 ${className}`}
+            className={`bg-bright-background ease-in-out-quint hover:outline-blue relative rounded-md outline-transparent transition-colors duration-500 hover:cursor-pointer hover:outline-2 ${className}`}
             onClick={onPreviewClick}
         >
             <div className="box-content aspect-video overflow-hidden p-1">

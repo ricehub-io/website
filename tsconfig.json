@@ -9,6 +9,7 @@
 		"lib": [
 			"ES2021"
 		],
+		"baseUrl": ".",
 
 		/* Preact Config */
 		"jsx": "react-jsx",
@@ -17,6 +18,7 @@
 		"paths": {
 			"react": ["./node_modules/preact/compat/"],
 			"react-dom": ["./node_modules/preact/compat/"],
+			"@/*": ["./src/*"],
 		}
 	},
 	"include": ["node_modules/vite/client.d.ts", "**/*"]

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function formatBytes(size: number): string {
     const i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
     return (
@@ -8,14 +10,15 @@ export function formatBytes(size: number): string {
 }
 
 export function formatLocaleDate(date: Date): string {
-    return new Date(date).toLocaleDateString(undefined, {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-    });
+    // return new Date(date).toLocaleDateString(undefined, {
+    //     day: "2-digit",
+    //     month: "2-digit",
+    //     year: "numeric",
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //     second: "2-digit",
+    // });
+    return moment(date).format("DD/MM/YYYY, HH:mm:ss");
 }
 
 /** Parses CSS duration string (e.g. 1s, 500ms) to actual milliseconds */

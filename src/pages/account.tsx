@@ -125,9 +125,15 @@ function Button(props: { label: string; red?: boolean; onClick?: () => {} }) {
 function RiceList({ rices }: { rices: PartialRice[] }) {
     return (
         <div className="bg-bright-background grid grid-cols-1 gap-4 rounded-lg p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {rices.map((rice) => (
-                <RicePreview {...rice} className="!bg-background-2" />
-            ))}
+            {rices.length > 0 ? (
+                rices.map((rice) => (
+                    <RicePreview {...rice} className="!bg-background-2" />
+                ))
+            ) : (
+                <p className="text-lg font-medium">
+                    You don't have any rices :(
+                </p>
+            )}
         </div>
     );
 }
