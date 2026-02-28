@@ -1,4 +1,4 @@
-import { TargetedEvent } from "preact/compat";
+import { TargetedEvent, useContext, useEffect } from "preact/compat";
 import ReportList from "../components/admin/ReportList";
 import ResourceList from "../components/admin/ResourceList";
 import Statistics from "../components/admin/Statistics";
@@ -7,22 +7,27 @@ import { FormInput, FormInputProps } from "../components/form/FormInput";
 import FormTextArea from "../components/form/FormTextArea";
 import SectionTitle from "../components/SectionTitle";
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
-import { addNotification } from "@/lib/appState";
+import { addNotification, AppState } from "@/lib/appState";
 import { ApiError, apiFetch } from "@/lib/api";
-import { User } from "@/lib/models";
+import { User, UserWithBan } from "@/lib/models";
 import { HttpStatus } from "@/lib/enums";
+import { useSignal } from "@preact/signals";
+import { For } from "@preact/signals/utils";
+import Bullet from "@/components/Bullet";
+import moment from "moment";
+import TextButton from "@/components/admin/TextButton";
 
 const DURATION_REGEX = /^\d+(h|m|s)$/;
 const REPORTS_REFRESH_INTERVAL = 60 * 1000; // 60s
 
 export default function AdminPage() {
     return (
-        <div className="admin-page mx-auto">
+        <div className="mx-auto w-full xl:w-[min(80%,1200px)]">
             <div className="mb-6">
                 <SectionTitle text="Statistics" />
                 <Statistics />
             </div>
-            <div className="flex w-full gap-6">
+            <div className="mb-6 flex w-full gap-6">
                 <div className="flex-1">
                     <SectionTitle text="Reports" />
                     <ReportList refreshInterval={REPORTS_REFRESH_INTERVAL} />
@@ -32,11 +37,15 @@ export default function AdminPage() {
                     <ResourceList />
                 </div>
             </div>
-            <div>
-                {/* this is only temporary */}
-                {/* i just want to finish the website asap and start getting feedback from cute people :3 */}
-                <SectionTitle text="Ban User" />
-                <BanUserForm />
+            <div className="flex w-full gap-6">
+                <div className="flex-1">
+                    <SectionTitle text="Ban User" />
+                    <BanUserForm />
+                </div>
+                <div className="flex-1">
+                    <SectionTitle text="Banned Users" />
+                    <BanList />
+                </div>
             </div>
         </div>
     );
@@ -181,6 +190,129 @@ function BanUserForm() {
                 />
             </div>
         </form>
+    );
+}
+
+// ugly ban list, need to restyle it later when I have more time
+function BanList() {
+    const { unbanCtx, modalCallback, currentModal } = useContext(AppState);
+
+    const bans = useSignal<UserWithBan[]>([]);
+
+    useEffect(() => {
+        apiFetch<UserWithBan[]>("GET", "/users?status=banned")
+            .then(([_, body]) => (bans.value = body))
+            .catch((e) => {
+                if (e instanceof Error) {
+                    addNotification(
+                        "Failed to fetch ban list",
+                        e.message,
+                        "error"
+                    );
+                }
+            });
+    }, []);
+
+    const unbanUser = async () => {
+        if (unbanCtx.value === null) {
+            addNotification(
+                "Something went wrong",
+                "Unban function called with invalid context",
+                "error"
+            );
+            return;
+        }
+
+        try {
+            const [status, _] = await apiFetch(
+                "DELETE",
+                `/users/${unbanCtx.value.id}/ban`
+            );
+
+            if (status !== HttpStatus.NoContent) {
+                throw new Error(
+                    `Unexpected status code received from API: ${status}`
+                );
+            }
+
+            bans.value = bans.value.filter(
+                ({ user }) => user.id !== unbanCtx.value.id
+            );
+            addNotification("Success", "User has been unbanned", "info");
+            unbanCtx.value = null;
+        } catch (e) {
+            if (e instanceof Error) {
+                addNotification("Failed to unban user", e.message, "error");
+            }
+        }
+    };
+
+    const onUnbanClick = (user: User) => {
+        unbanCtx.value = user;
+        modalCallback.value = unbanUser;
+        currentModal.value = "admin_unban";
+    };
+
+    return (
+        <div className="bg-bright-background flex flex-col gap-2 rounded-lg p-4">
+            <For
+                each={bans}
+                fallback={
+                    <p className="my-6 text-center text-xl font-medium">
+                        No users have been banned yet :)
+                    </p>
+                }
+            >
+                {({ user, ban }, _) => (
+                    <div className="bg-background-2 rounded-md p-4">
+                        <div className="mx-1 flex items-center justify-between gap-2">
+                            <a
+                                className="hover:text-foreground/80 text-lg font-medium underline transition-colors"
+                                href={`/${user.username}`}
+                                target="_blank"
+                            >
+                                {user.displayName}
+                            </a>
+                            <Bullet />
+                            <p className="text-bright-gray/80">
+                                @{user.username}
+                            </p>
+                            <Bullet />
+                            <p className="text-bright-gray/80">
+                                created {moment(user.createdAt).fromNow()}
+                            </p>
+                        </div>
+                        <p className="bg-gray/20 my-1 rounded-md p-4">
+                            {ban.reason}
+                        </p>
+                        <div className="mx-1 flex items-center justify-between gap-2">
+                            <p>
+                                banned:{" "}
+                                <span className="font-medium">
+                                    {moment(ban.bannedAt).format(
+                                        "DD/MM/YYYY, HH:mm:ss"
+                                    )}
+                                </span>
+                            </p>
+                            <Bullet />
+                            <p>
+                                expires in:{" "}
+                                <span className="font-medium">
+                                    {ban.expiresAt !== undefined
+                                        ? moment(ban.expiresAt).toNow(true)
+                                        : "never"}
+                                </span>
+                            </p>
+                            <Bullet />
+                            <TextButton
+                                text="unban"
+                                onClick={() => onUnbanClick(user)}
+                            />
+                        </div>
+                    </div>
+                )}
+            </For>
+        </div>
     );
 }
 

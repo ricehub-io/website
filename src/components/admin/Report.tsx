@@ -3,8 +3,8 @@ import { useContext } from "preact/hooks";
 import { apiFetch } from "../../lib/api";
 import { AppState } from "../../lib/appState";
 import { ReportWithUser, Rice, RiceCommentWithSlug } from "../../lib/models";
-import { JSX } from "preact";
 import { formatLocaleDate } from "../../lib/math";
+import TextButton from "@/components/admin/TextButton";
 
 export default function Report({
     id,
@@ -25,7 +25,11 @@ export default function Report({
     const isRice = riceId !== undefined;
 
     const { route } = useLocation();
-    const { currentModal, report, modalCallback } = useContext(AppState);
+    const {
+        currentModal,
+        reportCtx: report,
+        modalCallback,
+    } = useContext(AppState);
 
     const openTarget = async () => {
         // TODO: catch exceptions
@@ -53,7 +57,7 @@ export default function Report({
     };
 
     return (
-        <div className="bg-background-2 flex flex-col gap-1 rounded-lg px-4 py-2">
+        <div className="bg-background-2 flex flex-col gap-1 rounded-md px-4 py-2">
             <div>{/* add preview of reported content here */}</div>
             <div className="flex items-center gap-1">
                 <p className="text-lg font-bold">{displayName}</p>
@@ -61,7 +65,7 @@ export default function Report({
                 <p className="ml-auto">{date}</p>
             </div>
             <p className="bg-gray/20 rounded-md p-4">{reason}</p>
-            <div className="mt-1">
+            <div className="mt-1 flex justify-center gap-4">
                 {!isClosed && (
                     <TextButton text="Close" onClick={() => onClose(id)} />
                 )}
@@ -70,19 +74,5 @@ export default function Report({
                 <TextButton text="Ban resource author" />
             </div>
         </div>
-    );
-}
-
-function TextButton({
-    text,
-    ...props
-}: { text: string } & JSX.InputHTMLAttributes) {
-    return (
-        <input
-            className="text-blue hover:text-light-blue cursor-pointer not-first:ml-4"
-            type="button"
-            value={`[ ${text} ]`}
-            {...props}
-        />
     );
 }

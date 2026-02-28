@@ -37,7 +37,12 @@ export function RiceInfo({
     updatedAt,
 }: Rice) {
     const { route } = useLocation();
-    const { user, currentModal, currentRiceId, report } = useContext(AppState);
+    const {
+        user,
+        currentModal,
+        currentRiceId,
+        reportCtx: report,
+    } = useContext(AppState);
 
     const isAuthor = useComputed(
         () => user.value !== null && user.value.id === author.id

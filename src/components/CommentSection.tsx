@@ -148,7 +148,7 @@ function Comment({
     createdAt,
     comments,
 }: CommentWithUser & { comments: Signal<CommentWithUser[]> }) {
-    const { user, currentModal, report } = useContext(AppState);
+    const { user, currentModal, reportCtx: report } = useContext(AppState);
 
     const isAuthor = useComputed(
         () => user.value !== null && user.value.username === username

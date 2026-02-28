@@ -3,6 +3,7 @@ import { formatLocaleDate } from "../../lib/math";
 import { User } from "../../lib/models";
 import { useSignal } from "@preact/signals";
 import { apiFetch } from "../../lib/api";
+import { addNotification } from "@/lib/appState";
 
 interface UserListProps {
     userLimit: number;
@@ -14,10 +15,17 @@ export default function UserList({ userLimit }: UserListProps) {
     useEffect(() => {
         console.log("fetch users");
 
-        // TODO: catch exceptions
-        apiFetch<User[]>("GET", `/users?limit=${userLimit}`).then(
-            ([_, body]) => (users.value = body)
-        );
+        apiFetch<User[]>("GET", `/users?limit=${userLimit}`)
+            .then(([_, body]) => (users.value = body))
+            .catch((e) => {
+                if (e instanceof Error) {
+                    addNotification(
+                        "Failed to fetch recent users",
+                        e.message,
+                        "error"
+                    );
+                }
+            });
     }, []);
 
     return users.value.map((user) => <UserInfo key={user.id} {...user} />);
@@ -31,7 +39,7 @@ function UserInfo({
     updatedAt,
 }: User) {
     return (
-        <div className="bg-background-2 rounded-lg p-4">
+        <div className="bg-background-2 rounded-md p-4">
             <div className="flex items-center gap-4">
                 <div className="w-16">
                     <img

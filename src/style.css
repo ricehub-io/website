@@ -90,7 +90,6 @@ body {
 }
 
 .rice-page,
-.admin-page,
 .profile-page {
     width: min(100%, 1200px);
 }

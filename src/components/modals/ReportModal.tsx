@@ -8,7 +8,7 @@ import { CreateReportReq, CreateReportRes } from "../../lib/models";
 import { HttpStatus } from "../../lib/enums";
 
 export default function ReportModal() {
-    const { currentModal, report } = useContext(AppState);
+    const { currentModal, reportCtx: report } = useContext(AppState);
 
     const sendReport = async (e: SubmitEvent) => {
         e.preventDefault();

@@ -52,6 +52,22 @@ export interface User {
     updatedAt: Date;
 }
 
+export interface UserBan {
+    id: string;
+    userId: string;
+    adminId: string;
+    reason: string;
+    isRevoked: boolean;
+    expiresAt?: Date;
+    bannedAt: Date;
+    revokedAt: Date;
+}
+
+export interface UserWithBan {
+    user: User;
+    ban: UserBan;
+}
+
 export interface Profile {
     user: User;
     rices: PartialRice[];

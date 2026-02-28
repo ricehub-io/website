@@ -9,7 +9,7 @@ import { addNotification } from "../lib/appState";
 import Bullet from "./Bullet";
 
 const VERSION_MAJOR: number = 1;
-const VERSION_MINOR: number = 5;
+const VERSION_MINOR: number = 6;
 
 export default function Footer() {
     const discord = useSignal("");

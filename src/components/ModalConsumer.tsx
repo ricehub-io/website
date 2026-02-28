@@ -10,6 +10,7 @@ import DeleteAvatarModal from "./modals/DeleteAvatarModal";
 import DeleteRiceModal from "./modals/DeleteRiceModal";
 import ReportModal from "./modals/ReportModal";
 import DeleteResourceModal from "./modals/DeleteResourceModal";
+import UnbanModal from "@/components/modals/UnbanModal";
 
 export default function ModalConsumer() {
     const { currentModal } = useContext(AppState);
@@ -48,6 +49,7 @@ export default function ModalConsumer() {
                     {currentModal.value === "admin_deleteResource" && (
                         <DeleteResourceModal />
                     )}
+                    {currentModal.value === "admin_unban" && <UnbanModal />}
                 </div>
             </div>
         )

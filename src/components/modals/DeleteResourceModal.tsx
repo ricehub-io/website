@@ -5,7 +5,11 @@ import { apiFetch } from "../../lib/api";
 import { HttpStatus } from "../../lib/enums";
 
 export default function DeleteResourceModal() {
-    const { currentModal, report, modalCallback } = useContext(AppState);
+    const {
+        currentModal,
+        reportCtx: report,
+        modalCallback,
+    } = useContext(AppState);
 
     const deleteResource = async (e: SubmitEvent) => {
         e.preventDefault();

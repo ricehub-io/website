@@ -110,9 +110,9 @@ export default function ReportList({ refreshInterval }: ReportListProps) {
                     />
                 ))
             ) : (
-                <h3 className="my-6 text-center text-2xl font-bold">
+                <p className="my-6 text-center text-xl font-medium">
                     No user reports found :D
-                </h3>
+                </p>
             )}
         </ListWrapper>
     );

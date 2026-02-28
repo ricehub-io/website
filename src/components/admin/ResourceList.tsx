@@ -8,8 +8,6 @@ import RiceList from "./RiceList";
 // how many recent resources should be returned at most
 const RESOURCE_LIMIT = 20;
 
-// TODO: handle exceptions from apiFetch
-
 export default function ResourceList() {
     const resourceType = useSignal<string>("users");
 
