@@ -49,9 +49,7 @@ export default function Footer() {
                         content="golferjoe"
                         inNewTab
                     />{" "}
-                    <span className="font-ibm-plex-mono tracking-[-0.15em]">
-                        :3
-                    </span>
+                    <span className="font-sans">:3</span>
                 </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">

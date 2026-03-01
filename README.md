@@ -8,3 +8,7 @@ window.__APP_CONFIG__ = {
     API_URL: "https://api.ricehub.io",
 };
 ```
+
+## Favicon
+
+Favicon is not made and owned by RiceHub. It's taken from [this repo](https://github.com/garrett/Tux) and scaled accordingly.
