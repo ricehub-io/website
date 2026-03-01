@@ -21,15 +21,28 @@ export default function NewRicePage() {
         const formData = new FormData(target);
 
         try {
-            const [status, body] = await apiFetch<Rice>(
+            const [status, _] = await apiFetch<Rice>(
                 "POST",
                 "/rices",
                 formData
             );
 
-            if (status === HttpStatus.Created) {
-                route(`/${user.value.username}/${body.slug}`);
+            if (status !== HttpStatus.Created) {
+                throw new Error(
+                    `Unexpected status code received from API: ${status}`
+                );
             }
+
+            route("/");
+            addNotification(
+                "Success",
+                "Your rice has been created and is pending approval by staff. You can check the status in your account page.",
+                "info"
+            );
+
+            // if (status === HttpStatus.Created) {
+            //     route(`/${user.value.username}/${body.slug}`);
+            // }
         } catch (e) {
             if (e instanceof Error) {
                 addNotification("Something went wrong", e.message, "error");
