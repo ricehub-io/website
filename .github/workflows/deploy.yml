@@ -1,6 +1,7 @@
 name: Deploy via SSH
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -11,6 +12,13 @@ on:
       - "package.json"
       - "vite.config.ts"
       - ".github/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-deploy
+  cancel-in-progress: true
 
 jobs:
   deploy:
