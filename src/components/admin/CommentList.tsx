@@ -4,6 +4,7 @@ import { CommentWithUser } from "../../lib/models";
 import { useEffect } from "preact/hooks";
 import { apiFetch } from "../../lib/api";
 import { addNotification } from "@/lib/appState";
+import { For } from "@preact/signals/utils";
 
 interface CommentListProps {
     commentLimit: number;
@@ -27,9 +28,18 @@ export default function CommentList({ commentLimit }: CommentListProps) {
             });
     }, []);
 
-    return comments.value.map((comment) => (
-        <Comment key={comment.commentId} {...comment} />
-    ));
+    return (
+        <For
+            each={comments}
+            fallback={
+                <p className="my-6 text-center text-xl font-medium">
+                    No recently posted comments
+                </p>
+            }
+        >
+            {(comment, _) => <Comment key={comment.commentId} {...comment} />}
+        </For>
+    );
 }
 
 function Comment({

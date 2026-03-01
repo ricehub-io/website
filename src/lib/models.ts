@@ -1,6 +1,11 @@
 import { RefObject } from "preact";
 
 // DTOs
+export enum RiceState {
+    Waiting = "waiting",
+    Accepted = "accepted",
+}
+
 export interface PartialRice {
     id: string;
     title: string;
@@ -11,6 +16,7 @@ export interface PartialRice {
     stars: number;
     downloads: number;
     isStarred: boolean;
+    state: RiceState;
     createdAt: Date;
 }
 

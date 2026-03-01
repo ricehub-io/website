@@ -1,5 +1,5 @@
 import { useSignal } from "@preact/signals";
-import { PartialRice } from "../lib/models";
+import { PartialRice, RiceState } from "../lib/models";
 import { DownloadIcon } from "./icons/DownloadIcon";
 import { StarIcon } from "./icons/StarIcon";
 import { useLocation } from "preact-iso";
@@ -26,10 +26,13 @@ export default function RicePreview({
     title,
     displayName,
     downloads,
+    state,
     ...props
 }: RicePreviewProps) {
     const { route } = useLocation();
     const { user, currentModal, currentRiceId } = useContext(AppState);
+
+    const isWaiting = state === RiceState.Waiting;
 
     const starCount = useSignal(props.stars);
     const isStarred = useSignal(props.isStarred);
@@ -63,65 +66,82 @@ export default function RicePreview({
     const onEdit = () => route(`/edit-rice/${id}`);
 
     return (
-        <div
-            className={`bg-bright-background ease-in-out-quint hover:outline-blue relative rounded-md outline-transparent transition-colors duration-500 hover:cursor-pointer hover:outline-2 ${className}`}
-            onClick={onPreviewClick}
-        >
-            <div className="box-content aspect-video overflow-hidden p-1">
-                <img
-                    className="h-full w-full rounded-sm object-cover"
-                    src={thumbnail}
-                    alt="thumbnail"
-                />
-            </div>
-            <div className="flex items-center px-3 pb-2">
-                <div>
-                    <h1 className="-mb-1 text-lg font-medium md:text-xl">
-                        {title}
-                    </h1>
-                    <p className="text-gray text-sm md:text-base">
-                        by {displayName}
-                    </p>
+        // ugh i had to add a wrapper because pointer-events-none makes cursor-not-allowed not work -_-
+        <div className={isWaiting ? "cursor-not-allowed" : "cursor-pointer"}>
+            <div
+                className={`bg-bright-background ease-in-out-quint hover:outline-blue relative rounded-md outline-transparent transition-colors duration-500 select-none ${isWaiting ? "pointer-events-none" : "hover:outline-2"} ${className}`}
+                onClick={onPreviewClick}
+            >
+                <div
+                    className={`box-content aspect-video overflow-hidden p-1 ${isWaiting ? "opacity-70" : ""}`}
+                >
+                    <img
+                        className="h-full w-full rounded-sm object-cover"
+                        src={thumbnail}
+                        alt="thumbnail"
+                    />
                 </div>
-                <div className="ml-auto flex gap-2 select-none sm:gap-3">
-                    <div className="flex items-center gap-1">
-                        <DownloadIcon className="size-5 sm:size-6" />
-                        <p>{downloads}</p>
-                    </div>
-                    <div
-                        onClick={onStar}
-                        className="flex items-center gap-0.5 transition-colors duration-300 hover:cursor-pointer"
-                    >
-                        <StarIcon
-                            solid={isStarred.value}
-                            className="!size-5 sm:!size-6"
-                        />
-                        <p
-                            className={`transition-colors duration-300 ${
-                                isStarred.value && "text-accent"
-                            }`}
-                        >
-                            {starCount}
+                <div
+                    className={`flex items-center px-3 pb-2 ${isWaiting ? "opacity-70" : ""}`}
+                >
+                    <div>
+                        <h1 className="-mb-1 text-lg font-medium md:text-xl">
+                            {title}
+                        </h1>
+                        <p className="text-gray text-sm md:text-base">
+                            by {displayName}
                         </p>
                     </div>
-                </div>
-            </div>
-            {!hideActions &&
-                user.value !== null &&
-                username === user.value.username && (
-                    <div className="absolute top-2 right-2 md:top-3 md:right-3">
-                        <FloatingButton
-                            icon={<TrashIcon className="size-5 sm:size-6" />}
-                            onClick={onDelete}
-                        />
-                        <FloatingButton
-                            icon={
-                                <PencilSquareIcon className="size-5 sm:size-6" />
-                            }
-                            onClick={onEdit}
-                        />
+                    <div className="ml-auto flex gap-2 select-none sm:gap-3">
+                        <div className="flex items-center gap-1">
+                            <DownloadIcon className="size-5 sm:size-6" />
+                            <p>{downloads}</p>
+                        </div>
+                        <div
+                            onClick={onStar}
+                            className="flex items-center gap-0.5 transition-colors duration-300 hover:cursor-pointer"
+                        >
+                            <StarIcon
+                                solid={isStarred.value}
+                                className="!size-5 sm:!size-6"
+                            />
+                            <p
+                                className={`transition-colors duration-300 ${
+                                    isStarred.value && "text-accent"
+                                }`}
+                            >
+                                {starCount}
+                            </p>
+                        </div>
                     </div>
-                )}
+                </div>
+                {!hideActions &&
+                    user.value !== null &&
+                    username === user.value.username && (
+                        <div className="absolute top-2 right-2 md:top-3 md:right-3">
+                            {isWaiting ? (
+                                <p className="bg-dark-background/80 border-background-2 rounded-md border px-3 py-1 font-bold">
+                                    PENDING
+                                </p>
+                            ) : (
+                                <>
+                                    <FloatingButton
+                                        icon={
+                                            <TrashIcon className="size-5 sm:size-6" />
+                                        }
+                                        onClick={onDelete}
+                                    />
+                                    <FloatingButton
+                                        icon={
+                                            <PencilSquareIcon className="size-5 sm:size-6" />
+                                        }
+                                        onClick={onEdit}
+                                    />
+                                </>
+                            )}
+                        </div>
+                    )}
+            </div>
         </div>
     );
 }

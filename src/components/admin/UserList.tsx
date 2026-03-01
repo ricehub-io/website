@@ -4,6 +4,7 @@ import { User } from "../../lib/models";
 import { useSignal } from "@preact/signals";
 import { apiFetch } from "../../lib/api";
 import { addNotification } from "@/lib/appState";
+import { For } from "@preact/signals/utils";
 
 interface UserListProps {
     userLimit: number;
@@ -28,7 +29,12 @@ export default function UserList({ userLimit }: UserListProps) {
             });
     }, []);
 
-    return users.value.map((user) => <UserInfo key={user.id} {...user} />);
+    return (
+        // same as in rice list, we can assume that at least one user exists
+        <For each={users}>
+            {(user, _) => <UserInfo key={user.id} {...user} />}
+        </For>
+    );
 }
 
 function UserInfo({

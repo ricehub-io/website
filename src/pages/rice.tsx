@@ -13,12 +13,16 @@ export default function RicePage() {
     const route = useRoute();
     const { username, slug } = route.params;
 
-    const { accessToken } = useContext(AppState);
+    const { accessToken, userLoading } = useContext(AppState);
 
     const riceInfo = useSignal<Rice>(null);
     const notFound = useSignal(false);
 
     useEffect(() => {
+        if (userLoading.value) {
+            return;
+        }
+
         apiFetch<Rice>("GET", `/users/${username}/rices/${slug}`)
             .then(([_, body]) => (riceInfo.value = body))
             .catch((e) => {
@@ -34,7 +38,7 @@ export default function RicePage() {
                     }
                 }
             });
-    }, [username, slug, accessToken.value]);
+    }, [username, slug, accessToken.value, userLoading.value]);
 
     if (notFound.value) {
         return <NotFoundPage />;

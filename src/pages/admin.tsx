@@ -9,13 +9,14 @@ import SectionTitle from "../components/SectionTitle";
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
 import { addNotification, AppState } from "@/lib/appState";
 import { ApiError, apiFetch } from "@/lib/api";
-import { User, UserWithBan } from "@/lib/models";
+import { PartialRice, User, UserWithBan } from "@/lib/models";
 import { HttpStatus } from "@/lib/enums";
 import { useSignal } from "@preact/signals";
 import { For } from "@preact/signals/utils";
 import Bullet from "@/components/Bullet";
 import moment from "moment";
 import TextButton from "@/components/admin/TextButton";
+import WaitingRiceList from "@/components/admin/WaitingRiceList";
 
 const DURATION_REGEX = /^\d+(h|m|s)$/;
 const REPORTS_REFRESH_INTERVAL = 60 * 1000; // 60s
@@ -37,7 +38,7 @@ export default function AdminPage() {
                     <ResourceList />
                 </div>
             </div>
-            <div className="flex w-full gap-6">
+            <div className="mb-6 flex w-full gap-6">
                 <div className="flex-1">
                     <SectionTitle text="Ban User" />
                     <BanUserForm />
@@ -45,6 +46,14 @@ export default function AdminPage() {
                 <div className="flex-1">
                     <SectionTitle text="Banned Users" />
                     <BanList />
+                </div>
+            </div>
+            <div className="flex w-full gap-6">
+                {/* placeholder container */}
+                <div className="flex-1" />
+                <div className="flex-1">
+                    <SectionTitle text="Waiting Rices" />
+                    <WaitingRiceList />
                 </div>
             </div>
         </div>

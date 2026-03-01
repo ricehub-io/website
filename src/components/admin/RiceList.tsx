@@ -5,6 +5,7 @@ import { apiFetch } from "../../lib/api";
 import { formatLocaleDate } from "../../lib/math";
 import Bullet from "../Bullet";
 import { addNotification } from "@/lib/appState";
+import { For } from "@preact/signals/utils";
 
 export default function RiceList() {
     const rices = useSignal<PartialRice[]>([]);
@@ -24,7 +25,13 @@ export default function RiceList() {
             });
     }, []);
 
-    return rices.value.map((rice) => <RiceInfo {...rice} />);
+    return (
+        // we can assume that the website has AT LEAST one rice
+        // added so no need to add fallback here
+        <For each={rices}>
+            {(rice, _) => <RiceInfo key={rice.id} {...rice} />}
+        </For>
+    );
 }
 
 function RiceInfo({

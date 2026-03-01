@@ -1,0 +1,91 @@
+import WaitingRice from "@/components/admin/WaitingRice";
+import { apiFetch } from "@/lib/api";
+import { addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
+import { PartialRice } from "@/lib/models";
+import { useSignal } from "@preact/signals";
+import { For } from "@preact/signals/utils";
+import { useEffect } from "preact/hooks";
+
+export default function WaitingRiceList() {
+    const rices = useSignal<PartialRice[]>([]);
+
+    useEffect(() => {
+        apiFetch<PartialRice[]>("GET", "/rices?state=waiting")
+            .then(([_, body]) => (rices.value = body))
+            .catch((e) => {
+                if (e instanceof Error) {
+                    addNotification(
+                        "Failed to fetch waiting rices",
+                        e.message,
+                        "error"
+                    );
+                }
+            });
+    }, []);
+
+    const acceptRice = async (rice: PartialRice) => {
+        try {
+            const [status, _] = await apiFetch(
+                "PATCH",
+                `/rices/${rice.id}/state`,
+                JSON.stringify({
+                    newState: "accepted",
+                })
+            );
+
+            if (status !== HttpStatus.Ok) {
+                throw new Error(
+                    `Unexpected response code received from API: ${status}`
+                );
+            }
+
+            rices.value = rices.value.filter((r) => r.id !== rice.id);
+            addNotification("Success", "Rice has been accepted", "info");
+        } catch (e) {
+            if (e instanceof Error) {
+                addNotification("Something went wrong", e.message, "error");
+            }
+        }
+    };
+
+    const rejectRice = async (rice: PartialRice) => {
+        try {
+            const [status, _] = await apiFetch(
+                "PATCH",
+                `/rices/${rice.id}/state`,
+                JSON.stringify({
+                    newState: "rejected",
+                })
+            );
+
+            if (status !== HttpStatus.NoContent) {
+                throw new Error(
+                    `Unexpected response code received from API: ${status}`
+                );
+            }
+
+            rices.value = rices.value.filter((r) => r.id !== rice.id);
+            addNotification("Success", "Rice has been rejected", "info");
+        } catch (e) {
+            if (e instanceof Error) {
+                addNotification("Something went wrong", e.message, "error");
+            }
+        }
+    };
+
+    return (
+        <div className="bg-bright-background flex flex-col gap-2 rounded-lg p-4">
+            <For each={rices}>
+                {(rice, _) => (
+                    <WaitingRice
+                        key={rice.id}
+                        {...rice}
+                        onAccept={() => acceptRice(rice)}
+                        onReject={() => rejectRice(rice)}
+                    />
+                )}
+            </For>
+        </div>
+    );
+}
