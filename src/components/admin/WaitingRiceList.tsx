@@ -76,7 +76,14 @@ export default function WaitingRiceList() {
 
     return (
         <div className="bg-bright-background flex flex-col gap-2 rounded-lg p-4">
-            <For each={rices}>
+            <For
+                each={rices}
+                fallback={
+                    <p className="my-6 text-center text-xl font-medium">
+                        No pending rices
+                    </p>
+                }
+            >
                 {(rice, _) => (
                     <WaitingRice
                         key={rice.id}
