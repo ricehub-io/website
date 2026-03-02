@@ -223,7 +223,7 @@ function HeaderButton({
 }
 
 function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
-    const zoom = useSignal<string>(previews[0].url); // holds preview URL if any image is zoomed
+    const zoom = useSignal<string>(null); // holds preview URL if any image is zoomed
     const imageRef = useRef<HTMLDivElement>(); // reference to container holding the zoomed image
 
     // disable page scrolling when zoomed
