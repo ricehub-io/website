@@ -9,7 +9,7 @@ import { addNotification } from "../lib/appState";
 import Bullet from "./Bullet";
 
 const VERSION_MAJOR: number = 1;
-const VERSION_MINOR: number = 8;
+const VERSION_MINOR: number = 9;
 
 export default function Footer() {
     const discord = useSignal("");
@@ -45,8 +45,8 @@ export default function Footer() {
                 <p className="inline break-keep whitespace-nowrap">
                     made with love by{" "}
                     <Link
-                        url="https://github.com/golferjoe"
-                        content="golferjoe"
+                        url="https://github.com/unaimeds"
+                        content="unaimeds"
                         inNewTab
                     />{" "}
                     <span className="font-sans">:3</span>
