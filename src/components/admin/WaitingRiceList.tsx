@@ -7,10 +7,17 @@ import { useSignal } from "@preact/signals";
 import { For } from "@preact/signals/utils";
 import { useEffect } from "preact/hooks";
 
-export default function WaitingRiceList() {
+interface WaitingRiceListProps {
+    refreshInterval: number;
+}
+
+export default function WaitingRiceList({
+    refreshInterval,
+}: WaitingRiceListProps) {
     const rices = useSignal<PartialRice[]>([]);
 
-    useEffect(() => {
+    const fetchRices = async () => {
+        console.log("fetch waiting rices");
         apiFetch<PartialRice[]>("GET", "/rices?state=waiting")
             .then(([_, body]) => (rices.value = body))
             .catch((e) => {
@@ -22,6 +29,14 @@ export default function WaitingRiceList() {
                     );
                 }
             });
+    };
+
+    // periodically fetch waiting rices
+    useEffect(() => {
+        const interval = setInterval(fetchRices, refreshInterval ?? 60 * 1000);
+        fetchRices();
+
+        return () => clearInterval(interval);
     }, []);
 
     const acceptRice = async (rice: PartialRice) => {

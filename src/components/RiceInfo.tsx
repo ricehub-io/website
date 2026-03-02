@@ -3,8 +3,6 @@ import { Dotfiles, Rice, RicePreview } from "../lib/models";
 import { API_URL, apiFetch } from "../lib/api";
 import { StarIcon } from "./icons/StarIcon";
 import { DownloadIcon } from "./icons/DownloadIcon";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import PencilIcon from "./icons/PencilIcon";
 import { useLocation } from "preact-iso";
 import { JSX } from "preact/jsx-runtime";
@@ -20,8 +18,8 @@ import FlagIcon from "./icons/FlagIcon";
 import ExternalIcon from "./icons/ExternalIcon";
 import SectionTitle from "./SectionTitle";
 import { FolderArrowDownIcon, NoSymbolIcon } from "@heroicons/react/24/solid";
-
-dayjs.extend(relativeTime);
+import moment from "moment";
+import { formatBytes } from "@/lib/math";
 
 export function RiceInfo({
     id,
@@ -174,10 +172,10 @@ export function RiceInfo({
                     </div>
                     <div className="text-right text-sm sm:text-base md:text-lg">
                         <p>
-                            Created <b>{dayjs(createdAt).fromNow()}</b>
+                            Created <b>{moment(createdAt).fromNow()}</b>
                         </p>
                         <p>
-                            Updated <b>{dayjs(updatedAt).fromNow()}</b>
+                            Updated <b>{moment(updatedAt).fromNow()}</b>
                         </p>
                     </div>
                 </div>
@@ -316,8 +314,9 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
 }
 
 function RiceDotfiles({
-    onDownload,
     updatedAt,
+    fileSize,
+    onDownload,
 }: { onDownload: () => void } & Dotfiles) {
     return (
         <div
@@ -334,10 +333,10 @@ function RiceDotfiles({
             </div>
             <div className="text-right text-sm sm:text-base md:text-lg">
                 <p>
-                    Size: <b>432.92 Kb</b>
+                    Size: <b>{formatBytes(fileSize)}</b>
                 </p>
                 <p>
-                    Uploaded <b>{dayjs(updatedAt).fromNow()}</b>
+                    Uploaded <b>{moment(updatedAt).fromNow()}</b>
                 </p>
             </div>
         </div>
