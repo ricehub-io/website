@@ -13,7 +13,7 @@ import TrashIcon from "../components/icons/TrashIcon";
 import FormLabel from "../components/form/FormLabel";
 import { addNotification, AppState } from "../lib/appState";
 import PlusIcon from "../components/icons/PlusIcon";
-import { ChangeEvent, createRef } from "preact/compat";
+import { ChangeEvent, createRef, TargetedEvent } from "preact/compat";
 import PhotoIcon from "../components/icons/PhotoIcon";
 import { formatBytes } from "../lib/math";
 import PageTitle from "../components/PageTitle";
@@ -38,17 +38,31 @@ export default function EditRicePage() {
     const submitted = useSignal(false);
 
     useEffect(() => {
-        apiFetch<Rice>("GET", `/rices/${riceId}`).then(([status, body]) => {
-            if (status === HttpStatus.Ok) {
+        apiFetch<Rice>("GET", `/rices/${riceId}`)
+            .then(([status, body]) => {
+                if (status !== HttpStatus.Ok) {
+                    throw new Error(
+                        `Unexpected status code received from API: ${status}`
+                    );
+                }
                 rice.value = body;
-            }
-        });
+            })
+            .catch((e) => {
+                if (e instanceof Error) {
+                    addNotification(
+                        "Failed to fetch rice data",
+                        e.message,
+                        "error"
+                    );
+                }
+            });
     }, []);
 
-    const onSubmit = (e: SubmitEvent) => {
+    // ugh i need to find a better way of wrapping apiFetch with error catching
+    // too many try {} catch blocks - tho still less than `if let Some()` or `?` in Rust
+    const onSubmit = (e: TargetedEvent<HTMLFormElement, SubmitEvent>) => {
         e.preventDefault();
-        const target = e.currentTarget as HTMLFormElement;
-        const formData = new FormData(target);
+        const formData = new FormData(e.currentTarget);
 
         const newPreviews = carouselInput.current.files.length > 0;
         if (
@@ -63,34 +77,81 @@ export default function EditRicePage() {
             return;
         }
 
-        submitted.value = true;
         const temp = async () => {
-            const title = formData.get("title");
-            const description = formData.get("description");
+            const title = formData.get("title").toString();
+            const description = formData.get("description").toString();
             if (
                 title !== rice.value.title ||
                 description !== rice.value.description
             ) {
-                await apiFetch(
-                    "PATCH",
-                    `/rices/${riceId}`,
-                    JSON.stringify({ title, description })
-                );
+                // I need to update signal's metadata too
+                // because if we return from onSubmit
+                // for some reason the form inputs
+                // get reverted to initial value (idk why tbh)
+                // and if you dont know why then just forcefully fix the issue
+                rice.value = {
+                    ...rice.value,
+                    description,
+                    title,
+                };
+
+                try {
+                    await apiFetch(
+                        "PATCH",
+                        `/rices/${riceId}`,
+                        JSON.stringify({ title, description })
+                    );
+                } catch (e) {
+                    if (e instanceof Error) {
+                        addNotification(
+                            "Failed to update metadata",
+                            e.message,
+                            "error"
+                        );
+                    }
+                    return;
+                }
             }
 
             if (newDotfiles.value) {
                 const file = formData.get("dotfiles") as File;
                 const tempData = new FormData();
                 tempData.set("file", file);
-                await apiFetch("POST", `/rices/${riceId}/dotfiles`, tempData);
+                try {
+                    await apiFetch(
+                        "POST",
+                        `/rices/${riceId}/dotfiles`,
+                        tempData
+                    );
+                } catch (e) {
+                    if (e instanceof Error) {
+                        addNotification(
+                            "Failed to update dotfiles",
+                            e.message,
+                            "error"
+                        );
+                    }
+                    return;
+                }
             }
 
             const deletePreviews = async () => {
                 for (const pId of deletedPreviews.value) {
-                    await apiFetch(
-                        "DELETE",
-                        `/rices/${riceId}/previews/${pId}`
-                    );
+                    try {
+                        await apiFetch(
+                            "DELETE",
+                            `/rices/${riceId}/previews/${pId}`
+                        );
+                    } catch (e) {
+                        if (e instanceof Error) {
+                            addNotification(
+                                "Failed to delete preview",
+                                e.message,
+                                "error"
+                            );
+                        }
+                        return;
+                    }
                 }
             };
 
@@ -101,11 +162,22 @@ export default function EditRicePage() {
                 for (const preview of previews) {
                     const tempData = new FormData();
                     tempData.set("file", preview);
-                    await apiFetch(
-                        "POST",
-                        `/rices/${riceId}/previews`,
-                        tempData
-                    );
+                    try {
+                        await apiFetch(
+                            "POST",
+                            `/rices/${riceId}/previews`,
+                            tempData
+                        );
+                    } catch (e) {
+                        if (e instanceof Error) {
+                            addNotification(
+                                "Failed to add preview",
+                                e.message,
+                                "error"
+                            );
+                        }
+                        return;
+                    }
                 }
 
                 await deletePreviews();
@@ -116,7 +188,9 @@ export default function EditRicePage() {
             redirect(`/${user.value.username}/${rice.value.slug}`);
         };
 
+        submitted.value = true;
         temp();
+        submitted.value = false;
     };
 
     const onDotfilesDelete = () => (newDotfiles.value = true);
