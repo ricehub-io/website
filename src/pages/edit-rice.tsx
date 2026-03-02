@@ -84,17 +84,6 @@ export default function EditRicePage() {
                 title !== rice.value.title ||
                 description !== rice.value.description
             ) {
-                // I need to update signal's metadata too
-                // because if we return from onSubmit
-                // for some reason the form inputs
-                // get reverted to initial value (idk why tbh)
-                // and if you dont know why then just forcefully fix the issue
-                rice.value = {
-                    ...rice.value,
-                    description,
-                    title,
-                };
-
                 try {
                     await apiFetch(
                         "PATCH",
