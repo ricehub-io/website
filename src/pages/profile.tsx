@@ -91,7 +91,10 @@ function UserInfo({
                         </p>
                     </div>
                     <p className="mt-auto text-sm sm:text-base md:mt-0 md:text-lg">
-                        Joined {moment(createdAt).format("MMMM Do, YYYY")}
+                        Joined{" "}
+                        <span className="font-medium">
+                            {moment(createdAt).format("MMMM Do, YYYY")}
+                        </span>
                     </p>
                 </div>
             </div>
@@ -101,13 +104,13 @@ function UserInfo({
 
 function UserRices({ rices }: { rices: PartialRice[] }) {
     return (
-        <div className="flex flex-wrap gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {rices.length > 0 ? (
                 rices.map((rice) => (
                     <RicePreview
                         key={rice.id}
                         {...rice}
-                        className="!bg-background-2 w-full sm:w-64"
+                        className="!bg-background-2"
                         hideActions
                     />
                 ))
