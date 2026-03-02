@@ -55,6 +55,11 @@ export default function FormFileUpload({ name, accept }: Props) {
                     >
                         Touch to select a file
                     </label>
+                    {/* size limit text */}
+                    {/* TODO: fetch limit from API */}
+                    <p className="text-gray mt-0.5 text-right text-sm sm:text-base">
+                        Max file size: 90MB
+                    </p>
                 </>
             )}
             <input

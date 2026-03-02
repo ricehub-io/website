@@ -339,6 +339,9 @@ function CustomCarousel() {
                     onChange={onFileSelect}
                 />
             </div>
+            <p className="text-gray text-right text-sm sm:text-base">
+                Max preview image size: 5MB
+            </p>
         </div>
     );
 }

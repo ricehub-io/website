@@ -54,6 +54,9 @@ export default function ChangeAvatarModal() {
                     accept="image/jpeg, image/png"
                     className="cursor-pointer"
                 />
+                <p className="text-gray -mt-2 text-right text-sm sm:text-base">
+                    Max file size: 5MB
+                </p>
             </div>
             <div className="mt-2 flex gap-2">
                 <FormButton label="Cancel" type="reset" />
