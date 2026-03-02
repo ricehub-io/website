@@ -69,7 +69,7 @@ export default function RicePreview({
         // ugh i had to add a wrapper because pointer-events-none makes cursor-not-allowed not work -_-
         <div className={isWaiting ? "cursor-not-allowed" : "cursor-pointer"}>
             <div
-                className={`bg-bright-background ease-in-out-quint hover:outline-blue relative rounded-md outline-transparent transition-colors duration-500 select-none ${isWaiting ? "pointer-events-none" : "hover:outline-2"} ${className}`}
+                className={`bg-bright-background ease-in-out-quint hover:outline-blue relative h-full rounded-md outline-transparent transition-colors duration-500 select-none ${isWaiting ? "pointer-events-none" : "hover:outline-2"} ${className}`}
                 onClick={onPreviewClick}
             >
                 <div
@@ -85,9 +85,7 @@ export default function RicePreview({
                     className={`flex items-center px-3 pb-2 ${isWaiting ? "opacity-70" : ""}`}
                 >
                     <div>
-                        <h1 className="-mb-1 text-lg font-medium md:text-xl">
-                            {title}
-                        </h1>
+                        <h1 className="-mb-1 text-lg font-medium">{title}</h1>
                         <p className="text-gray text-sm md:text-base">
                             by {displayName}
                         </p>
