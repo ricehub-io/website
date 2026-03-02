@@ -223,7 +223,7 @@ function HeaderButton({
 }
 
 function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
-    const zoom = useSignal<string>(null); // holds preview URL if any image is zoomed
+    const zoom = useSignal<string>(previews[0].url); // holds preview URL if any image is zoomed
     const imageRef = useRef<HTMLDivElement>(); // reference to container holding the zoomed image
 
     // disable page scrolling when zoomed
@@ -285,8 +285,11 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
                 ))}
             </div>
             {zoom.value !== null && (
-                <div className="bg-background/70 fixed top-0 left-0 flex h-full w-full items-center justify-center">
-                    <div ref={imageRef} className="relative select-none">
+                <div className="bg-background/70 fixed top-0 left-0 flex aspect-video h-full w-full items-center justify-center">
+                    <div
+                        ref={imageRef}
+                        className="relative aspect-video w-full select-none lg:h-3/5 lg:w-auto xl:h-3/4"
+                    >
                         <button
                             className="bg-red/40 border-red/60 hover:bg-red/20 absolute top-2 right-2 cursor-pointer rounded-md border p-1 transition-colors md:top-4 md:right-4 md:rounded-lg"
                             onClick={() => (zoom.value = null)}
