@@ -2,8 +2,8 @@ import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { addNotification } from "@/lib/appState";
 import { For } from "@preact/signals/utils";
-import { apiFetch } from "@/api/apiFetch";
-import { PartialRice } from "@/api/schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { FetchRicesSchema, PartialRice } from "@/api/schemas";
 import Bullet from "@/components/Bullet";
 import { formatLocaleDate } from "@/lib/math";
 
@@ -12,8 +12,8 @@ export default function RiceList() {
 
     useEffect(() => {
         console.log("fetch rices");
-        apiFetch<PartialRice[]>("GET", "/rices?sort=recent")
-            .then(([_, body]) => (rices.value = body))
+        apiFetchV2("GET", "/rices?sort=recent", FetchRicesSchema)
+            .then(([_, data]) => (rices.value = data.rices))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(

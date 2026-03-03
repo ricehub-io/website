@@ -9,7 +9,7 @@ export function formatBytes(size: number): string {
     );
 }
 
-export function formatLocaleDate(date: Date): string {
+export function formatLocaleDate(date: Date | string): string {
     // return new Date(date).toLocaleDateString(undefined, {
     //     day: "2-digit",
     //     month: "2-digit",

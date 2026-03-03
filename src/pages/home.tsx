@@ -244,26 +244,28 @@ export default function HomePage() {
                     </>
                 )}
             </div>
-            {/* pagination */}
-            <div className="font-jetbrains-mono text-foreground/40 mx-auto flex items-center gap-4 text-lg select-none">
-                <ChevronLeftIcon
-                    className="size-6 cursor-pointer"
-                    onClick={() => incrementPage(true)}
-                />
-                {Array(pageCount.value)
-                    .fill(0)
-                    .map((_, pageNum) => (
-                        <PageButton
-                            onClick={changePage}
-                            index={pageNum + 1}
-                            isActive={currentPage.value === pageNum + 1}
-                        />
-                    ))}
-                <ChevronRightIcon
-                    className="size-6 cursor-pointer"
-                    onClick={() => incrementPage(false)}
-                />
-            </div>
+            {/* pagination buttons */}
+            {pageCount.value > 1 && (
+                <div className="font-jetbrains-mono text-foreground/40 mx-auto flex items-center gap-4 text-lg select-none">
+                    <ChevronLeftIcon
+                        className="size-6 cursor-pointer"
+                        onClick={() => incrementPage(true)}
+                    />
+                    {Array(pageCount.value)
+                        .fill(0)
+                        .map((_, pageNum) => (
+                            <PageButton
+                                onClick={changePage}
+                                index={pageNum + 1}
+                                isActive={currentPage.value === pageNum + 1}
+                            />
+                        ))}
+                    <ChevronRightIcon
+                        className="size-6 cursor-pointer"
+                        onClick={() => incrementPage(false)}
+                    />
+                </div>
+            )}
         </div>
     );
 }
