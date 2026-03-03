@@ -35,6 +35,8 @@ If you find a bug, please open a GitHub Issue and include:
 You can find a list of things to work on in the **Issues** tab.
 Each issue has a corresponding label attached to it.
 
+Please take a look at issues marked as **important** and try to first work on them if you're able to. Thank you <3
+
 Some of the label meanings:
 
 - **help wanted:** The task has not been claimed by anyone. Feel free to start working on it, but please leave a comment that you're working on it.

@@ -20,29 +20,29 @@ Before you can build the project you need to have installed these prerequisites 
 
 1. Clone the repository:
 
-```bash
-$ git clone https://github.com/ricehub-io/website.git ricehub-website
-$ cd ricehub-website
+```sh
+git clone https://github.com/ricehub-io/website.git
+cd website
 ```
 
 2. Install dependencies
 
-```bash
-$ pnpm i
+```sh
+pnpm i
 ```
 
 3. Start the development server
 
-```bash
-$ pnpm dev
+```sh
+pnpm dev
 ```
 
 Now the website will be accessible at http://127.0.0.1:3000
 
 If you want to build the website instead of running a development server you can simply run:
 
-```bash
-$ pnpm build
+```sh
+pnpm build
 ```
 
 Then you can find the built website in `dist/` directory.
