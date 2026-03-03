@@ -6,7 +6,7 @@ It's written in TypeScript using [PreactJS](https://preactjs.com/) which is near
 If you're interested in building the website for youself, you can do so by following the steps in [building](#building) section below.
 To get started with contributing please check the [contributing](#contributing) section.
 
-## [Building](#building)
+## Building
 
 ### Prerequisites
 
@@ -55,10 +55,10 @@ window.__APP_CONFIG__ = {
 };
 ```
 
-## [Contributing](#contributing)
+## Contributing
 
 If you're interested in contributing to the project, please first get yourself informed with the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
-Then check out the [CONTRIBUTING.md] file which contains all the important information on how to contribute.
+Then check out the [CONTRIBUTING.md](CONTRIBUTING.md) file which contains all the important information on how to contribute.
 
 If your question is still unanswered, feel free to open an issue or ask on Discord server (link provided below).
 
