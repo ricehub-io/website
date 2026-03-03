@@ -27,14 +27,15 @@ $ cd ricehub-website
 
 2. Install dependencies
 
-````bash
+```bash
 $ pnpm i
----
+```
 
 3. Start the development server
+
 ```bash
 $ pnpm dev
-````
+```
 
 Now the website will be accessible at http://127.0.0.1:3000
 
