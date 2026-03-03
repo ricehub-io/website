@@ -32,7 +32,7 @@ If you find a bug, please open a GitHub Issue and include:
 
 ## What can I work on?
 
-You can find a list of things to work on in the **Issues** tab.
+You can find a list of things to work on in the [Issues](https://github.com/ricehub-io/website/issues) tab.
 Each issue has a corresponding label attached to it.
 
 Please take a look at issues marked as **important** and try to first work on them if you're able to. Thank you <3
@@ -49,6 +49,14 @@ Other than that, you are welcome to improve anything in the project.
 If you believe something can be implemented better, feel free to open an issue and explain your idea before submitting a PR.
 
 Major architectural changes should be discussed first.
+
+## Contributing rices (content)
+
+The biggest way to support this project right now is by sharing your own rice on the website.
+
+If you use Linux or any Unix-like system, consider submitting your setup.
+
+More content makes the platform more useful and inspiring for others.
 
 ## Feature requests
 
