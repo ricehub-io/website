@@ -1,6 +1,5 @@
-import { formatBytes } from "../../lib/math";
-import DocumentIcon from "../icons/DocumentIcon";
-import TrashIcon from "../icons/TrashIcon";
+import { formatBytes } from "@/lib/math";
+import { DocumentIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 interface FilePreviewProps {
     fileName: string;

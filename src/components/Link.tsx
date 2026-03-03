@@ -1,7 +1,7 @@
 import { ComponentChildren } from "preact";
-import { JSX } from "preact/jsx-runtime";
+import { AnchorHTMLAttributes } from "preact/compat";
 
-export interface LinkProps extends JSX.AnchorHTMLAttributes {
+export interface LinkProps extends AnchorHTMLAttributes {
     content: string | ComponentChildren;
     url: string;
     /** should the link be opened in new or current tab */
@@ -11,7 +11,7 @@ export interface LinkProps extends JSX.AnchorHTMLAttributes {
 export default function Link({ content, url, inNewTab, ...props }: LinkProps) {
     return (
         <a
-            className="text-blue underline decoration-wavy transition-colors hover:text-blue/80"
+            className="text-blue hover:text-blue/80 underline decoration-wavy transition-colors"
             href={url}
             target={inNewTab ? "_blank" : "_self"}
             {...props}

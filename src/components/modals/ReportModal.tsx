@@ -1,11 +1,11 @@
+import { apiFetch } from "@/api/apiFetch";
+import { CreateReportReq, CreateReportRes } from "@/api/legacy-schemas";
+import { FormButton } from "@/components/form/FormButton";
+import FormTextArea from "@/components/form/FormTextArea";
+import FormTitle from "@/components/form/FormTitle";
+import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
 import { useContext } from "preact/hooks";
-import { addNotification, AppState } from "../../lib/appState";
-import { FormButton } from "../form/FormButton";
-import FormTitle from "../form/FormTitle";
-import FormTextArea from "../form/FormTextArea";
-import { apiFetch } from "../../lib/api";
-import { CreateReportReq, CreateReportRes } from "../../lib/models";
-import { HttpStatus } from "../../lib/enums";
 
 export default function ReportModal() {
     const { currentModal, reportCtx: report } = useContext(AppState);

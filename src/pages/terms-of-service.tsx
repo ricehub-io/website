@@ -1,23 +1,23 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
-import { apiFetch } from "../lib/api";
-import { addNotification } from "../lib/appState";
-import { Link as LinkDTO, WebsiteVariable } from "../lib/models";
-import { sanitizeMarkdownInput, superChargeMarkdown } from "../lib/sanitize";
 import moment from "moment";
-import PageTitle from "../components/PageTitle";
+import { apiFetch } from "@/api/apiFetch";
+import { WebsiteVariable } from "@/api/legacy-schemas";
+import PageTitle from "@/components/PageTitle";
+import { addNotification } from "@/lib/appState";
+import { sanitizeMarkdownInput } from "@/lib/sanitize";
 
 export default function TermsOfServicePage() {
-    const discord = useSignal<string>(null);
-    const discordFetched = useSignal(false);
+    // const discord = useSignal<string>(null);
+    // const discordFetched = useSignal(false);
     const data = useSignal<WebsiteVariable>(null);
-    const dataFetched = useSignal(false);
+    // const dataFetched = useSignal(false);
 
     useEffect(() => {
         apiFetch<WebsiteVariable>("GET", "/vars/terms_of_service_text")
             .then(([_, body]) => {
                 data.value = body;
-                dataFetched.value = true;
+                // dataFetched.value = true;
             })
             .catch((e) => {
                 if (e instanceof Error) {
@@ -26,37 +26,37 @@ export default function TermsOfServicePage() {
             });
     }, []);
 
-    useEffect(() => {
-        apiFetch<LinkDTO>("GET", "/links/discord")
-            .then(([_, body]) => {
-                discord.value = body.url;
-                discordFetched.value = true;
-            })
-            .catch((e) => {
-                if (e instanceof Error) {
-                    addNotification(
-                        "Failed to fetch discord link",
-                        e.message,
-                        "warning"
-                    );
-                }
-            });
-    }, []);
+    // useEffect(() => {
+    //     apiFetch<LinkDTO>("GET", "/links/discord")
+    //         .then(([_, body]) => {
+    //             discord.value = body.url;
+    //             discordFetched.value = true;
+    //         })
+    //         .catch((e) => {
+    //             if (e instanceof Error) {
+    //                 addNotification(
+    //                     "Failed to fetch discord link",
+    //                     e.message,
+    //                     "warning"
+    //                 );
+    //             }
+    //         });
+    // }, []);
 
-    useEffect(() => {
-        if (data.value === null || discord.value === null) {
-            return;
-        }
+    // useEffect(() => {
+    //     if (data.value === null || discord.value === null) {
+    //         return;
+    //     }
 
-        const vars: Map<string, string> = new Map([
-            ["DISCORD_URL", discord.value],
-        ]);
-        const md = superChargeMarkdown(data.value.value, vars);
-        data.value = {
-            ...data.value,
-            value: md,
-        };
-    }, [discordFetched.value, dataFetched.value]);
+    //     const vars: Map<string, string> = new Map([
+    //         ["DISCORD_URL", discord.value],
+    //     ]);
+    //     const md = superChargeMarkdown(data.value.value, vars);
+    //     data.value = {
+    //         ...data.value,
+    //         value: md,
+    //     };
+    // }, [discordFetched.value, dataFetched.value]);
 
     return (
         data.value !== null && (

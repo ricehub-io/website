@@ -1,7 +1,7 @@
 import { useEffect } from "preact/hooks";
-import { apiFetch } from "../../lib/api";
 import { useSignal } from "@preact/signals";
-import { ServiceStatistics } from "../../lib/models";
+import { apiFetch } from "@/api/apiFetch";
+import { ServiceStatistics } from "@/api/legacy-schemas";
 
 export default function Statistics() {
     const stats = useSignal<ServiceStatistics>(null);

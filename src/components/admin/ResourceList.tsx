@@ -1,9 +1,9 @@
 import { TargetedEvent } from "preact/compat";
-import ListWrapper from "./ListWrapper";
 import { useSignal } from "@preact/signals";
-import UserList from "./UserList";
-import CommentList from "./CommentList";
-import RiceList from "./RiceList";
+import CommentList from "@/components/admin/CommentList";
+import ListWrapper from "@/components/admin/ListWrapper";
+import RiceList from "@/components/admin/RiceList";
+import UserList from "@/components/admin/UserList";
 
 // how many recent resources should be returned at most
 const RESOURCE_LIMIT = 20;

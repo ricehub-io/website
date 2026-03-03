@@ -1,5 +1,5 @@
+import { PartialRice } from "@/api/schemas";
 import TextButton from "@/components/admin/TextButton";
-import { PartialRice } from "@/lib/models";
 import moment from "moment";
 
 interface WaitingRiceProps extends PartialRice {

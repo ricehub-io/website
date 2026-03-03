@@ -1,10 +1,10 @@
 import { useContext } from "preact/hooks";
-import { FormButton } from "../form/FormButton";
-import { FormInput } from "../form/FormInput";
-import { addNotification, AppState } from "../../lib/appState";
 import { useSignal } from "@preact/signals";
-import { API_URL } from "../../lib/api";
-import FormTitle from "../form/FormTitle";
+import { API_URL } from "@/api/apiFetch";
+import { FormButton } from "@/components/form/FormButton";
+import { FormInput } from "@/components/form/FormInput";
+import FormTitle from "@/components/form/FormTitle";
+import { AppState, addNotification } from "@/lib/appState";
 
 interface FormError {
     source: "username" | "displayName" | "password";

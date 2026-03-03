@@ -1,5 +1,5 @@
+import { RadioButtonProps, RadioButton } from "@/components/RadioButton";
 import { ComponentChildren } from "preact";
-import { RadioButton, RadioButtonProps } from "../RadioButton";
 
 interface ListWrapperProps {
     label: string;

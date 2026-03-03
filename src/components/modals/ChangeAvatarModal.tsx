@@ -1,10 +1,9 @@
+import { apiFetch } from "@/api/apiFetch";
+import { FormButton } from "@/components/form/FormButton";
+import { FormInput } from "@/components/form/FormInput";
+import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
 import { useContext } from "preact/hooks";
-import { FormButton } from "../form/FormButton";
-import { addNotification, AppState } from "../../lib/appState";
-import { apiFetch } from "../../lib/api";
-import { HttpStatus } from "../../lib/enums";
-import FormLabel from "../form/FormLabel";
-import { FormInput } from "../form/FormInput";
 
 export default function ChangeAvatarModal() {
     const { currentModal, user } = useContext(AppState);

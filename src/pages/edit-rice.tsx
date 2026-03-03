@@ -1,28 +1,23 @@
 import { useLocation, useRoute } from "preact-iso";
 import { useContext, useEffect, useRef } from "preact/hooks";
-import { apiFetch } from "../lib/api";
-import { Rice } from "../lib/models";
-import { FormButton } from "../components/form/FormButton";
-import FormFileUpload from "../components/form/FormFileUpload";
-import { FormInput } from "../components/form/FormInput";
-import FormTextArea from "../components/form/FormTextArea";
 import { signal, useComputed, useSignal } from "@preact/signals";
-import { HttpStatus } from "../lib/enums";
-import DocumentIcon from "../components/icons/DocumentIcon";
-import TrashIcon from "../components/icons/TrashIcon";
-import FormLabel from "../components/form/FormLabel";
-import { addNotification, AppState } from "../lib/appState";
-import PlusIcon from "../components/icons/PlusIcon";
 import { ChangeEvent, createRef, TargetedEvent } from "preact/compat";
-import PhotoIcon from "../components/icons/PhotoIcon";
-import { formatBytes } from "../lib/math";
-import PageTitle from "../components/PageTitle";
-import FormTitle from "../components/form/FormTitle";
-import FilePreview from "../components/form/FilePreview";
+import { apiFetch } from "@/api/apiFetch";
+import { Rice } from "@/api/legacy-schemas";
+import FilePreview from "@/components/form/FilePreview";
+import { FormButton } from "@/components/form/FormButton";
+import FormFileUpload from "@/components/form/FormFileUpload";
+import { FormInput } from "@/components/form/FormInput";
+import FormLabel from "@/components/form/FormLabel";
+import FormTextArea from "@/components/form/FormTextArea";
+import PageTitle from "@/components/PageTitle";
+import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 import {
     CarouselImage,
     CarouselPlusButton,
-} from "../components/form/FormImageCarousel";
+} from "@/components/form/FormImageCarousel";
 
 const deletedPreviews = signal<string[]>([]);
 const rice = signal<Rice>(null);
@@ -294,7 +289,7 @@ function CustomCarousel() {
             >
                 {noPreviews.value ? (
                     <div className="text-gray bg-bright-background border-gray/50 flex aspect-video w-86 items-center justify-center rounded-lg border-2">
-                        <PhotoIcon />
+                        <PhotoIcon className="size-36" />
                     </div>
                 ) : (
                     <>

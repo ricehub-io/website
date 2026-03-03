@@ -1,10 +1,10 @@
 import { useSignal } from "@preact/signals";
-import { formatLocaleDate } from "../../lib/math";
-import { CommentWithUser } from "../../lib/models";
 import { useEffect } from "preact/hooks";
-import { apiFetch } from "../../lib/api";
 import { addNotification } from "@/lib/appState";
 import { For } from "@preact/signals/utils";
+import { apiFetch } from "@/api/apiFetch";
+import { CommentWithUser } from "@/api/legacy-schemas";
+import { formatLocaleDate } from "@/lib/math";
 
 interface CommentListProps {
     commentLimit: number;

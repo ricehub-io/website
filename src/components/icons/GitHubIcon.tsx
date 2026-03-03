@@ -1,4 +1,4 @@
-import { IconProps } from "../../lib/models";
+import { IconProps } from "@/api/legacy-schemas";
 
 export function GitHubIcon(props: IconProps) {
     return (

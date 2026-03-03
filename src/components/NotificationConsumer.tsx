@@ -1,11 +1,13 @@
 import { useContext } from "preact/hooks";
-import { AppState } from "../lib/appState";
-import { AppNotification } from "../lib/models";
-import { InfoIcon } from "./icons/InfoIcon";
-import { WarningIcon } from "./icons/WarningIcon";
-import { ErrorIcon } from "./icons/ErrorIcon";
 import { For } from "@preact/signals/utils";
 import { useComputed } from "@preact/signals";
+import { AppNotification } from "@/api/legacy-schemas";
+import { AppState } from "@/lib/appState";
+import {
+    ExclamationCircleIcon,
+    ExclamationTriangleIcon,
+    InformationCircleIcon,
+} from "@heroicons/react/24/solid";
 
 export default function NotificationConsumer() {
     const { notifications } = useContext(AppState);
@@ -15,7 +17,7 @@ export default function NotificationConsumer() {
     // shown at once to not obstruct user's view
 
     return (
-        <div className="fixed top-16 left-0 w-full px-4 sm:w-auto sm:px-0 sm:left-auto sm:right-6 sm:max-w-114">
+        <div className="fixed top-16 left-0 w-full px-4 sm:right-6 sm:left-auto sm:w-auto sm:max-w-114 sm:px-0">
             <For each={notifsRev}>
                 {(notif) => <Notification key={notif.id} {...notif} />}
             </For>
@@ -39,15 +41,15 @@ function Notification({
             id={id}
         >
             <div className="w-12">
-                {severity === "info" && <InfoIcon />}
-                {severity === "warning" && <WarningIcon />}
-                {severity === "error" && <ErrorIcon />}
+                {severity === "info" && <InformationCircleIcon />}
+                {severity === "warning" && <ExclamationTriangleIcon />}
+                {severity === "error" && <ExclamationCircleIcon />}
             </div>
             <div>
-                <h3 className="mb-0.5 font-bold text-base sm:text-lg xl:text-xl">
+                <h3 className="mb-0.5 text-base font-bold sm:text-lg xl:text-xl">
                     {title}
                 </h3>
-                <p className="leading-5 text-sm sm:text-base xl:text-lg">
+                <p className="text-sm leading-5 sm:text-base xl:text-lg">
                     {message}
                 </p>
             </div>

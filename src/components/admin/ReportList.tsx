@@ -1,13 +1,13 @@
+import { apiFetch } from "@/api/apiFetch";
+import { ReportWithUser } from "@/api/legacy-schemas";
+import ListWrapper from "@/components/admin/ListWrapper";
+import Report from "@/components/admin/Report";
+import { addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
 import { useSignal } from "@preact/signals";
 import pluralize from "pluralize";
 import { ChangeEvent } from "preact/compat";
 import { useEffect } from "preact/hooks";
-import { apiFetch } from "../../lib/api";
-import { addNotification } from "../../lib/appState";
-import { HttpStatus } from "../../lib/enums";
-import { ReportWithUser } from "../../lib/models";
-import Report from "./Report";
-import ListWrapper from "./ListWrapper";
 
 interface ReportListProps {
     refreshInterval: number;

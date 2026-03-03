@@ -1,15 +1,15 @@
 import { useEffect } from "preact/hooks";
-import { apiFetch } from "../lib/api";
-import DiscordIcon from "./icons/DiscordIcon";
-import { GitHubIcon } from "./icons/GitHubIcon";
-import Link, { LinkProps } from "./Link";
 import { Signal, useSignal } from "@preact/signals";
-import { Link as LinkDTO } from "../lib/models";
-import { addNotification } from "../lib/appState";
-import Bullet from "./Bullet";
+import { addNotification } from "@/lib/appState";
+import { apiFetch } from "@/api/apiFetch";
+import Bullet from "@/components/Bullet";
+import Link, { LinkProps } from "@/components/Link";
+import { Link as LinkDTO } from "@/api/legacy-schemas";
+import { GitHubIcon } from "@/components/icons/GitHubIcon";
+import DiscordIcon from "@/components/icons/DiscordIcon";
 
 const VERSION_MAJOR: number = 1;
-const VERSION_MINOR: number = 9;
+const VERSION_MINOR: number = 10;
 
 export default function Footer() {
     const discord = useSignal("");

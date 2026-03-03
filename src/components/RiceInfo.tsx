@@ -1,25 +1,28 @@
 import { useComputed, useSignal } from "@preact/signals";
-import { Dotfiles, Rice, RicePreview } from "../lib/models";
-import { API_URL, apiFetch } from "../lib/api";
-import { StarIcon } from "./icons/StarIcon";
-import { DownloadIcon } from "./icons/DownloadIcon";
-import PencilIcon from "./icons/PencilIcon";
 import { useLocation } from "preact-iso";
 import { JSX } from "preact/jsx-runtime";
-import TrashIcon from "./icons/TrashIcon";
 import { useContext, useEffect, useRef } from "preact/hooks";
-import { addNotification, AppState } from "../lib/appState";
+import { addNotification, AppState } from "@/lib/appState";
 import { ComponentChildren } from "preact";
-import CommentSection from "./CommentSection";
-import { HttpStatus } from "../lib/enums";
-import XMarkIcon from "./icons/XMarkIcon";
-import { sanitizeMarkdownInput } from "../lib/sanitize";
-import FlagIcon from "./icons/FlagIcon";
-import ExternalIcon from "./icons/ExternalIcon";
-import SectionTitle from "./SectionTitle";
-import { FolderArrowDownIcon, NoSymbolIcon } from "@heroicons/react/24/solid";
+import {
+    ArrowDownTrayIcon,
+    ArrowTopRightOnSquareIcon,
+    FolderArrowDownIcon,
+    NoSymbolIcon,
+    PencilIcon,
+    TrashIcon,
+    XMarkIcon,
+} from "@heroicons/react/24/solid";
+import { FlagIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { formatBytes } from "@/lib/math";
+import { apiFetch, API_URL } from "@/api/apiFetch";
+import { Rice, RicePreview, Dotfiles } from "@/api/legacy-schemas";
+import CommentSection from "@/components/CommentSection";
+import SectionTitle from "@/components/SectionTitle";
+import { HttpStatus } from "@/lib/enums";
+import { sanitizeMarkdownInput } from "@/lib/sanitize";
+import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
 
 export function RiceInfo({
     id,
@@ -115,27 +118,30 @@ export function RiceInfo({
                 <div className="flex flex-wrap justify-center gap-2 text-sm sm:text-base">
                     {!isAuthor.value && (
                         <HeaderButton
-                            icon={<FlagIcon />}
+                            icon={<FlagIcon className="size-6" />}
                             content="Report"
                             onClick={openReportModal}
                         />
                     )}
-                    <HeaderButton icon={<DownloadIcon />} content={downloads} />
+                    <HeaderButton
+                        icon={<ArrowDownTrayIcon className="size-6" />}
+                        content={downloads}
+                    />
                     <HeaderButton
                         className={`transition-colors duration-300 ${_isStarred.value && "text-accent"}`}
-                        icon={<StarIcon solid={_isStarred.value} />}
+                        icon={<ReactiveStarIcon solid={_isStarred.value} />}
                         content={starCount.value}
                         onClick={onStar}
                     />
                     {isAuthor.value && (
                         <>
                             <HeaderButton
-                                icon={<PencilIcon />}
+                                icon={<PencilIcon className="size-6" />}
                                 content="Edit"
                                 onClick={onEdit}
                             />
                             <HeaderButton
-                                icon={<TrashIcon />}
+                                icon={<TrashIcon className="size-6" />}
                                 content="Delete"
                                 onClick={onDelete}
                             />
@@ -213,7 +219,7 @@ function HeaderButton({
 }) {
     return (
         <button
-            className={`${props.className} bg-bright-background flex items-center gap-1 rounded-lg px-3 py-1 ${onClick !== undefined ? "hover:bg-gray/30 transition-colors hover:cursor-pointer" : ""}`}
+            className={`${props.className} bg-bright-background flex items-center gap-1 rounded-lg px-3 py-1 sm:text-lg ${onClick !== undefined ? "hover:bg-gray/30 transition-colors hover:cursor-pointer" : ""}`}
             onClick={onClick}
         >
             {icon}
@@ -294,7 +300,7 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
                             className="bg-red/40 border-red/60 hover:bg-red/20 absolute top-2 right-2 cursor-pointer rounded-md border p-1 transition-colors md:top-4 md:right-4 md:rounded-lg"
                             onClick={() => (zoom.value = null)}
                         >
-                            <XMarkIcon className="!size-4 sm:!size-5 md:!size-6" />
+                            <XMarkIcon className="size-4 sm:size-5 md:size-6" />
                         </button>
                         <img
                             className="w-full"
@@ -306,7 +312,7 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
                             href={zoom.value}
                             target="_blank"
                         >
-                            <ExternalIcon className="!size-5 sm:!size-6 md:!size-7" />
+                            <ArrowTopRightOnSquareIcon className="size-5 sm:size-6 md:size-7" />
                             Open image in new tab
                         </a>
                     </div>

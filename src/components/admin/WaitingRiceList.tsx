@@ -1,8 +1,8 @@
+import { apiFetch } from "@/api/apiFetch";
+import { PartialRice } from "@/api/schemas";
 import WaitingRice from "@/components/admin/WaitingRice";
-import { apiFetch } from "@/lib/api";
 import { addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
-import { PartialRice } from "@/lib/models";
 import { useSignal } from "@preact/signals";
 import { For } from "@preact/signals/utils";
 import { useEffect } from "preact/hooks";

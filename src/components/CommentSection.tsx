@@ -1,16 +1,15 @@
 import { useContext, useEffect } from "preact/hooks";
-import { apiFetch } from "../lib/api";
 import { Signal, useComputed, useSignal } from "@preact/signals";
-import { CommentWithUser, RawComment } from "../lib/models";
-import { addNotification, AppState } from "../lib/appState";
 import moment from "moment";
-import { HttpStatus } from "../lib/enums";
-import TrashIcon from "./icons/TrashIcon";
-import FlagIcon from "./icons/FlagIcon";
-import Bullet from "./Bullet";
 import { For, Show } from "@preact/signals/utils";
 import { InputHTMLAttributes } from "preact/compat";
-import NoSymbolIcon from "@heroicons/react/24/solid/NoSymbolIcon";
+import { addNotification, AppState } from "@/lib/appState";
+import { apiFetch } from "@/api/apiFetch";
+import { CommentWithUser, RawComment } from "@/api/legacy-schemas";
+import Bullet from "@/components/Bullet";
+import { HttpStatus } from "@/lib/enums";
+import { TrashIcon, NoSymbolIcon } from "@heroicons/react/24/solid";
+import { FlagIcon } from "@heroicons/react/24/outline";
 
 interface CommentSectionProps {
     riceId: string;
@@ -186,16 +185,16 @@ function Comment({
 
     return (
         <div
-            className="bg-bright-background relative flex gap-2 rounded-lg p-3 md:p-4"
+            className="bg-bright-background relative flex gap-2 rounded-lg p-3 sm:gap-3 md:p-4"
             id={commentId}
         >
             <div className="w-12 sm:w-16">
                 <img className="rounded-md" src={avatar} alt="avatar" />
             </div>
-            <div className="flex-1 text-sm sm:text-base">
+            <div className="flex-1 text-sm sm:text-base md:text-lg">
                 <div className="-mt-1 flex items-center gap-1">
                     <a
-                        className={`flex items-center gap-0.5 text-base font-medium transition-colors hover:underline sm:text-lg ${isBanned ? "text-foreground/70" : "hover:text-foreground/80"}`}
+                        className={`flex items-center gap-0.5 text-base font-medium transition-colors hover:underline sm:text-lg md:text-xl ${isBanned ? "text-foreground/70" : "hover:text-foreground/80"}`}
                         href={`/${username}`}
                     >
                         {isBanned && (
@@ -235,14 +234,14 @@ function Comment({
                         onClick={deleteComment}
                         className="bg-red/40 border-red/60 hover:bg-red/20 cursor-pointer rounded-md border p-2 transition-colors"
                     >
-                        <TrashIcon />
+                        <TrashIcon className="size-8" />
                     </button>
                 ) : (
                     <button
                         onClick={reportComment}
                         className="bg-dark-background-2/60 border-gray/30 hover:bg-gray/10 hover:text-red/70 cursor-pointer rounded-md border p-2 transition-colors"
                     >
-                        <FlagIcon />
+                        <FlagIcon className="size-8" />
                     </button>
                 )}
             </div>

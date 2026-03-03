@@ -1,10 +1,14 @@
 import { useLocation } from "preact-iso";
 import { useContext } from "preact/hooks";
-import { apiFetch } from "../../lib/api";
-import { AppState } from "../../lib/appState";
-import { ReportWithUser, Rice, RiceCommentWithSlug } from "../../lib/models";
-import { formatLocaleDate } from "../../lib/math";
 import TextButton from "@/components/admin/TextButton";
+import { apiFetch } from "@/api/apiFetch";
+import {
+    ReportWithUser,
+    Rice,
+    RiceCommentWithSlug,
+} from "@/api/legacy-schemas";
+import { AppState } from "@/lib/appState";
+import { formatLocaleDate } from "@/lib/math";
 
 export default function Report({
     id,

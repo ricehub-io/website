@@ -1,16 +1,16 @@
 import { useContext, useEffect } from "preact/hooks";
-import { AppState } from "../lib/appState";
-import LoginModal from "./modals/LoginModal";
-import RegisterModal from "./modals/RegisterModal";
-import ChangeDisplayNameModal from "./modals/ChangeDisplayNameModal";
-import ChangePasswordModal from "./modals/ChangePasswordModal";
-import DeleteAccountModal from "./modals/DeleteAccountModal";
-import ChangeAvatarModal from "./modals/ChangeAvatarModal";
-import DeleteAvatarModal from "./modals/DeleteAvatarModal";
-import DeleteRiceModal from "./modals/DeleteRiceModal";
-import ReportModal from "./modals/ReportModal";
-import DeleteResourceModal from "./modals/DeleteResourceModal";
 import UnbanModal from "@/components/modals/UnbanModal";
+import ChangeAvatarModal from "@/components/modals/ChangeAvatarModal";
+import ChangeDisplayNameModal from "@/components/modals/ChangeDisplayNameModal";
+import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
+import DeleteAccountModal from "@/components/modals/DeleteAccountModal";
+import DeleteAvatarModal from "@/components/modals/DeleteAvatarModal";
+import DeleteResourceModal from "@/components/modals/DeleteResourceModal";
+import DeleteRiceModal from "@/components/modals/DeleteRiceModal";
+import LoginModal from "@/components/modals/LoginModal";
+import RegisterModal from "@/components/modals/RegisterModal";
+import ReportModal from "@/components/modals/ReportModal";
+import { AppState } from "@/lib/appState";
 
 export default function ModalConsumer() {
     const { currentModal } = useContext(AppState);

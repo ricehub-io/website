@@ -20,7 +20,8 @@
 		"preact-iso": "^2.10.0",
 		"prettier-plugin-tailwindcss": "^0.7.2",
 		"tailwindcss": "^4.1.13",
-		"uuid": "^13.0.0"
+		"uuid": "^13.0.0",
+		"zod": "^4.3.6"
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.10.2",

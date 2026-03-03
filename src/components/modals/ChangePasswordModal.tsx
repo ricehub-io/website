@@ -1,9 +1,9 @@
+import { apiFetch } from "@/api/apiFetch";
+import { FormButton } from "@/components/form/FormButton";
+import { FormInput } from "@/components/form/FormInput";
+import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
 import { useContext } from "preact/hooks";
-import { FormButton } from "../form/FormButton";
-import { FormInput } from "../form/FormInput";
-import { addNotification, AppState } from "../../lib/appState";
-import { apiFetch } from "../../lib/api";
-import { HttpStatus } from "../../lib/enums";
 
 export default function ChangePasswordModal() {
     const { currentModal, user } = useContext(AppState);

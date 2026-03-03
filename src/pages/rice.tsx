@@ -1,13 +1,13 @@
+import { apiFetch, ApiError } from "@/api/apiFetch";
+import { Rice } from "@/api/legacy-schemas";
+import { Placeholder } from "@/components/Placeholder";
+import { RiceInfo } from "@/components/RiceInfo";
+import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
+import NotFoundPage from "@/pages/_404";
 import { useSignal } from "@preact/signals";
 import { useRoute } from "preact-iso";
-import { Rice } from "../lib/models";
-import { RiceInfo } from "../components/RiceInfo";
 import { useContext, useEffect } from "preact/hooks";
-import { ApiError, apiFetch } from "../lib/api";
-import { Placeholder } from "../components/Placeholder";
-import { addNotification, AppState } from "../lib/appState";
-import { HttpStatus } from "../lib/enums";
-import NotFoundPage from "./_404";
 
 export default function RicePage() {
     const route = useRoute();

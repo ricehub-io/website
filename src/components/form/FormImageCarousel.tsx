@@ -1,10 +1,8 @@
+import FormLabel from "@/components/form/FormLabel";
+import { PhotoIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useSignal } from "@preact/signals";
 import { ChangeEvent } from "preact/compat";
 import { useRef } from "preact/hooks";
-import PhotoIcon from "../icons/PhotoIcon";
-import PlusIcon from "../icons/PlusIcon";
-import TrashIcon from "../icons/TrashIcon";
-import FormLabel from "./FormLabel";
 
 interface Props {
     label: string;

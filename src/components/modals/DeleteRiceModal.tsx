@@ -1,9 +1,9 @@
-import { FormButton } from "../form/FormButton";
 import { useContext } from "preact/hooks";
-import { addNotification, AppState } from "../../lib/appState";
-import { apiFetch } from "../../lib/api";
-import { HttpStatus } from "../../lib/enums";
 import { useLocation } from "preact-iso";
+import { apiFetch } from "@/api/apiFetch";
+import { FormButton } from "@/components/form/FormButton";
+import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
 
 export default function DeleteRiceModal() {
     const { route } = useLocation();

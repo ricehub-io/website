@@ -1,15 +1,6 @@
 import { TargetedEvent, useContext, useEffect } from "preact/compat";
-import ReportList from "../components/admin/ReportList";
-import ResourceList from "../components/admin/ResourceList";
-import Statistics from "../components/admin/Statistics";
-import { FormButton } from "../components/form/FormButton";
-import { FormInput, FormInputProps } from "../components/form/FormInput";
-import FormTextArea from "../components/form/FormTextArea";
-import SectionTitle from "../components/SectionTitle";
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
 import { addNotification, AppState } from "@/lib/appState";
-import { ApiError, apiFetch } from "@/lib/api";
-import { PartialRice, User, UserWithBan } from "@/lib/models";
 import { HttpStatus } from "@/lib/enums";
 import { useSignal } from "@preact/signals";
 import { For } from "@preact/signals/utils";
@@ -17,9 +8,18 @@ import Bullet from "@/components/Bullet";
 import moment from "moment";
 import TextButton from "@/components/admin/TextButton";
 import WaitingRiceList from "@/components/admin/WaitingRiceList";
+import { apiFetch, ApiError } from "@/api/apiFetch";
+import { User, UserWithBan } from "@/api/legacy-schemas";
+import ReportList from "@/components/admin/ReportList";
+import ResourceList from "@/components/admin/ResourceList";
+import Statistics from "@/components/admin/Statistics";
+import { FormButton } from "@/components/form/FormButton";
+import { FormInputProps, FormInput } from "@/components/form/FormInput";
+import FormTextArea from "@/components/form/FormTextArea";
+import SectionTitle from "@/components/SectionTitle";
 
 const DURATION_REGEX = /^\d+(h|m|s)$/;
-const REPORTS_REFRESH_INTERVAL = 60 * 1000; // 60s
+const REFRESH_INTERVAL = 60 * 1000; // 60s
 
 export default function AdminPage() {
     return (
@@ -31,7 +31,7 @@ export default function AdminPage() {
             <div className="mb-6 flex w-full gap-6">
                 <div className="flex-1">
                     <SectionTitle text="Reports" />
-                    <ReportList refreshInterval={REPORTS_REFRESH_INTERVAL} />
+                    <ReportList refreshInterval={REFRESH_INTERVAL} />
                 </div>
                 <div className="flex-1">
                     <SectionTitle text="Recents" />
@@ -53,7 +53,7 @@ export default function AdminPage() {
                 <div className="flex-1" />
                 <div className="flex-1">
                     <SectionTitle text="Waiting Rices" />
-                    <WaitingRiceList />
+                    <WaitingRiceList refreshInterval={REFRESH_INTERVAL} />
                 </div>
             </div>
         </div>

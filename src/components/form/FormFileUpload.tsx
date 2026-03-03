@@ -1,7 +1,7 @@
 import { ChangeEvent } from "preact/compat";
-import FormLabel from "./FormLabel";
 import { useComputed, useSignal } from "@preact/signals";
-import FilePreview from "./FilePreview";
+import FilePreview from "@/components/form/FilePreview";
+import FormLabel from "@/components/form/FormLabel";
 
 interface Props {
     name: string;

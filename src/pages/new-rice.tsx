@@ -1,15 +1,15 @@
-import { FormButton } from "../components/form/FormButton";
-import FormFileUpload from "../components/form/FormFileUpload";
-import { FormInput } from "../components/form/FormInput";
-import FormTextArea from "../components/form/FormTextArea";
-import { FormImageCarousel } from "../components/form/FormImageCarousel";
-import { apiFetch } from "../lib/api";
-import { HttpStatus } from "../lib/enums";
+import { apiFetch } from "@/api/apiFetch";
+import { Rice } from "@/api/legacy-schemas";
+import { FormButton } from "@/components/form/FormButton";
+import FormFileUpload from "@/components/form/FormFileUpload";
+import { FormImageCarousel } from "@/components/form/FormImageCarousel";
+import { FormInput } from "@/components/form/FormInput";
+import FormTextArea from "@/components/form/FormTextArea";
+import PageTitle from "@/components/PageTitle";
+import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
 import { useLocation } from "preact-iso";
 import { useContext } from "preact/hooks";
-import { addNotification, AppState } from "../lib/appState";
-import { Rice } from "../lib/models";
-import PageTitle from "../components/PageTitle";
 
 export default function NewRicePage() {
     const { route } = useLocation();

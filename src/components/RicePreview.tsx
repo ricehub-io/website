@@ -1,68 +1,47 @@
+import { FetchMethod, apiFetch } from "@/api/apiFetch";
+import { PartialRice } from "@/api/schemas";
+import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
+import { AppState } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
+import {
+    TrashIcon,
+    PencilSquareIcon,
+    ArrowDownTrayIcon,
+} from "@heroicons/react/24/solid";
 import { useSignal } from "@preact/signals";
-import { PartialRice, RiceState } from "../lib/models";
-import { DownloadIcon } from "./icons/DownloadIcon";
-import { StarIcon } from "./icons/StarIcon";
 import { useLocation } from "preact-iso";
 import { useContext, useEffect } from "preact/hooks";
-import { apiFetch, FetchMethod } from "../lib/api";
-import { AppState } from "../lib/appState";
-import PencilSquareIcon from "./icons/PencilSquareIcon";
-import { HttpStatus } from "../lib/enums";
 import { JSX } from "preact/jsx-runtime";
-import TrashIcon from "./icons/TrashIcon";
 
 interface RicePreviewProps extends PartialRice {
     className?: string;
     hideActions?: boolean;
 }
 
-export default function RicePreview({
-    className,
-    hideActions,
-    id,
-    slug,
-    username,
-    thumbnail,
-    title,
-    displayName,
-    downloads,
-    state,
-    ...props
-}: RicePreviewProps) {
+export default function RicePreview(props: RicePreviewProps) {
+    const {
+        className,
+        hideActions,
+        id,
+        slug,
+        username,
+        thumbnail,
+        title,
+        displayName,
+        downloads,
+        state,
+    } = props;
+
     const { route } = useLocation();
     const { user, currentModal, currentRiceId } = useContext(AppState);
 
-    const isWaiting = state === RiceState.Waiting;
-
-    const starCount = useSignal(props.stars);
-    const isStarred = useSignal(props.isStarred);
-
-    useEffect(() => {
-        isStarred.value = props.isStarred;
-    }, [props.isStarred]);
+    const isWaiting = state === "waiting";
 
     const onPreviewClick = () => route(`/${username}/${slug}`);
-
-    const onStar = async (e: MouseEvent) => {
-        e.stopPropagation();
-
-        const method: FetchMethod = isStarred.value ? "DELETE" : "POST";
-        const [status, _] = await apiFetch(method, `/rices/${id}/star`);
-
-        if (status === HttpStatus.Created) {
-            starCount.value += 1;
-            isStarred.value = true;
-        } else if (status === HttpStatus.NoContent) {
-            starCount.value -= 1;
-            isStarred.value = false;
-        }
-    };
-
     const onDelete = () => {
         currentRiceId.value = id;
         currentModal.value = "deleteRice";
     };
-
     const onEdit = () => route(`/edit-rice/${id}`);
 
     return (
@@ -92,25 +71,10 @@ export default function RicePreview({
                     </div>
                     <div className="ml-auto flex gap-2 select-none sm:gap-3">
                         <div className="flex items-center gap-1">
-                            <DownloadIcon className="size-5 sm:size-6" />
-                            <p>{downloads}</p>
+                            <ArrowDownTrayIcon className="size-5 sm:size-6" />
+                            <p className="sm:text-lg">{downloads}</p>
                         </div>
-                        <div
-                            onClick={onStar}
-                            className="flex items-center gap-0.5 transition-colors duration-300 hover:cursor-pointer"
-                        >
-                            <StarIcon
-                                solid={isStarred.value}
-                                className="!size-5 sm:!size-6"
-                            />
-                            <p
-                                className={`transition-colors duration-300 ${
-                                    isStarred.value && "text-accent"
-                                }`}
-                            >
-                                {starCount}
-                            </p>
-                        </div>
+                        <StarButton {...props} />
                     </div>
                 </div>
                 {!hideActions &&
@@ -163,5 +127,48 @@ function FloatingButton({
         >
             {icon}
         </button>
+    );
+}
+
+function StarButton({ id, ...props }: PartialRice) {
+    const starCount = useSignal(props.stars);
+    const isStarred = useSignal(props.isStarred);
+
+    useEffect(() => {
+        isStarred.value = props.isStarred;
+    }, [props.isStarred]);
+
+    const onStar = async (e: MouseEvent) => {
+        e.stopPropagation();
+
+        const method: FetchMethod = isStarred.value ? "DELETE" : "POST";
+        const [status, _] = await apiFetch(method, `/rices/${id}/star`);
+
+        if (status === HttpStatus.Created) {
+            starCount.value += 1;
+            isStarred.value = true;
+        } else if (status === HttpStatus.NoContent) {
+            starCount.value -= 1;
+            isStarred.value = false;
+        }
+    };
+
+    return (
+        <div
+            onClick={onStar}
+            className="flex items-center gap-0.5 transition-colors duration-300 hover:cursor-pointer"
+        >
+            <ReactiveStarIcon
+                solid={isStarred.value}
+                className="size-5 sm:size-6"
+            />
+            <p
+                className={`transition-colors duration-300 sm:text-lg ${
+                    isStarred.value && "text-accent"
+                }`}
+            >
+                {starCount}
+            </p>
+        </div>
     );
 }

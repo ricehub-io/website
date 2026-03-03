@@ -1,24 +1,6 @@
+// Vanilla - deprecated - schemas which will be gradually removed
+import { PartialRice } from "@/api/schemas";
 import { RefObject } from "preact";
-
-// DTOs
-export enum RiceState {
-    Waiting = "waiting",
-    Accepted = "accepted",
-}
-
-export interface PartialRice {
-    id: string;
-    title: string;
-    slug: string;
-    displayName: string;
-    username: string;
-    thumbnail: string;
-    stars: number;
-    downloads: number;
-    isStarred: boolean;
-    state: RiceState;
-    createdAt: Date;
-}
 
 export interface Dotfiles {
     filePath: string;

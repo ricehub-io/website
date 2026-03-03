@@ -1,11 +1,11 @@
 import { useContext, useEffect } from "preact/hooks";
-import { addNotification, AppState } from "../lib/appState";
 import moment from "moment";
 import { useSignal } from "@preact/signals";
-import { PartialRice } from "../lib/models";
-import RicePreview from "../components/RicePreview";
-import { apiFetch } from "../lib/api";
-import SectionTitle from "../components/SectionTitle";
+import { apiFetch } from "@/api/apiFetch";
+import { PartialRice } from "@/api/schemas";
+import RicePreview from "@/components/RicePreview";
+import SectionTitle from "@/components/SectionTitle";
+import { AppState, addNotification } from "@/lib/appState";
 
 export default function AccountPage() {
     const { currentModal, user } = useContext(AppState);

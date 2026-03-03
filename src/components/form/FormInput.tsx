@@ -1,5 +1,5 @@
+import FormLabel from "@/components/form/FormLabel";
 import { InputHTMLAttributes } from "preact/compat";
-import FormLabel from "./FormLabel";
 
 export interface FormInputProps extends InputHTMLAttributes {
     label: string;

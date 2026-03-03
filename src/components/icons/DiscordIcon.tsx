@@ -1,4 +1,4 @@
-import { IconProps } from "../../lib/models";
+import { IconProps } from "@/api/legacy-schemas";
 
 export default function DiscordIcon(props: IconProps) {
     return (

@@ -1,14 +1,15 @@
 import { useRoute } from "preact-iso";
 import { useEffect } from "preact/hooks";
-import { ApiError, apiFetch } from "../lib/api";
 import { useSignal } from "@preact/signals";
-import { PartialRice, Profile, User } from "../lib/models";
-import { addNotification } from "../lib/appState";
-import RicePreview from "../components/RicePreview";
-import { HttpStatus } from "../lib/enums";
-import NotFoundPage from "./_404";
 import moment from "moment";
 import { NoSymbolIcon } from "@heroicons/react/24/solid";
+import { apiFetch, ApiError } from "@/api/apiFetch";
+import { Profile, User } from "@/api/legacy-schemas";
+import { PartialRice } from "@/api/schemas";
+import RicePreview from "@/components/RicePreview";
+import { addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
+import NotFoundPage from "@/pages/_404";
 
 export default function ProfilePage() {
     const route = useRoute();

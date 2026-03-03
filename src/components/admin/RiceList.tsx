@@ -1,11 +1,11 @@
 import { useSignal } from "@preact/signals";
-import { PartialRice } from "../../lib/models";
 import { useEffect } from "preact/hooks";
-import { apiFetch } from "../../lib/api";
-import { formatLocaleDate } from "../../lib/math";
-import Bullet from "../Bullet";
 import { addNotification } from "@/lib/appState";
 import { For } from "@preact/signals/utils";
+import { apiFetch } from "@/api/apiFetch";
+import { PartialRice } from "@/api/schemas";
+import Bullet from "@/components/Bullet";
+import { formatLocaleDate } from "@/lib/math";
 
 export default function RiceList() {
     const rices = useSignal<PartialRice[]>([]);

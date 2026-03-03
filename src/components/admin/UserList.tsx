@@ -1,10 +1,10 @@
 import { useEffect } from "preact/hooks";
-import { formatLocaleDate } from "../../lib/math";
-import { User } from "../../lib/models";
 import { useSignal } from "@preact/signals";
-import { apiFetch } from "../../lib/api";
 import { addNotification } from "@/lib/appState";
 import { For } from "@preact/signals/utils";
+import { apiFetch } from "@/api/apiFetch";
+import { User } from "@/api/legacy-schemas";
+import { formatLocaleDate } from "@/lib/math";
 
 interface UserListProps {
     userLimit: number;
@@ -55,7 +55,13 @@ function UserInfo({
                     />
                 </div>
                 <div>
-                    <p className="text-lg font-medium">{displayName}</p>
+                    <a
+                        href={`/${username}`}
+                        target="_blank"
+                        className="text-lg font-medium"
+                    >
+                        {displayName}
+                    </a>
                     <p className="text-gray">@{username}</p>
                 </div>
                 <div className="ml-auto">

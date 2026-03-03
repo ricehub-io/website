@@ -1,7 +1,6 @@
+import FormLabel from "@/components/form/FormLabel";
 import { useSignal } from "@preact/signals";
-import FormLabel from "./FormLabel";
 import {
-    ChangeEvent,
     TargetedEvent,
     TextareaHTMLAttributes,
     useEffect,

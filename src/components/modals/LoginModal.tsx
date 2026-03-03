@@ -1,10 +1,10 @@
+import { API_URL } from "@/api/apiFetch";
+import { LoginRes } from "@/api/legacy-schemas";
+import { FormButton } from "@/components/form/FormButton";
+import { FormInput } from "@/components/form/FormInput";
+import FormTitle from "@/components/form/FormTitle";
+import { AppState, addNotification } from "@/lib/appState";
 import { useContext } from "preact/compat";
-import { addNotification, AppState } from "../../lib/appState";
-import { API_URL } from "../../lib/api";
-import { LoginRes } from "../../lib/models";
-import { FormInput } from "../form/FormInput";
-import { FormButton } from "../form/FormButton";
-import FormTitle from "../form/FormTitle";
 
 async function login(username: string, password: string): Promise<LoginRes> {
     const res = await fetch(`${API_URL}/auth/login`, {

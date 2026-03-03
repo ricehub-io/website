@@ -1,10 +1,14 @@
 import { signal, Signal } from "@preact/signals";
 import { createContext, createRef } from "preact";
-import { AppNotification, NotificationSeverity, User } from "./models";
-import { API_URL, refreshToken } from "./api";
 import { jwtDecode } from "jwt-decode";
 import { v4 as uuidv4 } from "uuid";
-import { cssDurationToMs } from "./math";
+import { refreshToken, API_URL } from "@/api/apiFetch";
+import {
+    AppNotification,
+    User,
+    NotificationSeverity,
+} from "@/api/legacy-schemas";
+import { cssDurationToMs } from "@/lib/math";
 
 export type ModalType =
     | "login"

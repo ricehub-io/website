@@ -1,12 +1,14 @@
-import { MagnifyingGlassIcon } from "./icons/MagnifyingGlassIcon";
 import { useLocation } from "preact-iso";
 import { useContext } from "preact/hooks";
-import { addNotification, AppState, ModalType } from "../lib/appState";
-import { API_URL } from "../lib/api";
-import Link, { LinkProps } from "./Link";
-import BarsIcon from "./icons/BarsIcon";
 import { useSignal } from "@preact/signals";
-import XMarkIcon from "./icons/XMarkIcon";
+import { API_URL } from "@/api/apiFetch";
+import Link, { LinkProps } from "@/components/Link";
+import { AppState, addNotification, ModalType } from "@/lib/appState";
+import {
+    XMarkIcon,
+    MagnifyingGlassIcon,
+    Bars3Icon,
+} from "@heroicons/react/24/solid";
 
 interface TextButtonProps {
     text: string;
@@ -51,7 +53,9 @@ export default function Header() {
                 className="text-bright-gray cursor-pointer md:hidden"
                 onClick={openNavMenu}
             >
-                <BarsIcon className={navOpen.value ? "hidden" : "block"} />
+                <Bars3Icon
+                    className={`size-8 ${navOpen.value ? "hidden" : "block"}`}
+                />
                 <XMarkIcon
                     className={`size-8 ${navOpen.value ? "block" : "hidden"}`}
                 />
@@ -145,7 +149,7 @@ function SearchBar({
 }) {
     return (
         <div className="bg-bright-background focus-within:border-primary absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-lg border-2 border-transparent px-2 py-2 transition-colors duration-300 ease-out has-disabled:cursor-not-allowed has-disabled:opacity-30 lg:flex">
-            <MagnifyingGlassIcon />
+            <MagnifyingGlassIcon className="size-5" />
             <input
                 className="placeholder:text-gray outline-none disabled:cursor-not-allowed"
                 type="text"

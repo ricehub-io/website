@@ -1,6 +1,6 @@
-import { JSX } from "preact";
+import { InputHTMLAttributes } from "preact/compat";
 
-export interface RadioButtonProps extends JSX.InputHTMLAttributes {
+export interface RadioButtonProps extends InputHTMLAttributes {
     text: string;
     value: string;
 }
