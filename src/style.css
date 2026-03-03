@@ -74,10 +74,6 @@ body {
     flex: 0 0 auto;
 }
 
-.contact-email {
-    @apply !text-blue/60 !line-through !decoration-solid;
-}
-
 /* markdown style */
 .markdown-content {
     @apply text-sm sm:text-base md:text-lg;

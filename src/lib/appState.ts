@@ -53,7 +53,7 @@ export function createAppState(): StateValues {
     const user = signal(null);
     const userLoading = signal(true);
     const currentRiceId = signal(null);
-    const report = signal(null);
+    const reportCtx = signal(null);
     const unbanCtx = signal(null);
     const modalCallback = signal(null);
 
@@ -88,7 +88,7 @@ export function createAppState(): StateValues {
         user,
         userLoading,
         currentRiceId,
-        reportCtx: report,
+        reportCtx,
         unbanCtx,
         modalCallback,
     };
