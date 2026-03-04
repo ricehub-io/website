@@ -61,15 +61,19 @@ export default function Report({
     };
 
     return (
-        <div className="bg-background-2 flex flex-col gap-1 rounded-md px-4 py-2">
+        <div className="bg-background-2 flex flex-col gap-1 rounded-md px-4 py-2 text-sm sm:text-base">
             <div>{/* add preview of reported content here */}</div>
             <div className="flex items-center gap-1">
-                <p className="text-lg font-bold">{displayName}</p>
-                <p className="text-gray">(@{username})</p>
+                <div className="flex flex-col items-center gap-2 sm:flex-row">
+                    <p className="text-base font-bold sm:text-lg">
+                        {displayName}
+                    </p>
+                    <p className="text-gray">(@{username})</p>
+                </div>
                 <p className="ml-auto">{date}</p>
             </div>
-            <p className="bg-gray/20 rounded-md p-4">{reason}</p>
-            <div className="mt-1 flex justify-center gap-4">
+            <p className="bg-gray/20 my-2 rounded-md p-4">{reason}</p>
+            <div className="flex flex-wrap justify-center gap-4">
                 {!isClosed && (
                     <TextButton text="Close" onClick={() => onClose(id)} />
                 )}

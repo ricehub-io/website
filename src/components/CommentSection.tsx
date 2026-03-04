@@ -149,8 +149,10 @@ function Comment({
 }: CommentWithUser & { comments: Signal<CommentWithUser[]> }) {
     const { user, currentModal, reportCtx: report } = useContext(AppState);
 
-    const isAuthor = useComputed(
-        () => user.value !== null && user.value.username === username
+    const canDelete = useComputed(
+        () =>
+            user.value !== null &&
+            (user.value.username === username || user.value.isAdmin)
     );
 
     const deleteComment = async () => {
@@ -210,7 +212,7 @@ function Comment({
                     <div className="sm:hidden">
                         <Bullet className="text-foreground/20 mr-1" />
                         <Show
-                            when={isAuthor}
+                            when={canDelete}
                             fallback={
                                 <TextButton
                                     value="Report"
@@ -229,7 +231,7 @@ function Comment({
             </div>
             {/* action buttons for bigger screens */}
             <div className="border-gray/20 hidden border-l-2 pl-4 sm:flex">
-                {isAuthor.value ? (
+                {canDelete.value ? (
                     <button
                         onClick={deleteComment}
                         className="bg-red/40 border-red/60 hover:bg-red/20 cursor-pointer rounded-md border p-2 transition-colors"

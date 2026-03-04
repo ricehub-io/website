@@ -21,10 +21,10 @@ export default function WaitingRice({
     const onView = () => window.open(ricePath, "_blank", "noopener,noreferrer");
 
     return (
-        <div className="bg-background-2 flex flex-col gap-1 rounded-md p-4">
+        <div className="bg-background-2 flex flex-col gap-1 rounded-md p-4 text-sm sm:text-base">
             <div className="flex justify-between">
                 <div>
-                    <p className="text-lg font-medium">{title}</p>
+                    <p className="font-medium sm:text-lg">{title}</p>
                     <p className="text-gray">{ricePath}</p>
                 </div>
                 <div className="text-right">

@@ -17,7 +17,7 @@ export default function ResourceList() {
 
     return (
         <ListWrapper
-            label={`most recent ${resourceType.value}`}
+            label={`recent ${resourceType.value}`}
             buttons={[
                 {
                     text: "Users",

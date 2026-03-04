@@ -13,7 +13,7 @@ export function RadioButton({
 }: RadioButtonProps) {
     return (
         <label
-            className={`bg-gray/20 border-gray/60 hover:bg-gray/40 has-checked:border-blue has-checked:bg-blue/40 cursor-pointer rounded-md border px-3 py-1 transition-colors select-none not-first:ml-2 ${className}`}
+            className={`bg-gray/20 border-gray/60 hover:bg-gray/40 has-checked:border-blue has-checked:bg-blue/40 cursor-pointer rounded-md border px-2 py-1 text-sm transition-colors select-none not-first:ml-2 sm:px-3 sm:text-base ${className}`}
             htmlFor={text.toLowerCase()}
         >
             <input

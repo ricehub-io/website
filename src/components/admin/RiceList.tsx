@@ -46,10 +46,10 @@ function RiceInfo({
     const ricePath = `/${username}/${slug}`;
 
     return (
-        <div className="bg-background-2 rounded-md p-4">
-            <div className="mb-2 flex items-center justify-evenly gap-2">
+        <div className="bg-background-2 rounded-md p-4 text-sm sm:text-base">
+            <div className="mb-2 flex flex-col justify-evenly gap-x-2 gap-y-0.5 md:flex-row md:items-center">
                 <p className="font-bold">{title}</p>
-                <Bullet />
+                <Bullet className="hidden md:block" />
                 <a
                     href={ricePath}
                     target="_blank"
@@ -57,9 +57,12 @@ function RiceInfo({
                 >
                     {ricePath}
                 </a>
-                <Bullet />
+                <Bullet className="hidden md:block" />
                 <p className="text-foreground/80">
-                    {formatLocaleDate(createdAt)}
+                    <span className="md:hidden">Created: </span>
+                    <span className="font-medium md:font-normal">
+                        {formatLocaleDate(createdAt)}
+                    </span>
                 </p>
             </div>
             <div>

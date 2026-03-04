@@ -14,8 +14,6 @@ export default function UserList({ userLimit }: UserListProps) {
     const users = useSignal<User[]>([]);
 
     useEffect(() => {
-        console.log("fetch users");
-
         apiFetch<User[]>("GET", `/users?limit=${userLimit}`)
             .then(([_, body]) => (users.value = body))
             .catch((e) => {
@@ -45,28 +43,40 @@ function UserInfo({
     updatedAt,
 }: User) {
     return (
-        <div className="bg-background-2 rounded-md p-4">
-            <div className="flex items-center gap-4">
-                <div className="w-16">
-                    <img
-                        className="rounded-md"
-                        src={avatarUrl}
-                        alt="user's avatar"
-                    />
+        <div className="bg-background-2 rounded-md p-4 text-sm sm:text-left sm:text-base">
+            <div className="flex flex-col items-center gap-2 sm:gap-4 md:flex-row">
+                <div className="flex items-center gap-2">
+                    <div className="w-12 sm:w-16">
+                        <img
+                            className="rounded-md"
+                            src={avatarUrl}
+                            alt="user's avatar"
+                        />
+                    </div>
+                    <div>
+                        <a
+                            href={`/${username}`}
+                            target="_blank"
+                            className="text-base font-medium sm:text-lg"
+                        >
+                            {displayName}
+                        </a>
+                        <p className="text-gray -mt-1">@{username}</p>
+                    </div>
                 </div>
-                <div>
-                    <a
-                        href={`/${username}`}
-                        target="_blank"
-                        className="text-lg font-medium"
-                    >
-                        {displayName}
-                    </a>
-                    <p className="text-gray">@{username}</p>
-                </div>
-                <div className="ml-auto">
-                    <p>Created {formatLocaleDate(createdAt)}</p>
-                    <p>Updated {formatLocaleDate(updatedAt)}</p>
+                <div className="sm:ml-auto">
+                    <p>
+                        Created{" "}
+                        <span className="font-medium">
+                            {formatLocaleDate(createdAt)}
+                        </span>
+                    </p>
+                    <p>
+                        Updated{" "}
+                        <span className="font-medium">
+                            {formatLocaleDate(updatedAt)}
+                        </span>
+                    </p>
                 </div>
             </div>
             <div></div>

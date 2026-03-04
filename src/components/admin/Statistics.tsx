@@ -16,7 +16,7 @@ export default function Statistics() {
 
     return (
         stats.value !== null && (
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
                 <StatsCard
                     value={stats.value.userCount}
                     secondValue={stats.value.user24hCount}
@@ -52,12 +52,12 @@ function StatsCard({
     label: string;
 }) {
     return (
-        <div className="bg-bright-background border-background-2 flex-1 rounded-2xl border-2 p-8">
-            <p className="font-jetbrains-mono text-3xl font-bold">
+        <div className="bg-bright-background border-background-2 flex-1 rounded-2xl border-2 p-6 sm:p-8">
+            <p className="font-jetbrains-mono text-xl font-bold sm:text-2xl md:text-3xl">
                 {value}
                 <span className="ml-1">({secondValue})</span>
             </p>
-            <p className="text-gray mt-1">{label}</p>
+            <p className="text-gray mt-1 text-sm sm:text-base">{label}</p>
         </div>
     );
 }

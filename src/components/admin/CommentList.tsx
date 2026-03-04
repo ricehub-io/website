@@ -5,6 +5,7 @@ import { For } from "@preact/signals/utils";
 import { apiFetch } from "@/api/apiFetch";
 import { CommentWithUser } from "@/api/legacy-schemas";
 import { formatLocaleDate } from "@/lib/math";
+import moment from "moment";
 
 interface CommentListProps {
     commentLimit: number;
@@ -32,7 +33,7 @@ export default function CommentList({ commentLimit }: CommentListProps) {
         <For
             each={comments}
             fallback={
-                <p className="my-6 text-center text-xl font-medium">
+                <p className="my-6 text-center font-medium sm:text-xl">
                     No recently posted comments
                 </p>
             }
@@ -50,17 +51,24 @@ function Comment({
     createdAt,
 }: CommentWithUser) {
     return (
-        <div className="bg-background-2 flex gap-4 rounded-md p-4">
-            <div className="w-16">
+        <div className="bg-background-2 flex gap-2 rounded-md p-4 sm:gap-4">
+            <div className="w-12 sm:w-16">
                 <img className="rounded-md" src={avatar} alt="avatar" />
             </div>
             <div className="flex-1">
                 <div className="-mt-1 flex items-center gap-1">
-                    <p className="text-lg font-medium">{displayName}</p>
-                    <p className="text-gray">(@{username})</p>
-                    <p className="ml-auto">{formatLocaleDate(createdAt)}</p>
+                    <p className="text-base font-medium sm:text-lg">
+                        {displayName}
+                    </p>
+                    <p className="text-gray hidden sm:block">(@{username})</p>
+                    <p className="ml-auto hidden sm:block">
+                        {formatLocaleDate(createdAt)}
+                    </p>
+                    <p className="text-gray ml-auto sm:hidden">
+                        {moment(createdAt).fromNow()}
+                    </p>
                 </div>
-                <div>
+                <div className="text-sm sm:text-base">
                     <p>{content}</p>
                 </div>
             </div>

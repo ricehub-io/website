@@ -28,7 +28,7 @@ export default function AdminPage() {
                 <SectionTitle text="Statistics" />
                 <Statistics />
             </div>
-            <div className="mb-6 flex w-full gap-6">
+            <div className="mb-6 flex w-full flex-col gap-6 md:flex-row">
                 <div className="flex-1">
                     <SectionTitle text="Reports" />
                     <ReportList refreshInterval={REFRESH_INTERVAL} />
@@ -38,7 +38,7 @@ export default function AdminPage() {
                     <ResourceList />
                 </div>
             </div>
-            <div className="mb-6 flex w-full gap-6">
+            <div className="mb-6 flex w-full flex-col gap-6 md:flex-row">
                 <div className="flex-1">
                     <SectionTitle text="Ban User" />
                     <BanUserForm />
@@ -50,7 +50,7 @@ export default function AdminPage() {
             </div>
             <div className="flex w-full gap-6">
                 {/* placeholder container */}
-                <div className="flex-1" />
+                <div className="hidden flex-1 md:block" />
                 <div className="flex-1">
                     <SectionTitle text="Waiting Rices" />
                     <WaitingRiceList refreshInterval={REFRESH_INTERVAL} />
@@ -273,28 +273,29 @@ function BanList() {
                 }
             >
                 {({ user, ban }, _) => (
-                    <div className="bg-background-2 rounded-md p-4">
-                        <div className="mx-1 flex items-center justify-between gap-2">
-                            <a
-                                className="hover:text-foreground/80 text-lg font-medium underline transition-colors"
-                                href={`/${user.username}`}
-                                target="_blank"
-                            >
-                                {user.displayName}
-                            </a>
-                            <Bullet />
-                            <p className="text-bright-gray/80">
-                                @{user.username}
-                            </p>
-                            <Bullet />
+                    <div className="bg-background-2 rounded-md p-4 text-sm sm:text-base">
+                        <div className="mx-1 flex items-center justify-between gap-x-2">
+                            <div className="flex flex-col items-center md:flex-row">
+                                <a
+                                    className="hover:text-foreground/80 font-medium underline transition-colors sm:text-lg"
+                                    href={`/${user.username}`}
+                                    target="_blank"
+                                >
+                                    {user.displayName}
+                                </a>
+                                <Bullet className="hidden md:block" />
+                                <p className="text-bright-gray/80">
+                                    @{user.username}
+                                </p>
+                            </div>
                             <p className="text-bright-gray/80">
                                 created {moment(user.createdAt).fromNow()}
                             </p>
                         </div>
-                        <p className="bg-gray/20 my-1 rounded-md p-4">
+                        <p className="bg-gray/20 my-2 rounded-md p-4">
                             {ban.reason}
                         </p>
-                        <div className="mx-1 flex items-center justify-between gap-2">
+                        <div className="mx-1 flex flex-col justify-between gap-x-2 md:flex-row md:items-center">
                             <p>
                                 banned:{" "}
                                 <span className="font-medium">
@@ -303,7 +304,7 @@ function BanList() {
                                     )}
                                 </span>
                             </p>
-                            <Bullet />
+                            <Bullet className="hidden md:block" />
                             <p>
                                 expires in:{" "}
                                 <span className="font-medium">
@@ -312,7 +313,7 @@ function BanList() {
                                         : "never"}
                                 </span>
                             </p>
-                            <Bullet />
+                            <Bullet className="hidden md:block" />
                             <TextButton
                                 text="unban"
                                 onClick={() => onUnbanClick(user)}

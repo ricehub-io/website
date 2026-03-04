@@ -15,7 +15,7 @@ export default function ListWrapper({
     return (
         <div className="bg-bright-background rounded-lg p-4">
             <div className="mb-4 flex items-center justify-between">
-                <p className="text-lg font-bold">{label}</p>
+                <p className="text-base font-bold sm:text-lg">{label}</p>
                 <div>
                     {buttons.map((props) => (
                         <RadioButton key={props.value} {...props} />

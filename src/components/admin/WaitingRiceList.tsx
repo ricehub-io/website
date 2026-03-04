@@ -17,7 +17,6 @@ export default function WaitingRiceList({
     const rices = useSignal<PartialRice[]>([]);
 
     const fetchRices = async () => {
-        console.log("fetch waiting rices");
         apiFetch<PartialRice[]>("GET", "/rices?state=waiting")
             .then(([_, body]) => (rices.value = body))
             .catch((e) => {
@@ -94,7 +93,7 @@ export default function WaitingRiceList({
             <For
                 each={rices}
                 fallback={
-                    <p className="my-6 text-center text-xl font-medium">
+                    <p className="my-6 text-center font-medium sm:text-xl">
                         No pending rices
                     </p>
                 }
