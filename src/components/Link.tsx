@@ -11,7 +11,7 @@ export interface LinkProps extends AnchorHTMLAttributes {
 export default function Link({ content, url, inNewTab, ...props }: LinkProps) {
     return (
         <a
-            className="text-blue hover:text-blue/80 underline decoration-wavy transition-colors"
+            className="text-blue hover:text-blue/80 underline transition-colors"
             href={url}
             target={inNewTab ? "_blank" : "_self"}
             {...props}

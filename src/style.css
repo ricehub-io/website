@@ -80,7 +80,7 @@ body {
 }
 
 .markdown-content a {
-    @apply text-blue hover:text-blue/80 underline decoration-wavy transition-colors;
+    @apply text-blue hover:text-blue/80 underline transition-colors;
 }
 
 .markdown-content h1 {

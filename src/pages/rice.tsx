@@ -45,7 +45,7 @@ export default function RicePage() {
     }
 
     return (
-        <div className="mx-auto my-8 flex flex-col gap-6 md:w-[min(80%,1000px)]">
+        <div className="mx-auto my-8 flex flex-col gap-2 md:w-[min(80%,1000px)]">
             {riceInfo.value !== null ? (
                 <RiceInfo {...riceInfo.value} />
             ) : (

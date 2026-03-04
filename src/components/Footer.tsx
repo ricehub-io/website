@@ -9,7 +9,7 @@ import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import DiscordIcon from "@/components/icons/DiscordIcon";
 
 const VERSION_MAJOR: number = 1;
-const VERSION_MINOR: number = 10;
+const VERSION_MINOR: number = 11;
 
 export default function Footer() {
     const discord = useSignal("");

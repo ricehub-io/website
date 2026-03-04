@@ -109,8 +109,11 @@ export function RiceInfo({
         currentModal.value = "report";
     };
 
+    const openAuthorProfile = () => route(`/${author.username}`);
+
     return (
         <>
+            {/* rice header */}
             <div className="flex flex-col items-center justify-between gap-y-4 md:flex-row">
                 <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">
                     {title}
@@ -149,34 +152,34 @@ export function RiceInfo({
                     )}
                 </div>
             </div>
-            <div>
-                <div
-                    className="markdown-content bg-bright-background mb-2 rounded-lg p-6"
-                    dangerouslySetInnerHTML={{
-                        __html: sanitizeMarkdownInput(description),
-                    }}
-                />
-                <div className="bg-bright-background flex items-center justify-between rounded-lg p-4 text-sm sm:text-base">
-                    <div className="flex items-center gap-3">
+
+            <div className="bg-dark-background rounded-lg p-6">
+                {/* author + creation date */}
+                <div className="flex items-center gap-2">
+                    <div className="w-10 md:w-12">
                         <img
-                            className="w-16 rounded-lg"
+                            className="rounded-lg"
                             src={author.avatarUrl}
-                            alt="Author's avatar"
+                            alt="avatar"
                         />
-                        <div>
-                            <a
-                                className={`flex items-center gap-0.5 text-base font-medium transition-colors hover:underline sm:text-lg md:text-xl ${author.isBanned ? "text-foreground/70" : "hover:text-foreground/80"}`}
-                                href={`/${author.username}`}
-                            >
-                                {author.isBanned && (
-                                    <NoSymbolIcon className="text-red/70 size-5 sm:size-6" />
-                                )}
-                                {author.displayName}
-                            </a>
-                            <p className="text-gray">@{author.username}</p>
-                        </div>
                     </div>
-                    <div className="text-right text-sm sm:text-base md:text-lg">
+                    <div
+                        className={`-mt-1 cursor-pointer transition-opacity select-none ${author.isBanned ? "opacity-70 hover:opacity-50" : "hover:opacity-80"}`}
+                        onClick={openAuthorProfile}
+                    >
+                        <div className="flex items-center">
+                            {author.isBanned && (
+                                <NoSymbolIcon className="text-red/70 size-4 md:size-5" />
+                            )}
+                            <p className="text-base font-bold md:text-lg">
+                                {author.displayName}
+                            </p>
+                        </div>
+                        <p className="text-gray -mt-1 text-sm md:text-base">
+                            @{author.username}
+                        </p>
+                    </div>
+                    <div className="-mt-1 ml-auto text-sm md:text-base">
                         <p>
                             Created <b>{moment(createdAt).fromNow()}</b>
                         </p>
@@ -185,14 +188,33 @@ export function RiceInfo({
                         </p>
                     </div>
                 </div>
+
+                <Separator />
+
+                {/* screenshots */}
+                <div>
+                    <SectionTitle text="Screenshots" />
+                    <RiceScreenshots previews={previews} />
+                </div>
+
+                {/* description */}
+                <div className="mt-4">
+                    <SectionTitle text="Description" />
+                    <div
+                        className="markdown-content bg-bright-background rounded-lg p-6"
+                        dangerouslySetInnerHTML={{
+                            __html: sanitizeMarkdownInput(description),
+                        }}
+                    />
+                </div>
+
+                {/* dotfiles */}
+                <RiceDotfiles onDownload={onDownload} {...dotfiles} />
             </div>
+
             <Separator />
-            <div>
-                <SectionTitle text="Screenshots" />
-                <RiceScreenshots previews={previews} />
-            </div>
-            <RiceDotfiles onDownload={onDownload} {...dotfiles} />
-            <Separator />
+
+            {/* comment section */}
             <div>
                 <SectionTitle text="Comments" />
                 <CommentSection
@@ -204,7 +226,7 @@ export function RiceInfo({
     );
 }
 
-const Separator = () => <div className="bg-bright-background/50 mx-2 h-0.5" />;
+const Separator = () => <div className="bg-bright-background/50 my-4 h-0.5" />;
 
 function HeaderButton({
     onClick,
@@ -275,7 +297,7 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
 
     return (
         <>
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                 {previews.map((preview) => (
                     <div
                         key={preview.id}
@@ -291,10 +313,10 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
                 ))}
             </div>
             {zoom.value !== null && (
-                <div className="bg-background/70 fixed top-0 left-0 flex aspect-video h-full w-full items-center justify-center">
+                <div className="bg-background/70 fixed top-0 left-0 z-50 flex aspect-video h-full w-full items-center justify-center">
                     <div
                         ref={imageRef}
-                        className="relative aspect-video w-full select-none lg:h-3/5 lg:w-auto xl:h-3/4"
+                        className="relative aspect-video w-full max-w-3/4 select-none lg:h-3/5 lg:w-auto xl:h-3/4"
                     >
                         <button
                             className="bg-red/40 border-red/60 hover:bg-red/20 absolute top-2 right-2 cursor-pointer rounded-md border p-1 transition-colors md:top-4 md:right-4 md:rounded-lg"
@@ -329,13 +351,13 @@ function RiceDotfiles({
 }: { onDownload: () => void } & Dotfiles) {
     return (
         <div
-            className="bg-dark-background hover:bg-bright-background hover:border-accent flex items-center justify-between rounded-lg border-2 border-transparent px-4 py-3 transition-colors duration-300 select-none hover:cursor-pointer"
+            className="bg-bright-background hover:bg-bright-background hover:border-blue mt-4 flex items-center justify-between rounded-lg border-2 border-transparent px-4 py-3 transition-colors duration-300 select-none hover:cursor-pointer"
             onClick={onDownload}
         >
             <div className="flex items-center gap-2">
-                <FolderArrowDownIcon className="size-8 sm:size-10" />
+                <FolderArrowDownIcon className="size-6 sm:size-8 md:size-10" />
                 <input
-                    className="text-lg font-semibold hover:cursor-pointer sm:text-xl"
+                    className="font-semibold hover:cursor-pointer sm:text-lg md:text-xl"
                     type="button"
                     value="Download"
                 />
