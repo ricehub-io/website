@@ -1,6 +1,6 @@
 import { useContext } from "preact/hooks";
 import { useLocation } from "preact-iso";
-import { apiFetch, API_URL } from "@/api/apiFetch";
+import { apiFetchV2 } from "@/api/apiFetch";
 import { FormButton } from "@/components/form/FormButton";
 import { FormInput } from "@/components/form/FormInput";
 import { AppState, addNotification } from "@/lib/appState";
@@ -18,7 +18,7 @@ export default function DeleteAccountModal() {
         const password = formData.get("password");
 
         try {
-            const [status, _] = await apiFetch(
+            const [status, _] = await apiFetchV2(
                 "DELETE",
                 `/users/${user.value.id}`,
                 JSON.stringify({
@@ -34,10 +34,7 @@ export default function DeleteAccountModal() {
                 target.reset();
 
                 // log out
-                fetch(`${API_URL}/auth/logout`, {
-                    method: "POST",
-                    credentials: "include",
-                });
+                await apiFetchV2("POST", "/auth/logout");
                 accessToken.value = null;
                 user.value = null;
 

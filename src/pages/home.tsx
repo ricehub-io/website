@@ -13,11 +13,7 @@ import { ApiError, apiFetchV2 } from "@/api/apiFetch";
 import { Placeholder } from "@/components/Placeholder";
 import RicePreview from "@/components/RicePreview";
 import { AppState, addNotification } from "@/lib/appState";
-import {
-    FetchRicesSchema,
-    PartialRice,
-    PartialRiceSchema,
-} from "@/api/schemas";
+import { FetchRicesSchema, PartialRice } from "@/api/schemas";
 import { HttpStatus } from "@/lib/enums";
 
 const SORT_OPTIONS = [
@@ -59,7 +55,7 @@ export default function HomePage() {
     const isLoaded = useComputed(() => rices.value.length > 0);
 
     const fetchRices = () => {
-        apiFetchV2("GET", `/rices?sort=${sortBy.value}`, FetchRicesSchema)
+        apiFetchV2("GET", `/rices?sort=${sortBy.value}`, null, FetchRicesSchema)
             .then(([_, data]) => {
                 rices.value = data.rices;
                 pageCount.value = data.pageCount;
@@ -113,23 +109,21 @@ export default function HomePage() {
         }
 
         // access last rice in rices to get values for pagination
-        const firstRice = rices.value.at(0);
-        const lastRice = rices.value.at(-1);
-        // if (lastRice === undefined) {
-        //     addNotification(
-        //         "Something went wrong",
-        //         "Tried fetching rices in new page but lastRice is undefined. Check console logs for more details.",
-        //         "error"
-        //     );
-        //     console.log(rices.value);
-        //     return;
-        // }
+        const reverse = diff < 0;
+        const rice = rices.value.at(reverse ? 0 : -1);
+        if (rice === undefined) {
+            addNotification(
+                "Something went wrong",
+                "Tried fetching paginated rices but rice is undefined. Check console logs for more details.",
+                "error"
+            );
+            console.log(rices.value);
+            return;
+        }
 
         // fetch paginated rices
         try {
             const sort = sortBy.value;
-            const reverse = diff < 0;
-            const rice = reverse ? firstRice : lastRice;
             let endpoint = `/rices?sort=${sort}&lastId=${rice.id}`;
 
             if (reverse) {
@@ -159,6 +153,7 @@ export default function HomePage() {
             const [status, data] = await apiFetchV2(
                 "GET",
                 endpoint,
+                null,
                 FetchRicesSchema
             );
             if (status !== HttpStatus.Ok) {
@@ -187,6 +182,10 @@ export default function HomePage() {
         const newValue = (currentPage.value += byNegative ? -1 : 1);
         currentPage.value = clamp(newValue, 1, pageCount.value);
         changePage(currentPage.value);
+    };
+
+    const deleteRice = (riceId: string) => {
+        rices.value = rices.value.filter((rice) => rice.id !== riceId);
     };
 
     return (
@@ -233,7 +232,11 @@ export default function HomePage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {isLoaded.value ? (
                     rices.value.map((rice) => (
-                        <RicePreview key={rice.id} {...rice} />
+                        <RicePreview
+                            key={rice.id}
+                            {...rice}
+                            onDelete={() => deleteRice(rice.id)}
+                        />
                     ))
                 ) : (
                     <>

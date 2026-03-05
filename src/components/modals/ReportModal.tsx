@@ -1,5 +1,5 @@
-import { apiFetch } from "@/api/apiFetch";
-import { CreateReportReq, CreateReportRes } from "@/api/legacy-schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { CreateReport, ReportCreatedSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import FormTextArea from "@/components/form/FormTextArea";
 import FormTitle from "@/components/form/FormTitle";
@@ -17,16 +17,17 @@ export default function ReportModal() {
 
         try {
             const isRice = report.value.resourceType === "rice";
-            const reqBody: CreateReportReq = {
+            const reqBody: CreateReport = {
                 reason: formData.get("message") as string,
                 ...(isRice
                     ? { riceId: report.value.resourceId }
                     : { commentId: report.value.resourceId }),
             };
-            const [status, body] = await apiFetch<CreateReportRes>(
+            const [status, body] = await apiFetchV2(
                 "POST",
                 "/reports",
-                JSON.stringify(reqBody)
+                JSON.stringify(reqBody),
+                ReportCreatedSchema
             );
             if (status !== HttpStatus.Created) {
                 throw new Error(

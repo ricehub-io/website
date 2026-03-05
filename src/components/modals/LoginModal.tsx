@@ -1,28 +1,11 @@
-import { API_URL } from "@/api/apiFetch";
-import { LoginRes } from "@/api/legacy-schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { LoginSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import { FormInput } from "@/components/form/FormInput";
 import FormTitle from "@/components/form/FormTitle";
 import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
 import { useContext } from "preact/compat";
-
-async function login(username: string, password: string): Promise<LoginRes> {
-    const res = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-        credentials: "include",
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-        throw new Error(data.error || "Failed to login");
-    }
-
-    return data;
-}
 
 export default function LoginModal() {
     const { currentModal, accessToken, user } = useContext(AppState);
@@ -36,18 +19,33 @@ export default function LoginModal() {
         const password = formData.get("password").toString();
 
         try {
-            const body = await login(username, password);
+            const [status, body] = await apiFetchV2(
+                "POST",
+                "/auth/login",
+                JSON.stringify({ username, password }),
+                LoginSchema,
+                true
+            );
+
+            if (status !== HttpStatus.Ok) {
+                throw new Error(
+                    `Unexpected status code received from API: ${status}`
+                );
+            }
+
             accessToken.value = body.accessToken;
             user.value = body.user;
+
             target.reset();
             addNotification(
                 "Login",
                 "You successfully logged into an account!",
                 "info"
             );
-        } catch (err) {
-            const errMsg = (err as Error).message;
-            addNotification("Login failed", errMsg, "error");
+        } catch (e) {
+            if (e instanceof Error) {
+                addNotification("Failed to login", e.message, "error");
+            }
         }
     };
 

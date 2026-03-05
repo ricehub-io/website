@@ -2,10 +2,10 @@ import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { addNotification } from "@/lib/appState";
 import { For } from "@preact/signals/utils";
-import { apiFetch } from "@/api/apiFetch";
-import { CommentWithUser } from "@/api/legacy-schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
 import { formatLocaleDate } from "@/lib/math";
 import moment from "moment";
+import { CommentWithUser, CommentWithUserSchema } from "@/api/schemas";
 
 interface CommentListProps {
     commentLimit: number;
@@ -16,7 +16,12 @@ export default function CommentList({ commentLimit }: CommentListProps) {
 
     useEffect(() => {
         console.log("fetch comments");
-        apiFetch<CommentWithUser[]>("GET", `/comments?limit=${commentLimit}`)
+        apiFetchV2(
+            "GET",
+            `/comments?limit=${commentLimit}`,
+            null,
+            CommentWithUserSchema.array()
+        )
             .then(([_, body]) => (comments.value = body))
             .catch((e) => {
                 if (e instanceof Error) {

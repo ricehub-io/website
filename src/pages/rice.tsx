@@ -1,5 +1,5 @@
-import { apiFetch, ApiError } from "@/api/apiFetch";
-import { Rice } from "@/api/legacy-schemas";
+import { apiFetchV2, ApiError } from "@/api/apiFetch";
+import { Rice, RiceSchema } from "@/api/schemas";
 import { Placeholder } from "@/components/Placeholder";
 import { RiceInfo } from "@/components/RiceInfo";
 import { AppState, addNotification } from "@/lib/appState";
@@ -23,19 +23,15 @@ export default function RicePage() {
             return;
         }
 
-        apiFetch<Rice>("GET", `/users/${username}/rices/${slug}`)
+        apiFetchV2("GET", `/users/${username}/rices/${slug}`, null, RiceSchema)
             .then(([_, body]) => (riceInfo.value = body))
             .catch((e) => {
                 if (e instanceof ApiError) {
                     if (e.statusCode === HttpStatus.NotFound) {
                         notFound.value = true;
-                    } else {
-                        addNotification(
-                            "Failed to fetch data",
-                            e.message,
-                            "error"
-                        );
+                        return;
                     }
+                    addNotification("Failed to fetch data", e.message, "error");
                 }
             });
     }, [username, slug, accessToken.value, userLoading.value]);

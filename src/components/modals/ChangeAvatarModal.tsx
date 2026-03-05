@@ -1,4 +1,5 @@
-import { apiFetch } from "@/api/apiFetch";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { NewAvatarSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import { FormInput } from "@/components/form/FormInput";
 import { AppState, addNotification } from "@/lib/appState";
@@ -14,10 +15,11 @@ export default function ChangeAvatarModal() {
         const formData = new FormData(target);
 
         try {
-            const [status, body] = await apiFetch<{ avatarUrl: string }>(
+            const [status, body] = await apiFetchV2(
                 "POST",
                 `/users/${user.value.id}/avatar`,
-                formData
+                formData,
+                NewAvatarSchema
             );
             if (status === HttpStatus.Created) {
                 target.reset();

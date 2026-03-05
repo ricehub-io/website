@@ -1,6 +1,8 @@
-import { IconProps } from "@/api/legacy-schemas";
+interface DiscordIconProps {
+    className: string;
+}
 
-export default function DiscordIcon(props: IconProps) {
+export default function DiscordIcon(props: DiscordIconProps) {
     return (
         <svg
             role="img"

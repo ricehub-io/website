@@ -4,12 +4,16 @@ import moment from "moment";
 import { For, Show } from "@preact/signals/utils";
 import { InputHTMLAttributes } from "preact/compat";
 import { addNotification, AppState } from "@/lib/appState";
-import { apiFetch } from "@/api/apiFetch";
-import { CommentWithUser, RawComment } from "@/api/legacy-schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
 import Bullet from "@/components/Bullet";
 import { HttpStatus } from "@/lib/enums";
 import { TrashIcon, NoSymbolIcon } from "@heroicons/react/24/solid";
 import { FlagIcon } from "@heroicons/react/24/outline";
+import {
+    CommentSchema,
+    CommentWithUser,
+    CommentWithUserSchema,
+} from "@/api/schemas";
 
 interface CommentSectionProps {
     riceId: string;
@@ -25,7 +29,12 @@ export default function CommentSection({
     const comments = useSignal<CommentWithUser[]>([]);
 
     useEffect(() => {
-        apiFetch<CommentWithUser[]>("GET", `/rices/${riceId}/comments`)
+        apiFetchV2(
+            "GET",
+            `/rices/${riceId}/comments`,
+            null,
+            CommentWithUserSchema.array()
+        )
             .then(([_, body]) => {
                 comments.value = body;
                 onLoad();
@@ -79,13 +88,14 @@ function CommentCreator({
         const formData = new FormData(target);
 
         try {
-            const [status, comment] = await apiFetch<RawComment>(
+            const [status, comment] = await apiFetchV2(
                 "POST",
                 "/comments",
                 JSON.stringify({
                     riceId,
                     content: formData.get("content") as string,
-                })
+                }),
+                CommentSchema
             );
 
             if (status !== HttpStatus.Created) {
@@ -157,7 +167,7 @@ function Comment({
 
     const deleteComment = async () => {
         try {
-            const [status, _] = await apiFetch(
+            const [status, _] = await apiFetchV2(
                 "DELETE",
                 `/comments/${commentId}`
             );

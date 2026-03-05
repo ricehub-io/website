@@ -1,4 +1,5 @@
-import { apiFetch } from "@/api/apiFetch";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { NewAvatarSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import { AppState, addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
@@ -12,9 +13,11 @@ export default function DeleteAvatarModal() {
         const target = e.currentTarget as HTMLFormElement;
 
         try {
-            const [status, body] = await apiFetch<{ avatarUrl: string }>(
+            const [status, body] = await apiFetchV2(
                 "DELETE",
-                `/users/${user.value.id}/avatar`
+                `/users/${user.value.id}/avatar`,
+                null,
+                NewAvatarSchema
             );
 
             if (status === HttpStatus.Ok) {

@@ -1,5 +1,5 @@
-import { apiFetch } from "@/api/apiFetch";
-import { PartialRice } from "@/api/schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { PartialRice, PartialRiceSchema } from "@/api/schemas";
 import WaitingRice from "@/components/admin/WaitingRice";
 import { addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
@@ -17,7 +17,12 @@ export default function WaitingRiceList({
     const rices = useSignal<PartialRice[]>([]);
 
     const fetchRices = async () => {
-        apiFetch<PartialRice[]>("GET", "/rices?state=waiting")
+        apiFetchV2(
+            "GET",
+            "/rices?state=waiting",
+            null,
+            PartialRiceSchema.array()
+        )
             .then(([_, body]) => (rices.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
@@ -40,7 +45,7 @@ export default function WaitingRiceList({
 
     const acceptRice = async (rice: PartialRice) => {
         try {
-            const [status, _] = await apiFetch(
+            const [status, _] = await apiFetchV2(
                 "PATCH",
                 `/rices/${rice.id}/state`,
                 JSON.stringify({
@@ -65,7 +70,7 @@ export default function WaitingRiceList({
 
     const rejectRice = async (rice: PartialRice) => {
         try {
-            const [status, _] = await apiFetch(
+            const [status, _] = await apiFetchV2(
                 "PATCH",
                 `/rices/${rice.id}/state`,
                 JSON.stringify({

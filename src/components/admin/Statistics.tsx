@@ -1,17 +1,25 @@
 import { useEffect } from "preact/hooks";
 import { useSignal } from "@preact/signals";
-import { apiFetch } from "@/api/apiFetch";
-import { ServiceStatistics } from "@/api/legacy-schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { ServiceStatistics, ServiceStatisticsSchema } from "@/api/schemas";
+import { addNotification } from "@/lib/appState";
 
 export default function Statistics() {
     const stats = useSignal<ServiceStatistics>(null);
 
     useEffect(() => {
-        console.log("fetching service stats");
         // TODO: catch exceptions
-        apiFetch<ServiceStatistics>("GET", "/admin/stats").then(
-            ([_, body]) => (stats.value = body)
-        );
+        apiFetchV2("GET", "/admin/stats", null, ServiceStatisticsSchema)
+            .then(([_, body]) => (stats.value = body))
+            .catch((e) => {
+                if (e instanceof Error) {
+                    addNotification(
+                        "Failed to fetch service stats",
+                        e.message,
+                        "warning"
+                    );
+                }
+            });
     }, []);
 
     return (

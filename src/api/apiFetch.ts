@@ -58,53 +58,42 @@ async function checkTokenExpired() {
 async function sendRequest(
     method: FetchMethod,
     endpoint: string,
-    body?: any
+    body?: any,
+    withoutToken?: boolean
 ): Promise<[HttpStatus, any]> {
     const res = await fetch(`${API_URL}${endpoint}`, {
         method,
         headers: {
-            ...(accessToken.value && {
-                Authorization: `Bearer ${accessToken.value}`,
-            }),
+            ...(accessToken.value &&
+                !withoutToken && {
+                    Authorization: `Bearer ${accessToken.value}`,
+                }),
         },
+        credentials: withoutToken ? "include" : "same-origin",
         body,
     });
     const resBody = await res.json().catch(() => null);
     return [res.status, resBody];
 }
 
-/**
- * API Fetch function for vanilla schemas
- * @deprecated You should instead use apiFetchV2. This function will be removed in the future.
- */
-export async function apiFetch<T>(
-    method: FetchMethod,
-    endpoint: string,
-    reqBody?: any
-): Promise<[HttpStatus, T]> {
-    await checkTokenExpired();
-
-    const [status, resBody] = await sendRequest(method, endpoint, reqBody);
-    if (!isStatusOk(status)) {
-        const err =
-            resBody?.errors?.[0] || resBody?.error || "Failed to reach API";
-
-        throw new ApiError(err, status);
-    }
-
-    return [status, resBody];
-}
-
 /** API Fetch function for Zod schemas */
 export async function apiFetchV2<T extends z.ZodType>(
     method: FetchMethod,
     endpoint: string,
-    schema: T,
-    reqBody?: any
+    reqBody?: string | FormData,
+    schema?: T,
+    withoutToken?: boolean
 ): Promise<[HttpStatus, z.infer<T>]> {
-    await checkTokenExpired();
+    if (!withoutToken) {
+        await checkTokenExpired();
+    }
 
-    const [status, resBody] = await sendRequest(method, endpoint, reqBody);
+    const [status, resBody] = await sendRequest(
+        method,
+        endpoint,
+        reqBody,
+        withoutToken
+    );
     if (!isStatusOk(status)) {
         const err =
             resBody?.errors?.[0] || resBody?.error || "Failed to reach API";
@@ -112,6 +101,6 @@ export async function apiFetchV2<T extends z.ZodType>(
         throw new ApiError(err, status);
     }
 
-    const parsedBody = schema.parse(resBody);
+    const parsedBody = schema?.parse(resBody) ?? null;
     return [status, parsedBody];
 }

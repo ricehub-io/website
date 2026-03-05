@@ -1,12 +1,12 @@
 import { useEffect } from "preact/hooks";
 import { Signal, useSignal } from "@preact/signals";
 import { addNotification } from "@/lib/appState";
-import { apiFetch } from "@/api/apiFetch";
+import { apiFetchV2 } from "@/api/apiFetch";
 import Bullet from "@/components/Bullet";
 import Link, { LinkProps } from "@/components/Link";
-import { Link as LinkDTO } from "@/api/legacy-schemas";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import DiscordIcon from "@/components/icons/DiscordIcon";
+import { ExternalLinkSchema } from "@/api/schemas";
 
 const VERSION_MAJOR: number = 1;
 const VERSION_MINOR: number = 11;
@@ -15,11 +15,9 @@ export default function Footer() {
     const discord = useSignal("");
     const github = useSignal("");
 
-    // emmmm actually this is bad
-    // its only temporary ok?
     useEffect(() => {
         const fetchLink = (linkName: string, linkSignal: Signal<string>) =>
-            apiFetch<LinkDTO>("GET", `/links/${linkName}`)
+            apiFetchV2("GET", `/links/${linkName}`, null, ExternalLinkSchema)
                 .then(([_, body]) => (linkSignal.value = body.url))
                 .catch((e) => {
                     if (e instanceof Error) {

@@ -1,6 +1,8 @@
-import { IconProps } from "@/api/legacy-schemas";
+interface GitHubIconProps {
+    className: string;
+}
 
-export function GitHubIcon(props: IconProps) {
+export function GitHubIcon(props: GitHubIconProps) {
     return (
         <svg
             role="img"

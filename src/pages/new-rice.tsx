@@ -1,19 +1,17 @@
-import { apiFetch } from "@/api/apiFetch";
-import { Rice } from "@/api/legacy-schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { RiceSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import FormFileUpload from "@/components/form/FormFileUpload";
 import { FormImageCarousel } from "@/components/form/FormImageCarousel";
 import { FormInput } from "@/components/form/FormInput";
 import FormTextArea from "@/components/form/FormTextArea";
 import PageTitle from "@/components/PageTitle";
-import { AppState, addNotification } from "@/lib/appState";
+import { addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
 import { useLocation } from "preact-iso";
-import { useContext } from "preact/hooks";
 
 export default function NewRicePage() {
     const { route } = useLocation();
-    const { user } = useContext(AppState);
 
     const onSubmit = async (e: SubmitEvent) => {
         e.preventDefault();
@@ -21,10 +19,11 @@ export default function NewRicePage() {
         const formData = new FormData(target);
 
         try {
-            const [status, _] = await apiFetch<Rice>(
+            const [status, _] = await apiFetchV2(
                 "POST",
                 "/rices",
-                formData
+                formData,
+                RiceSchema
             );
 
             if (status !== HttpStatus.Created) {

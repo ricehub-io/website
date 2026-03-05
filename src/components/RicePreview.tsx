@@ -1,7 +1,7 @@
-import { FetchMethod, apiFetch } from "@/api/apiFetch";
+import { ApiError, FetchMethod, apiFetchV2 } from "@/api/apiFetch";
 import { PartialRice } from "@/api/schemas";
 import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
-import { AppState } from "@/lib/appState";
+import { addNotification, AppState } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
 import {
     TrashIcon,
@@ -16,6 +16,7 @@ import { JSX } from "preact/jsx-runtime";
 interface RicePreviewProps extends PartialRice {
     className?: string;
     hideActions?: boolean;
+    onDelete?: () => void;
 }
 
 export default function RicePreview(props: RicePreviewProps) {
@@ -33,12 +34,14 @@ export default function RicePreview(props: RicePreviewProps) {
     } = props;
 
     const { route } = useLocation();
-    const { user, currentModal, currentRiceId } = useContext(AppState);
+    const { user, currentModal, currentRiceId, modalCallback } =
+        useContext(AppState);
 
     const isWaiting = state === "waiting";
 
     const onPreviewClick = () => route(`/${username}/${slug}`);
     const onDelete = () => {
+        modalCallback.value = props.onDelete;
         currentRiceId.value = id;
         currentModal.value = "deleteRice";
     };
@@ -142,14 +145,33 @@ function StarButton({ id, ...props }: PartialRice) {
         e.stopPropagation();
 
         const method: FetchMethod = isStarred.value ? "DELETE" : "POST";
-        const [status, _] = await apiFetch(method, `/rices/${id}/star`);
 
-        if (status === HttpStatus.Created) {
-            starCount.value += 1;
-            isStarred.value = true;
-        } else if (status === HttpStatus.NoContent) {
-            starCount.value -= 1;
-            isStarred.value = false;
+        try {
+            const [status, _] = await apiFetchV2(method, `/rices/${id}/star`);
+
+            if (status === HttpStatus.Created) {
+                starCount.value += 1;
+                isStarred.value = true;
+            } else if (status === HttpStatus.NoContent) {
+                starCount.value -= 1;
+                isStarred.value = false;
+            }
+        } catch (e) {
+            if (e instanceof ApiError) {
+                if (e.statusCode === HttpStatus.Forbidden) {
+                    addNotification(
+                        "Forbidden",
+                        "You must be logged in to do that",
+                        "error"
+                    );
+                } else {
+                    addNotification(
+                        "Failed to star/unstar rice",
+                        e.message,
+                        "error"
+                    );
+                }
+            }
         }
     };
 

@@ -12,7 +12,7 @@ export default function RiceList() {
 
     useEffect(() => {
         console.log("fetch rices");
-        apiFetchV2("GET", "/rices?sort=recent", FetchRicesSchema)
+        apiFetchV2("GET", "/rices?sort=recent", null, FetchRicesSchema)
             .then(([_, data]) => (rices.value = data.rices))
             .catch((e) => {
                 if (e instanceof Error) {

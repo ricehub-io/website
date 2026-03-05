@@ -16,13 +16,13 @@ import {
 import { FlagIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { formatBytes } from "@/lib/math";
-import { apiFetch, API_URL } from "@/api/apiFetch";
-import { Rice, RicePreview, Dotfiles } from "@/api/legacy-schemas";
+import { apiFetchV2, API_URL } from "@/api/apiFetch";
 import CommentSection from "@/components/CommentSection";
 import SectionTitle from "@/components/SectionTitle";
 import { HttpStatus } from "@/lib/enums";
 import { sanitizeMarkdownInput } from "@/lib/sanitize";
 import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
+import { Rice, RiceDotfiles, RiceScreenshot } from "@/api/schemas";
 
 export function RiceInfo({
     id,
@@ -38,12 +38,8 @@ export function RiceInfo({
     updatedAt,
 }: Rice) {
     const { route } = useLocation();
-    const {
-        user,
-        currentModal,
-        currentRiceId,
-        reportCtx: report,
-    } = useContext(AppState);
+    const { user, currentModal, currentRiceId, reportCtx, modalCallback } =
+        useContext(AppState);
 
     const isAuthor = useComputed(
         () => user.value !== null && user.value.id === author.id
@@ -79,7 +75,7 @@ export function RiceInfo({
 
     const onStar = async () => {
         try {
-            const [status, _] = await apiFetch(
+            const [status, _] = await apiFetchV2(
                 _isStarred.value ? "DELETE" : "POST",
                 `/rices/${id}/star`
             );
@@ -97,12 +93,13 @@ export function RiceInfo({
     };
     const onEdit = () => route(`/edit-rice/${id}`);
     const onDelete = () => {
+        modalCallback.value = () => route("/", true);
         currentRiceId.value = id;
         currentModal.value = "deleteRice";
     };
     const onDownload = () => window.open(`${API_URL}/rices/${id}/dotfiles`);
     const openReportModal = () => {
-        report.value = {
+        reportCtx.value = {
             resourceType: "rice",
             resourceId: id,
         };
@@ -209,7 +206,7 @@ export function RiceInfo({
                 </div>
 
                 {/* dotfiles */}
-                <RiceDotfiles onDownload={onDownload} {...dotfiles} />
+                <DownloadButton onDownload={onDownload} {...dotfiles} />
             </div>
 
             <Separator />
@@ -250,7 +247,7 @@ function HeaderButton({
     );
 }
 
-function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
+function RiceScreenshots({ previews }: { previews: RiceScreenshot[] }) {
     const zoom = useSignal<string>(null); // holds preview URL if any image is zoomed
     const imageRef = useRef<HTMLDivElement>(); // reference to container holding the zoomed image
 
@@ -344,11 +341,11 @@ function RiceScreenshots({ previews }: { previews: RicePreview[] }) {
     );
 }
 
-function RiceDotfiles({
+function DownloadButton({
     updatedAt,
     fileSize,
     onDownload,
-}: { onDownload: () => void } & Dotfiles) {
+}: { onDownload: () => void } & RiceDotfiles) {
     return (
         <div
             className="bg-bright-background hover:bg-bright-background hover:border-blue mt-4 flex items-center justify-between rounded-lg border-2 border-transparent px-4 py-3 transition-colors duration-300 select-none hover:cursor-pointer"

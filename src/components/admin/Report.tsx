@@ -1,14 +1,14 @@
 import { useLocation } from "preact-iso";
 import { useContext } from "preact/hooks";
 import TextButton from "@/components/admin/TextButton";
-import { apiFetch } from "@/api/apiFetch";
-import {
-    ReportWithUser,
-    Rice,
-    RiceCommentWithSlug,
-} from "@/api/legacy-schemas";
-import { AppState } from "@/lib/appState";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { addNotification, AppState } from "@/lib/appState";
 import { formatLocaleDate } from "@/lib/math";
+import {
+    CommentWithRiceSlugSchema,
+    ReportWithUser,
+    RiceSchema,
+} from "@/api/schemas";
 
 export default function Report({
     id,
@@ -36,18 +36,37 @@ export default function Report({
     } = useContext(AppState);
 
     const openTarget = async () => {
-        // TODO: catch exceptions
-        if (isRice) {
-            // fetch rice details by ID to get the slug
-            const [_, body] = await apiFetch<Rice>("GET", `/rices/${riceId}`);
-            route(`/${body.author.username}/${body.slug}`);
-        } else {
-            // fetch comment details to get rice slug so we can anchor link :333
-            const [_, body] = await apiFetch<RiceCommentWithSlug>(
-                "GET",
-                `/comments/${commentId}`
-            );
-            route(`/${body.riceAuthorUsername}/${body.riceSlug}#${body.id}`);
+        try {
+            if (isRice) {
+                // fetch rice details by ID to get the slug
+                const [_, body] = await apiFetchV2(
+                    "GET",
+                    `/rices/${riceId}`,
+                    null,
+                    RiceSchema
+                );
+
+                route(`/${body.author.username}/${body.slug}`);
+            } else {
+                // fetch comment details to get rice slug so we can anchor link :333
+                const [_, body] = await apiFetchV2(
+                    "GET",
+                    `/comments/${commentId}`,
+                    null,
+                    CommentWithRiceSlugSchema
+                );
+                route(
+                    `/${body.riceAuthorUsername}/${body.riceSlug}#${body.id}`
+                );
+            }
+        } catch (e) {
+            if (e instanceof Error) {
+                addNotification(
+                    "Failed to open target resource",
+                    e.message,
+                    "error"
+                );
+            }
         }
     };
 

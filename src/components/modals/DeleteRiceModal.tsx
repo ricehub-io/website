@@ -1,24 +1,19 @@
 import { useContext } from "preact/hooks";
 import { useLocation } from "preact-iso";
-import { apiFetch } from "@/api/apiFetch";
+import { apiFetchV2 } from "@/api/apiFetch";
 import { FormButton } from "@/components/form/FormButton";
 import { AppState, addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
 
 export default function DeleteRiceModal() {
-    const { route } = useLocation();
-    const { currentModal, currentRiceId } = useContext(AppState);
+    const { currentModal, currentRiceId, modalCallback } = useContext(AppState);
 
     const onSubmit = async (e: SubmitEvent) => {
         e.preventDefault();
         const target = e.currentTarget as HTMLFormElement;
 
-        console.log(
-            `sending request to delete rice with ID ${currentRiceId.value}`
-        );
-
         try {
-            const [status, _] = await apiFetch(
+            const [status, _] = await apiFetchV2(
                 "DELETE",
                 `/rices/${currentRiceId.value}`
             );
@@ -28,9 +23,10 @@ export default function DeleteRiceModal() {
                 );
             }
 
-            target.reset();
-            route("/", true);
             addNotification("Rice", "Rice has been deleted", "info");
+            modalCallback.value?.();
+
+            target.reset();
         } catch (e) {
             if (e instanceof Error) {
                 addNotification("Something went wrong", e.message, "error");

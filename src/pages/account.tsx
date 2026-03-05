@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "preact/hooks";
 import moment from "moment";
-import { useSignal } from "@preact/signals";
-import { apiFetch } from "@/api/apiFetch";
-import { PartialRice } from "@/api/schemas";
+import { Signal, useSignal } from "@preact/signals";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { PartialRice, PartialRiceSchema } from "@/api/schemas";
 import RicePreview from "@/components/RicePreview";
 import SectionTitle from "@/components/SectionTitle";
 import { AppState, addNotification } from "@/lib/appState";
@@ -13,7 +13,12 @@ export default function AccountPage() {
     const rices = useSignal<PartialRice[]>([]);
 
     useEffect(() => {
-        apiFetch<PartialRice[]>("GET", `/users/${user.value.id}/rices`)
+        apiFetchV2(
+            "GET",
+            `/users/${user.value.id}/rices`,
+            null,
+            PartialRiceSchema.array()
+        )
             .then(([_, body]) => (rices.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
@@ -93,7 +98,7 @@ export default function AccountPage() {
                 </div>
             </div>
             <SectionTitle text="Rices" />
-            <RiceList rices={rices.value} />
+            <RiceList rices={rices} />
         </div>
     );
 }
@@ -122,12 +127,21 @@ function Button(props: { label: string; red?: boolean; onClick?: () => {} }) {
     );
 }
 
-function RiceList({ rices }: { rices: PartialRice[] }) {
+function RiceList({ rices }: { rices: Signal<PartialRice[]> }) {
+    const deleteRice = (riceId: string) => {
+        rices.value = rices.value.filter((rice) => rice.id !== riceId);
+    };
+
     return (
         <div className="bg-bright-background grid grid-cols-1 gap-4 rounded-lg p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {rices.length > 0 ? (
-                rices.map((rice) => (
-                    <RicePreview {...rice} className="!bg-background-2" />
+            {rices.value.length > 0 ? (
+                rices.value.map((rice) => (
+                    <RicePreview
+                        key={rice.id}
+                        {...rice}
+                        className="!bg-background-2"
+                        onDelete={() => deleteRice(rice.id)}
+                    />
                 ))
             ) : (
                 <p className="text-lg font-medium">

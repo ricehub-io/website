@@ -2,8 +2,7 @@ import { useLocation, useRoute } from "preact-iso";
 import { useContext, useEffect, useRef } from "preact/hooks";
 import { signal, useComputed, useSignal } from "@preact/signals";
 import { ChangeEvent, createRef, TargetedEvent } from "preact/compat";
-import { apiFetch } from "@/api/apiFetch";
-import { Rice } from "@/api/legacy-schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
 import FilePreview from "@/components/form/FilePreview";
 import { FormButton } from "@/components/form/FormButton";
 import FormFileUpload from "@/components/form/FormFileUpload";
@@ -18,6 +17,7 @@ import {
     CarouselImage,
     CarouselPlusButton,
 } from "@/components/form/FormImageCarousel";
+import { Rice, RiceSchema } from "@/api/schemas";
 
 const deletedPreviews = signal<string[]>([]);
 const rice = signal<Rice>(null);
@@ -33,7 +33,7 @@ export default function EditRicePage() {
     const submitted = useSignal(false);
 
     useEffect(() => {
-        apiFetch<Rice>("GET", `/rices/${riceId}`)
+        apiFetchV2("GET", `/rices/${riceId}`, null, RiceSchema)
             .then(([status, body]) => {
                 if (status !== HttpStatus.Ok) {
                     throw new Error(
@@ -80,7 +80,7 @@ export default function EditRicePage() {
                 description !== rice.value.description
             ) {
                 try {
-                    await apiFetch(
+                    await apiFetchV2(
                         "PATCH",
                         `/rices/${riceId}`,
                         JSON.stringify({ title, description })
@@ -102,7 +102,7 @@ export default function EditRicePage() {
                 const tempData = new FormData();
                 tempData.set("file", file);
                 try {
-                    await apiFetch(
+                    await apiFetchV2(
                         "POST",
                         `/rices/${riceId}/dotfiles`,
                         tempData
@@ -122,7 +122,7 @@ export default function EditRicePage() {
             const deletePreviews = async () => {
                 for (const pId of deletedPreviews.value) {
                     try {
-                        await apiFetch(
+                        await apiFetchV2(
                             "DELETE",
                             `/rices/${riceId}/previews/${pId}`
                         );
@@ -147,7 +147,7 @@ export default function EditRicePage() {
                     const tempData = new FormData();
                     tempData.set("file", preview);
                     try {
-                        await apiFetch(
+                        await apiFetchV2(
                             "POST",
                             `/rices/${riceId}/previews`,
                             tempData

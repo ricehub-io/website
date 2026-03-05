@@ -1,21 +1,25 @@
-import { apiFetch } from "@/api/apiFetch";
-import { ReportWithUser } from "@/api/legacy-schemas";
+import { apiFetchV2 } from "@/api/apiFetch";
+import { ReportWithUser, ReportWithUserSchema } from "@/api/schemas";
 import ListWrapper from "@/components/admin/ListWrapper";
 import Report from "@/components/admin/Report";
+import { RadioButtonProps } from "@/components/RadioButton";
 import { addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
 import { useSignal } from "@preact/signals";
 import pluralize from "pluralize";
-import { ChangeEvent } from "preact/compat";
+import { ChangeEvent, TargetedEvent } from "preact/compat";
 import { useEffect } from "preact/hooks";
 
 interface ReportListProps {
     refreshInterval: number;
 }
 
+const FILTER_OPTIONS = ["open", "closed"] as const;
+type FilterOption = (typeof FILTER_OPTIONS)[number];
+
 export default function ReportList({ refreshInterval }: ReportListProps) {
     const reports = useSignal<ReportWithUser[]>([]);
-    const filter = useSignal<string>("open");
+    const filter = useSignal<FilterOption>("open");
     const filteredReports = useSignal<ReportWithUser[]>([]);
 
     const filterReports = () => {
@@ -28,8 +32,7 @@ export default function ReportList({ refreshInterval }: ReportListProps) {
     useEffect(filterReports, [reports.value, filter.value]);
 
     const fetchReports = () => {
-        console.log("fetch reports");
-        apiFetch<ReportWithUser[]>("GET", "/reports")
+        apiFetchV2("GET", "/reports", null, ReportWithUserSchema.array())
             .then(([_, body]) => (reports.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
@@ -49,15 +52,15 @@ export default function ReportList({ refreshInterval }: ReportListProps) {
         return () => clearInterval(interval);
     }, []);
 
-    const changeFiltering = (e: ChangeEvent) => {
-        const target = e.currentTarget as HTMLInputElement;
-        filter.value = target.value;
+    const changeFiltering = (
+        e: TargetedEvent<HTMLInputElement, ChangeEvent>
+    ) => {
+        filter.value = e.currentTarget.value as FilterOption;
     };
 
     const closeReport = async (reportId: string) => {
-        console.log(`sending request to close report with ID ${reportId}`);
         try {
-            const [status, _] = await apiFetch(
+            const [status, _] = await apiFetchV2(
                 "POST",
                 `/reports/${reportId}/close`
             );
@@ -81,24 +84,20 @@ export default function ReportList({ refreshInterval }: ReportListProps) {
         }
     };
 
+    const radioButtons: RadioButtonProps[] = FILTER_OPTIONS.map(
+        (filter, index) => ({
+            text: filter.charAt(0).toUpperCase() + filter.slice(1), // capitalize
+            name: "status",
+            value: filter,
+            onChange: changeFiltering,
+            defaultChecked: index === 0,
+        })
+    );
+
     return (
         <ListWrapper
             label={pluralize("item", filteredReports.value.length, true)}
-            buttons={[
-                {
-                    text: "Open",
-                    name: "status",
-                    value: "open",
-                    onChange: changeFiltering,
-                    defaultChecked: true,
-                },
-                {
-                    text: "Closed",
-                    name: "status",
-                    value: "closed",
-                    onChange: changeFiltering,
-                },
-            ]}
+            buttons={radioButtons}
         >
             {filteredReports.value.length > 0 ? (
                 filteredReports.value.map((r) => (

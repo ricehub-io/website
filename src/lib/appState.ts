@@ -1,14 +1,10 @@
 import { signal, Signal } from "@preact/signals";
-import { createContext, createRef } from "preact";
+import { createContext, createRef, RefObject } from "preact";
 import { jwtDecode } from "jwt-decode";
 import { v4 as uuidv4 } from "uuid";
 import { refreshToken, API_URL } from "@/api/apiFetch";
-import {
-    AppNotification,
-    User,
-    NotificationSeverity,
-} from "@/api/legacy-schemas";
 import { cssDurationToMs } from "@/lib/math";
+import { User } from "@/api/schemas";
 
 export type ModalType =
     | "login"
@@ -25,6 +21,16 @@ export type ModalType =
     | null;
 
 type CallbackFn = () => void;
+
+export type NotificationSeverity = "info" | "warning" | "error";
+
+export interface AppNotification {
+    id: string;
+    title: string;
+    message: string;
+    severity: NotificationSeverity;
+    htmlRef: RefObject<HTMLDivElement>;
+}
 
 interface ReportContext {
     resourceType: "rice" | "comment";
