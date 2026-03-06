@@ -38,8 +38,14 @@ export function RiceInfo({
     updatedAt,
 }: Rice) {
     const { route } = useLocation();
-    const { user, currentModal, currentRiceId, reportCtx, modalCallback } =
-        useContext(AppState);
+    const {
+        user,
+        currentModal,
+        currentRiceId,
+        reportCtx,
+        modalCallback,
+        okayModalCtx,
+    } = useContext(AppState);
 
     const isAuthor = useComputed(
         () => user.value !== null && user.value.id === author.id
@@ -97,7 +103,68 @@ export function RiceInfo({
         currentRiceId.value = id;
         currentModal.value = "deleteRice";
     };
-    const onDownload = () => window.open(`${API_URL}/rices/${id}/dotfiles`);
+    const onDownload = () => {
+        // only trusted people can be admins therefore
+        // no reason to show this warning when downloading
+        // rices posted by admin
+        if (!author.isAdmin) {
+        }
+
+        // is it too long? :ddd i dont want to scare users from using the website
+        // but i fear there's no better way to tell them that they cant trust
+        okayModalCtx.value = {
+            content: (
+                <>
+                    <h1 className="mb-4 text-center text-3xl font-bold">
+                        Security Warning!
+                    </h1>
+                    <p>
+                        The dotfiles you are about to download were uploaded by
+                        other users. These files <b>may</b> contain malicious or
+                        harmful content.
+                    </p>
+                    <p>
+                        Before using any downloaded files, please take the time
+                        to inspect them carefully. In particular:
+                    </p>
+                    <ul className="list-disc pl-4 font-medium">
+                        <li className="mb-1">
+                            Review all scripts (e.g. .sh, .bash, .zsh, .py,
+                            etc.) to understand what commands they execute.
+                        </li>
+                        <li className="mb-1">
+                            Do not run compiled executables or binaries included
+                            in the download. Unlike scripts, their contents
+                            cannot be easily inspected, and you cannot be
+                            certain what they do.
+                        </li>
+                        <li>
+                            Be cautious of files that automatically execute
+                            commands, modify system settings, download
+                            additional software, or request elevated privileges
+                            (sudo).
+                        </li>
+                    </ul>
+                    <p>
+                        By downloading and using these files, you acknowledge
+                        that you do so at your own risk.
+                    </p>
+                    <p>
+                        Always verify the contents before applying them to your
+                        system.
+                    </p>
+                    <p className="underline">
+                        This is only a warning. You should apply these rules to{" "}
+                        <b>ANY</b> file you download from internet, not only
+                        from RiceHub.
+                    </p>
+                </>
+            ),
+        };
+        modalCallback.value = () =>
+            window.open(`${API_URL}/rices/${id}/dotfiles`);
+        currentModal.value = "okay";
+    };
     const openReportModal = () => {
         reportCtx.value = {
             resourceType: "rice",

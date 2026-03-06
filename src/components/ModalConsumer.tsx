@@ -11,6 +11,7 @@ import LoginModal from "@/components/modals/LoginModal";
 import RegisterModal from "@/components/modals/RegisterModal";
 import ReportModal from "@/components/modals/ReportModal";
 import { AppState } from "@/lib/appState";
+import OkayModal from "@/components/modals/OkayModal";
 
 export default function ModalConsumer() {
     const { currentModal } = useContext(AppState);
@@ -44,6 +45,7 @@ export default function ModalConsumer() {
                     )}
                     {currentModal.value === "deleteRice" && <DeleteRiceModal />}
                     {currentModal.value === "report" && <ReportModal />}
+                    {currentModal.value === "okay" && <OkayModal />}
 
                     {/* admin-only modals */}
                     {currentModal.value === "admin_deleteResource" && (

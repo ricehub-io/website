@@ -6,12 +6,15 @@ import { FormImageCarousel } from "@/components/form/FormImageCarousel";
 import { FormInput } from "@/components/form/FormInput";
 import FormTextArea from "@/components/form/FormTextArea";
 import PageTitle from "@/components/PageTitle";
-import { addNotification } from "@/lib/appState";
+import { addNotification, AppState } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
 import { useLocation } from "preact-iso";
+import { useContext } from "preact/hooks";
 
 export default function NewRicePage() {
     const { route } = useLocation();
+
+    const { currentModal, okayModalCtx, modalCallback } = useContext(AppState);
 
     const onSubmit = async (e: SubmitEvent) => {
         e.preventDefault();
@@ -19,12 +22,7 @@ export default function NewRicePage() {
         const formData = new FormData(target);
 
         try {
-            const [status, _] = await apiFetchV2(
-                "POST",
-                "/rices",
-                formData,
-                RiceSchema
-            );
+            const [status, _] = await apiFetchV2("POST", "/rices", formData);
 
             if (status !== HttpStatus.Created) {
                 throw new Error(
@@ -32,16 +30,21 @@ export default function NewRicePage() {
                 );
             }
 
-            route("/");
-            addNotification(
-                "Success",
-                "Your rice has been created and is pending approval by staff. You can check the status in your account page.",
-                "info"
-            );
-
-            // if (status === HttpStatus.Created) {
-            //     route(`/${user.value.username}/${body.slug}`);
-            // }
+            okayModalCtx.value = {
+                content: (
+                    <>
+                        <p className="font-medium">
+                            Rice has been created and is pending veritication.
+                        </p>
+                        <p className="text-gray mt-0.5 text-sm sm:text-base">
+                            It will be published automatically after staff
+                            review.
+                        </p>
+                    </>
+                ),
+            };
+            modalCallback.value = () => route("/");
+            currentModal.value = "okay";
         } catch (e) {
             if (e instanceof Error) {
                 addNotification("Something went wrong", e.message, "error");

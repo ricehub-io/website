@@ -1,5 +1,5 @@
 import { signal, Signal } from "@preact/signals";
-import { createContext, createRef, RefObject } from "preact";
+import { ComponentChildren, createContext, createRef, RefObject } from "preact";
 import { jwtDecode } from "jwt-decode";
 import { v4 as uuidv4 } from "uuid";
 import { refreshToken, API_URL } from "@/api/apiFetch";
@@ -16,6 +16,7 @@ export type ModalType =
     | "deleteAccount"
     | "deleteRice"
     | "report"
+    | "okay"
     | "admin_deleteResource"
     | "admin_unban"
     | null;
@@ -37,6 +38,11 @@ interface ReportContext {
     resourceId: string;
 }
 
+interface OkayModalContext {
+    /** HTML Content shown to user when modal opens up */
+    content: ComponentChildren;
+}
+
 interface StateValues {
     currentModal: Signal<ModalType>;
     notifications: Signal<AppNotification[]>;
@@ -47,6 +53,7 @@ interface StateValues {
     currentRiceId: Signal<string>;
     reportCtx: Signal<ReportContext>;
     unbanCtx: Signal<User>;
+    okayModalCtx: Signal<OkayModalContext>;
     modalCallback: Signal<CallbackFn>;
 }
 
@@ -61,6 +68,7 @@ export function createAppState(): StateValues {
     const currentRiceId = signal(null);
     const reportCtx = signal(null);
     const unbanCtx = signal(null);
+    const okayModalCtx = signal(null);
     const modalCallback = signal(null);
 
     const fetchUser = async () => {
@@ -96,6 +104,7 @@ export function createAppState(): StateValues {
         currentRiceId,
         reportCtx,
         unbanCtx,
+        okayModalCtx,
         modalCallback,
     };
 }

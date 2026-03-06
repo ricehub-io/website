@@ -45,6 +45,7 @@ export const RiceScreenshotSchema = z.object({
 });
 export type RiceScreenshot = z.infer<typeof RiceScreenshotSchema>;
 
+// from API this is actually RiceWithRelationsDTO, not RiceDTO
 export const RiceSchema = z.object({
     id: z.uuidv4(),
     title: z.string(),
