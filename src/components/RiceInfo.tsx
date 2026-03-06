@@ -110,12 +110,10 @@ export function RiceInfo({
         if (!author.isAdmin) {
         }
 
-        // is it too long? :ddd i dont want to scare users from using the website
-        // but i fear there's no better way to tell them that they cant trust
         okayModalCtx.value = {
             content: (
                 <>
-                    <h1 className="mb-4 text-center text-3xl font-bold">
+                    <h1 className="text-center text-2xl font-bold sm:text-3xl md:text-4xl">
                         Security Warning!
                     </h1>
                     <p>
@@ -146,17 +144,8 @@ export function RiceInfo({
                         </li>
                     </ul>
                     <p>
-                        By downloading and using these files, you acknowledge
-                        that you do so at your own risk.
-                    </p>
-                    <p>
                         Always verify the contents before applying them to your
                         system.
-                    </p>
-                    <p className="underline">
-                        This is only a warning. You should apply these rules to{" "}
-                        <b>ANY</b> file you download from internet, not only
-                        from RiceHub.
                     </p>
                 </>
             ),

@@ -18,7 +18,7 @@ export default function OkayModal() {
 
     return (
         <form onSubmit={okayClicked}>
-            <div className="flex flex-col gap-2 text-lg">
+            <div className="flex flex-col gap-2 text-sm sm:text-base md:text-lg">
                 {okayModalCtx.value.content}
             </div>
             <div className="mt-2 flex gap-2">

@@ -36,7 +36,7 @@ export default function NewRicePage() {
                         <p className="font-medium">
                             Rice has been created and is pending veritication.
                         </p>
-                        <p className="text-gray mt-0.5 text-sm sm:text-base">
+                        <p className="mt-0.5">
                             It will be published automatically after staff
                             review.
                         </p>
