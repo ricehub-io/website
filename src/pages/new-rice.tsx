@@ -58,7 +58,12 @@ export default function NewRicePage() {
             <form onSubmit={onSubmit} className="flex flex-col gap-2 md:gap-4">
                 <FormInput label="Title" name="title" type="text" />
                 <FormTextArea label="Description" name="description" />
-                <FormFileUpload name="dotfiles" accept=".zip" />
+                <FormFileUpload
+                    label="Dotfiles"
+                    name="dotfiles"
+                    accept="application/zip"
+                    maxSize="90MB"
+                />
                 <FormImageCarousel label="Screenshots" name="previews[]" />
                 <FormButton label="Create" type="submit" />
             </form>

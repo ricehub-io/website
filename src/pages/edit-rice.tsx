@@ -210,7 +210,12 @@ export default function EditRicePage() {
                     </div>
                 ) : (
                     // no existing dotfiles, show input:file to user
-                    <FormFileUpload name="dotfiles" accept=".zip" />
+                    <FormFileUpload
+                        label="Dotfiles"
+                        name="dotfiles"
+                        accept="application/zip"
+                        maxSize="90MB"
+                    />
                 )}
                 <CustomCarousel />
                 <FormButton

@@ -1,6 +1,7 @@
 import { apiFetchV2 } from "@/api/apiFetch";
 import { NewAvatarSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
+import FormFileUpload from "@/components/form/FormFileUpload";
 import { FormInput } from "@/components/form/FormInput";
 import { AppState, addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
@@ -47,7 +48,13 @@ export default function ChangeAvatarModal() {
     return (
         <form onSubmit={onSubmit} onReset={() => (currentModal.value = null)}>
             <div>
-                <FormInput
+                <FormFileUpload
+                    label="New avatar"
+                    name="file"
+                    accept="image/jpeg, image/png"
+                    maxSize="5MB"
+                />
+                {/* <FormInput
                     label="New avatar"
                     type="file"
                     name="file"
@@ -57,7 +64,7 @@ export default function ChangeAvatarModal() {
                 />
                 <p className="text-gray -mt-2 text-right text-sm sm:text-base">
                     Max file size: 5MB
-                </p>
+                </p> */}
             </div>
             <div className="mt-2 flex gap-2">
                 <FormButton label="Cancel" type="reset" />

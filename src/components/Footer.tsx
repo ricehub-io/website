@@ -9,7 +9,7 @@ import DiscordIcon from "@/components/icons/DiscordIcon";
 import { ExternalLinkSchema } from "@/api/schemas";
 
 const VERSION_MAJOR: number = 1;
-const VERSION_MINOR: number = 11;
+const VERSION_MINOR: number = 13;
 
 export default function Footer() {
     const discord = useSignal("");
@@ -47,7 +47,7 @@ export default function Footer() {
                         content="unaimeds"
                         inNewTab
                     />{" "}
-                    <span className="font-sans">:3</span>
+                    & contributors
                 </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
