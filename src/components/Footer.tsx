@@ -41,7 +41,7 @@ export default function Footer() {
                 </p>
                 <Bullet />
                 <p className="inline break-keep whitespace-nowrap">
-                    made with love by{" "}
+                    made by{" "}
                     <Link
                         url="https://github.com/unaimeds"
                         content="unaimeds"

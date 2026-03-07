@@ -11,7 +11,6 @@ export default function RiceList() {
     const rices = useSignal<PartialRice[]>([]);
 
     useEffect(() => {
-        console.log("fetch rices");
         apiFetchV2("GET", "/rices?sort=recent", null, FetchRicesSchema)
             .then(([_, data]) => (rices.value = data.rices))
             .catch((e) => {

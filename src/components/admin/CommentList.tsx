@@ -15,7 +15,6 @@ export default function CommentList({ commentLimit }: CommentListProps) {
     const comments = useSignal<CommentWithUser[]>([]);
 
     useEffect(() => {
-        console.log("fetch comments");
         apiFetchV2(
             "GET",
             `/comments?limit=${commentLimit}`,
