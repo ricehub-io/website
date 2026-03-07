@@ -88,7 +88,6 @@ export default function FormFileUpload({
         const acceptedTypes = inputRef.current.accept
             .replaceAll(" ", "")
             .split(",");
-        console.log(acceptedTypes, file.type);
         if (!acceptedTypes.some((type) => file.type === type)) {
             addNotification(
                 "Incorrect type",
