@@ -8,7 +8,6 @@ export default function Statistics() {
     const stats = useSignal<ServiceStatistics>(null);
 
     useEffect(() => {
-        // TODO: catch exceptions
         apiFetchV2("GET", "/admin/stats", null, ServiceStatisticsSchema)
             .then(([_, body]) => (stats.value = body))
             .catch((e) => {

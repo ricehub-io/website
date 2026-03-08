@@ -1,8 +1,7 @@
 import { useContext } from "preact/hooks";
 import { For } from "@preact/signals/utils";
 import { useComputed } from "@preact/signals";
-import { AppNotification } from "@/api/legacy-schemas";
-import { AppState } from "@/lib/appState";
+import { AppNotification, AppState } from "@/lib/appState";
 import {
     ExclamationCircleIcon,
     ExclamationTriangleIcon,
