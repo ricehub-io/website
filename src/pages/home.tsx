@@ -179,9 +179,9 @@ export default function HomePage() {
     };
 
     const incrementPage = (byNegative: boolean) => {
-        const newValue = (currentPage.value += byNegative ? -1 : 1);
-        currentPage.value = clamp(newValue, 1, pageCount.value);
-        changePage(currentPage.value);
+        const newValue = currentPage.value + (byNegative ? -1 : 1);
+        const clampedValue = clamp(newValue, 1, pageCount.value);
+        changePage(clampedValue);
     };
 
     const deleteRice = (riceId: string) => {

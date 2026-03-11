@@ -28,7 +28,7 @@ export function RiceInfo({
     id,
     title,
     description,
-    previews,
+    screenshots,
     stars,
     isStarred,
     downloads,
@@ -247,7 +247,7 @@ export function RiceInfo({
                 {/* screenshots */}
                 <div>
                     <SectionTitle text="Screenshots" />
-                    <RiceScreenshots previews={previews} />
+                    <RiceScreenshots screenshots={screenshots} />
                 </div>
 
                 {/* description */}
@@ -303,7 +303,7 @@ function HeaderButton({
     );
 }
 
-function RiceScreenshots({ previews }: { previews: RiceScreenshot[] }) {
+function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
     const zoom = useSignal<string>(null); // holds preview URL if any image is zoomed
     const imageRef = useRef<HTMLDivElement>(); // reference to container holding the zoomed image
 
@@ -351,15 +351,15 @@ function RiceScreenshots({ previews }: { previews: RiceScreenshot[] }) {
     return (
         <>
             <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-                {previews.map((preview) => (
+                {screenshots.map((scr) => (
                     <div
-                        key={preview.id}
+                        key={scr.id}
                         className="aspect-video cursor-pointer"
-                        onClick={() => (zoom.value = preview.url)}
+                        onClick={() => (zoom.value = scr.url)}
                     >
                         <img
                             className="border-background-2 h-full w-full rounded-md border-2 object-cover"
-                            src={preview.url}
+                            src={scr.url}
                             alt="preview"
                         />
                     </div>

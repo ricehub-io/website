@@ -64,7 +64,7 @@ export default function NewRicePage() {
                     accept="application/zip"
                     maxSize="90MB"
                 />
-                <FormImageCarousel label="Screenshots" name="previews[]" />
+                <FormImageCarousel label="Screenshots" name="screenshots[]" />
                 <FormButton label="Create" type="submit" />
             </form>
         </div>

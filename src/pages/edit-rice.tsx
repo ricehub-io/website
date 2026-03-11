@@ -19,7 +19,7 @@ import {
 } from "@/components/form/FormImageCarousel";
 import { Rice, RiceSchema } from "@/api/schemas";
 
-const deletedPreviews = signal<string[]>([]);
+const deletedScreenshots = signal<string[]>([]);
 const rice = signal<Rice>(null);
 const carouselInput = createRef<HTMLInputElement>();
 
@@ -59,10 +59,10 @@ export default function EditRicePage() {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
 
-        const newPreviews = carouselInput.current.files.length > 0;
+        const newScreenshots = carouselInput.current.files.length > 0;
         if (
-            deletedPreviews.value.length >= rice.value.previews.length &&
-            !newPreviews
+            deletedScreenshots.value.length >= rice.value.screenshots.length &&
+            !newScreenshots
         ) {
             addNotification(
                 "Oh no!",
@@ -119,12 +119,12 @@ export default function EditRicePage() {
                 }
             }
 
-            const deletePreviews = async () => {
-                for (const pId of deletedPreviews.value) {
+            const deleteScreenshots = async () => {
+                for (const pId of deletedScreenshots.value) {
                     try {
                         await apiFetchV2(
                             "DELETE",
-                            `/rices/${riceId}/previews/${pId}`
+                            `/rices/${riceId}/screenshots/${pId}`
                         );
                     } catch (e) {
                         if (e instanceof Error) {
@@ -139,17 +139,17 @@ export default function EditRicePage() {
                 }
             };
 
-            // we need to first upload previews and then delete existing ones
-            if (newPreviews) {
-                const previews = formData.getAll("previews[]") as File[];
+            // we need to first upload screenshots and then delete existing ones
+            if (newScreenshots) {
+                const screenshots = formData.getAll("screenshots[]") as File[];
 
-                for (const preview of previews) {
+                for (const preview of screenshots) {
                     const tempData = new FormData();
                     tempData.set("file", preview);
                     try {
                         await apiFetchV2(
                             "POST",
-                            `/rices/${riceId}/previews`,
+                            `/rices/${riceId}/screenshots`,
                             tempData
                         );
                     } catch (e) {
@@ -164,9 +164,9 @@ export default function EditRicePage() {
                     }
                 }
 
-                await deletePreviews();
+                await deleteScreenshots();
             } else {
-                await deletePreviews();
+                await deleteScreenshots();
             }
 
             redirect(`/${user.value.username}/${rice.value.slug}`);
@@ -231,8 +231,8 @@ export default function EditRicePage() {
 function CustomCarousel() {
     const container = useRef<HTMLDivElement>(null);
     const images = useSignal<File[]>([]);
-    const noPreviews = useComputed(
-        () => rice.value.previews.length + images.value.length <= 0
+    const noScreenshots = useComputed(
+        () => rice.value.screenshots.length + images.value.length <= 0
     );
 
     const onFileSelect = (e: ChangeEvent) => {
@@ -260,13 +260,13 @@ function CustomCarousel() {
     ) => {
         e.preventDefault();
 
-        deletedPreviews.value.push(id);
-        const newPreviews = rice.value.previews.filter(
+        deletedScreenshots.value.push(id);
+        const newScreenshots = rice.value.screenshots.filter(
             (_, index) => index !== targetIndex
         );
         rice.value = {
             ...rice.value,
-            previews: newPreviews,
+            screenshots: newScreenshots,
         };
     };
 
@@ -292,13 +292,13 @@ function CustomCarousel() {
                 onMouseLeave={onContainerUnHover}
                 onWheel={horizontalScroll}
             >
-                {noPreviews.value ? (
+                {noScreenshots.value ? (
                     <div className="text-gray bg-bright-background border-gray/50 flex aspect-video w-86 items-center justify-center rounded-lg border-2">
                         <PhotoIcon className="size-36" />
                     </div>
                 ) : (
                     <>
-                        {rice.value.previews.map((preview, index) => (
+                        {rice.value.screenshots.map((preview, index) => (
                             <CarouselImage
                                 key={preview.id}
                                 url={preview.url}
@@ -316,14 +316,14 @@ function CustomCarousel() {
                     </>
                 )}
 
-                <CarouselPlusButton name="previews[]" />
+                <CarouselPlusButton name="screenshots[]" />
                 <input
                     ref={carouselInput}
                     className="hidden"
                     multiple
                     type="file"
-                    name="previews[]"
-                    id="previews[]"
+                    name="screenshots[]"
+                    id="screenshots[]"
                     accept="image/png, image/jpeg"
                     onChange={onFileSelect}
                 />
