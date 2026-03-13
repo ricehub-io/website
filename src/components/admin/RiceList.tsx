@@ -40,6 +40,7 @@ function RiceInfo({
     createdAt,
     thumbnail,
     stars,
+    comments,
     downloads,
 }: PartialRice) {
     const ricePath = `/${username}/${slug}`;
@@ -72,18 +73,18 @@ function RiceInfo({
                 />
             </div>
             <div className="font-jetbrains-mono mt-3 flex justify-evenly font-bold">
-                <p>
-                    Stars:
-                    <span className="text-foreground/60 ml-1">[ {stars} ]</span>
-                </p>
+                <InteractionCount text="Stars" value={stars} />
                 <Bullet />
-                <p>
-                    Downloads:
-                    <span className="text-foreground/60 ml-1">
-                        [ {downloads} ]
-                    </span>
-                </p>
+                <InteractionCount text="Downloads" value={downloads} />
+                <Bullet />
+                <InteractionCount text="Comments" value={comments} />
             </div>
         </div>
     );
 }
+
+const InteractionCount = ({ text, value }: { text: string; value: number }) => (
+    <p>
+        {text}: <span className="text-foreground/60 ml-1">[ {value} ]</span>
+    </p>
+);

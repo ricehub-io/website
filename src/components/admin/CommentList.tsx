@@ -56,9 +56,11 @@ function Comment({
 }: CommentWithUser) {
     return (
         <div className="bg-background-2 flex gap-2 rounded-md p-4 sm:gap-4">
-            <div className="w-12 sm:w-16">
-                <img className="rounded-md" src={avatar} alt="avatar" />
-            </div>
+            <img
+                className="aspect-square w-12 rounded-md sm:w-16"
+                src={avatar}
+                alt="avatar"
+            />
             <div className="flex-1">
                 <div className="-mt-1 flex items-center gap-1">
                     <p className="text-base font-medium sm:text-lg">

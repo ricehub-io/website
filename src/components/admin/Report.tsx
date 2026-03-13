@@ -81,7 +81,6 @@ export default function Report({
 
     return (
         <div className="bg-background-2 flex flex-col gap-1 rounded-md px-4 py-2 text-sm sm:text-base">
-            <div>{/* add preview of reported content here */}</div>
             <div className="flex items-center gap-1">
                 <div className="flex flex-col items-center gap-2 sm:flex-row">
                     <p className="text-base font-bold sm:text-lg">
