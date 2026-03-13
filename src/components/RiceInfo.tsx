@@ -209,13 +209,11 @@ export function RiceInfo({
             <div className="bg-dark-background rounded-lg p-6">
                 {/* author + creation date */}
                 <div className="flex items-center gap-2">
-                    <div className="w-10 md:w-12">
-                        <img
-                            className="rounded-lg"
-                            src={author.avatarUrl}
-                            alt="avatar"
-                        />
-                    </div>
+                    <img
+                        className="aspect-square w-10 rounded-lg md:w-12"
+                        src={author.avatarUrl}
+                        alt="avatar"
+                    />
                     <div
                         className={`-mt-1 cursor-pointer transition-opacity select-none ${author.isBanned ? "opacity-70 hover:opacity-50" : "hover:opacity-80"}`}
                         onClick={openAuthorProfile}

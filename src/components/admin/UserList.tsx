@@ -46,13 +46,11 @@ function UserInfo({
         <div className="bg-background-2 rounded-md p-4 text-sm sm:text-left sm:text-base">
             <div className="flex flex-col items-center gap-2 sm:gap-4 md:flex-row">
                 <div className="flex items-center gap-2">
-                    <div className="w-12 sm:w-16">
-                        <img
-                            className="rounded-md"
-                            src={avatarUrl}
-                            alt="user's avatar"
-                        />
-                    </div>
+                    <img
+                        className="aspect-square w-12 rounded-md sm:w-16"
+                        src={avatarUrl}
+                        alt="user's avatar"
+                    />
                     <div>
                         <a
                             href={`/${username}`}

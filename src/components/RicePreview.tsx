@@ -3,6 +3,7 @@ import { PartialRice } from "@/api/schemas";
 import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
 import { addNotification, AppState } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
+import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
 import {
     TrashIcon,
     PencilSquareIcon,
@@ -29,6 +30,7 @@ export default function RicePreview(props: RicePreviewProps) {
         thumbnail,
         title,
         displayName,
+        comments,
         downloads,
         state,
     } = props;
@@ -72,10 +74,14 @@ export default function RicePreview(props: RicePreviewProps) {
                             by {displayName}
                         </p>
                     </div>
-                    <div className="ml-auto flex gap-2 select-none sm:gap-3">
+                    <div className="ml-auto flex gap-2 select-none sm:gap-3 sm:text-lg">
                         <div className="flex items-center gap-1">
-                            <ArrowDownTrayIcon className="size-5 sm:size-6" />
-                            <p className="sm:text-lg">{downloads}</p>
+                            <ChatBubbleOvalLeftIcon className="size-4 sm:size-5" />
+                            <p>{comments}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <ArrowDownTrayIcon className="size-4 sm:size-5" />
+                            <p>{downloads}</p>
                         </div>
                         <StarButton {...props} />
                     </div>
@@ -182,7 +188,7 @@ function StarButton({ id, ...props }: PartialRice) {
         >
             <ReactiveStarIcon
                 solid={isStarred.value}
-                className="size-5 sm:size-6"
+                className="size-4 sm:size-5"
             />
             <p
                 className={`transition-colors duration-300 sm:text-lg ${

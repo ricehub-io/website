@@ -9,7 +9,7 @@ import DiscordIcon from "@/components/icons/DiscordIcon";
 import { ExternalLinkSchema } from "@/api/schemas";
 
 const VERSION_MAJOR: number = 1;
-const VERSION_MINOR: number = 14;
+const VERSION_MINOR: number = 15;
 
 export default function Footer() {
     const discord = useSignal("");

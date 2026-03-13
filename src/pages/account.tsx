@@ -54,7 +54,7 @@ export default function AccountPage() {
 
                         <UserDetailLabel label="Avatar" />
                         <img
-                            className="w-32 rounded-lg sm:w-36 md:w-48"
+                            className="aspect-square w-32 rounded-lg sm:w-36 md:w-48"
                             src={user.value.avatarUrl}
                             alt="user's avatar"
                         />

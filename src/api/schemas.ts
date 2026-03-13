@@ -74,6 +74,7 @@ export const PartialRiceSchema = z.object({
     username: z.string(),
     thumbnail: z.string(),
     stars: z.number(),
+    comments: z.number(),
     downloads: z.number(),
     isStarred: z.boolean(),
     state: RiceStateSchema,

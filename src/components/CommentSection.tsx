@@ -200,9 +200,11 @@ function Comment({
             className="bg-bright-background relative flex gap-2 rounded-lg p-3 sm:gap-3 md:p-4"
             id={commentId}
         >
-            <div className="w-12 sm:w-16">
-                <img className="rounded-md" src={avatar} alt="avatar" />
-            </div>
+            <img
+                className="aspect-square w-12 rounded-md sm:w-16"
+                src={avatar}
+                alt="avatar"
+            />
             <div className="flex-1 text-sm sm:text-base md:text-lg">
                 <div className="-mt-1 flex items-center gap-1">
                     <a

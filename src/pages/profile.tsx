@@ -67,15 +67,11 @@ function UserInfo({
     return (
         <div className="bg-bright-background rounded-lg p-4">
             <div className="flex gap-4">
-                <div
-                    className={`w-22 sm:w-28 md:w-32 ${(isBanned && "opacity-70") || ""}`}
-                >
-                    <img
-                        className="rounded-md"
-                        src={avatarUrl}
-                        alt="user's avatar"
-                    />
-                </div>
+                <img
+                    className={`aspect-square w-22 rounded-md sm:w-28 md:w-32 ${isBanned ? "opacity-70" : ""}`}
+                    src={avatarUrl}
+                    alt="user's avatar"
+                />
                 <div className="flex flex-1 flex-col md:flex-row md:justify-between">
                     <div className="flex flex-col">
                         <p
