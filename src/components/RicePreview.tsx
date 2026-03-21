@@ -33,6 +33,7 @@ export default function RicePreview(props: RicePreviewProps) {
         comments,
         downloads,
         state,
+        isFree,
     } = props;
 
     const { route } = useLocation();
@@ -56,6 +57,9 @@ export default function RicePreview(props: RicePreviewProps) {
                 className={`bg-bright-background ease-in-out-quint hover:outline-blue relative h-full rounded-md outline-transparent transition-colors duration-500 select-none ${isWaiting ? "pointer-events-none" : "hover:outline-2"} ${className}`}
                 onClick={onPreviewClick}
             >
+                <p className="bg-dark-background border-background-2 absolute top-3 left-3 rounded-md border px-3 font-medium sm:text-lg">
+                    {isFree ? "free" : "paid"}
+                </p>
                 <div
                     className={`box-content aspect-video overflow-hidden p-1 ${isWaiting ? "opacity-70" : ""}`}
                 >

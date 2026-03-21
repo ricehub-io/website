@@ -10,6 +10,7 @@ import {
     FolderArrowDownIcon,
     NoSymbolIcon,
     PencilIcon,
+    ShoppingCartIcon,
     TrashIcon,
     XMarkIcon,
 } from "@heroicons/react/24/solid";
@@ -23,6 +24,7 @@ import { HttpStatus } from "@/lib/enums";
 import { sanitizeMarkdownInput } from "@/lib/sanitize";
 import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
 import { Rice, RiceDotfiles, RiceScreenshot } from "@/api/schemas";
+import Bullet from "@/components/Bullet";
 
 export function RiceInfo({
     id,
@@ -31,6 +33,7 @@ export function RiceInfo({
     screenshots,
     stars,
     isStarred,
+    isOwned,
     downloads,
     dotfiles,
     author,
@@ -46,6 +49,8 @@ export function RiceInfo({
         modalCallback,
         okayModalCtx,
     } = useContext(AppState);
+
+    const toPurchase = dotfiles.type !== "free" && !isOwned;
 
     const isAuthor = useComputed(
         () => user.value !== null && user.value.id === author.id
@@ -103,56 +108,65 @@ export function RiceInfo({
         currentRiceId.value = id;
         currentModal.value = "deleteRice";
     };
-    const onDownload = () => {
+
+    /** onDownloadClick callback is triggered when user either presses download or purchase button */
+    const onDownloadClick = () => {
+        if (toPurchase) {
+            // TODO: send request to API
+            return;
+        }
+
         // only trusted people can be admins therefore
         // no reason to show this warning when downloading
         // rices posted by admin
         if (!author.isAdmin) {
+            okayModalCtx.value = {
+                content: (
+                    <>
+                        <h1 className="text-center text-2xl font-bold sm:text-3xl md:text-4xl">
+                            Security Warning!
+                        </h1>
+                        <p>
+                            The dotfiles you are about to download were uploaded
+                            by other users. These files <b>may</b> contain
+                            malicious or harmful content.
+                        </p>
+                        <p>
+                            Before using any downloaded files, please take the
+                            time to inspect them carefully. In particular:
+                        </p>
+                        <ul className="list-disc pl-4 font-medium">
+                            <li className="mb-1">
+                                Review all scripts (e.g. .sh, .bash, .zsh, .py,
+                                etc.) to understand what commands they execute.
+                            </li>
+                            <li className="mb-1">
+                                Do not run compiled executables or binaries
+                                included in the download. Unlike scripts, their
+                                contents cannot be easily inspected, and you
+                                cannot be certain what they do.
+                            </li>
+                            <li>
+                                Be cautious of files that automatically execute
+                                commands, modify system settings, download
+                                additional software, or request elevated
+                                privileges (sudo).
+                            </li>
+                        </ul>
+                        <p>
+                            Always verify the contents before applying them to
+                            your system.
+                        </p>
+                    </>
+                ),
+            };
+            modalCallback.value = () =>
+                window.open(`${API_URL}/rices/${id}/dotfiles`);
+            currentModal.value = "okay";
+            return;
         }
 
-        okayModalCtx.value = {
-            content: (
-                <>
-                    <h1 className="text-center text-2xl font-bold sm:text-3xl md:text-4xl">
-                        Security Warning!
-                    </h1>
-                    <p>
-                        The dotfiles you are about to download were uploaded by
-                        other users. These files <b>may</b> contain malicious or
-                        harmful content.
-                    </p>
-                    <p>
-                        Before using any downloaded files, please take the time
-                        to inspect them carefully. In particular:
-                    </p>
-                    <ul className="list-disc pl-4 font-medium">
-                        <li className="mb-1">
-                            Review all scripts (e.g. .sh, .bash, .zsh, .py,
-                            etc.) to understand what commands they execute.
-                        </li>
-                        <li className="mb-1">
-                            Do not run compiled executables or binaries included
-                            in the download. Unlike scripts, their contents
-                            cannot be easily inspected, and you cannot be
-                            certain what they do.
-                        </li>
-                        <li>
-                            Be cautious of files that automatically execute
-                            commands, modify system settings, download
-                            additional software, or request elevated privileges
-                            (sudo).
-                        </li>
-                    </ul>
-                    <p>
-                        Always verify the contents before applying them to your
-                        system.
-                    </p>
-                </>
-            ),
-        };
-        modalCallback.value = () =>
-            window.open(`${API_URL}/rices/${id}/dotfiles`);
-        currentModal.value = "okay";
+        window.open(`${API_URL}/rices/${id}/dotfiles`);
     };
     const openReportModal = () => {
         reportCtx.value = {
@@ -260,7 +274,11 @@ export function RiceInfo({
                 </div>
 
                 {/* dotfiles */}
-                <DownloadButton onDownload={onDownload} {...dotfiles} />
+                <DownloadButton
+                    showPurchase={toPurchase}
+                    onClick={onDownloadClick}
+                    {...dotfiles}
+                />
             </div>
 
             <Separator />
@@ -398,20 +416,31 @@ function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
 function DownloadButton({
     updatedAt,
     fileSize,
-    onDownload,
-}: { onDownload: () => void } & RiceDotfiles) {
+    price,
+    showPurchase,
+    onClick,
+}: { showPurchase: boolean; onClick: () => void } & RiceDotfiles) {
     return (
         <div
             className="bg-bright-background hover:bg-bright-background hover:border-blue mt-4 flex items-center justify-between rounded-lg border-2 border-transparent px-4 py-3 transition-colors duration-300 select-none hover:cursor-pointer"
-            onClick={onDownload}
+            onClick={onClick}
         >
-            <div className="flex items-center gap-2">
-                <FolderArrowDownIcon className="size-6 sm:size-8 md:size-10" />
-                <input
-                    className="font-semibold hover:cursor-pointer sm:text-lg md:text-xl"
-                    type="button"
-                    value="Download"
-                />
+            <div className="flex items-center gap-2 font-semibold sm:text-lg md:text-xl">
+                {!showPurchase ? (
+                    <>
+                        <FolderArrowDownIcon className="size-6 sm:size-8 md:size-10" />
+                        <p>Download</p>
+                    </>
+                ) : (
+                    <>
+                        <ShoppingCartIcon className="size-6 sm:size-8 md:size-10" />
+                        <p>Purchase</p>
+                        <Bullet />
+                        <p className="font-jetbrains-mono">
+                            ${price.toFixed(2)}
+                        </p>
+                    </>
+                )}
             </div>
             <div className="text-right text-sm sm:text-base md:text-lg">
                 <p>
