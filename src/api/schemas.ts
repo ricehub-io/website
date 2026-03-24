@@ -31,9 +31,13 @@ export const UserBanSchema = z.object({
 export const RiceStateSchema = z.enum(["waiting", "accepted"]);
 // export type RiceState = z.infer<typeof RiceStateSchema>;
 
+export const DotfilesTypeSchema = z.enum(["free", "one-time"]);
+
 export const RiceDotfilesSchema = z.object({
     filePath: z.string(),
     fileSize: z.number(),
+    type: DotfilesTypeSchema,
+    price: z.float32().optional(),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
 });
@@ -56,6 +60,7 @@ export const RiceSchema = z.object({
     downloads: z.number(),
     stars: z.number(),
     isStarred: z.boolean(),
+    isOwned: z.boolean(),
 
     screenshots: RiceScreenshotSchema.array(),
     dotfiles: RiceDotfilesSchema,
@@ -77,6 +82,7 @@ export const PartialRiceSchema = z.object({
     comments: z.number(),
     downloads: z.number(),
     isStarred: z.boolean(),
+    isFree: z.boolean(),
     state: RiceStateSchema,
     // not coercing to date because then it loses precision which is needed for pagination
     createdAt: z.string(),
@@ -214,4 +220,8 @@ export const ReportCreatedSchema = z.object({
 
 export const NewAvatarSchema = z.object({
     avatarUrl: z.url(),
+});
+
+export const PurchaseRiceSchema = z.object({
+    checkoutUrl: z.url(),
 });

@@ -37,6 +37,7 @@
     --color-orange: #ffd447;
     --color-blue: #5a7cff;
     --color-light-blue: #8ba3ff;
+    --color-green: #83e58c;
 }
 /*
 to override the default theme define a new class with variables, e.g.:

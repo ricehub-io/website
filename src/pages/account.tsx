@@ -10,7 +10,27 @@ import { AppState, addNotification } from "@/lib/appState";
 export default function AccountPage() {
     const { currentModal, user } = useContext(AppState);
 
-    const rices = useSignal<PartialRice[]>([]);
+    const purchasedRices = useSignal<PartialRice[]>([]);
+    const createdRices = useSignal<PartialRice[]>([]);
+
+    useEffect(() => {
+        apiFetchV2(
+            "GET",
+            `/users/${user.value.id}/purchased`,
+            null,
+            PartialRiceSchema.array()
+        )
+            .then(([_, body]) => (purchasedRices.value = body))
+            .catch((e) => {
+                if (e instanceof Error) {
+                    addNotification(
+                        "Failed to fetch purchased rices",
+                        e.message,
+                        "warning"
+                    );
+                }
+            });
+    }, []);
 
     useEffect(() => {
         apiFetchV2(
@@ -19,11 +39,11 @@ export default function AccountPage() {
             null,
             PartialRiceSchema.array()
         )
-            .then(([_, body]) => (rices.value = body))
+            .then(([_, body]) => (createdRices.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(
-                        "Failed to fetch user rices",
+                        "Failed to fetch created rices",
                         e.message,
                         "warning"
                     );
@@ -33,6 +53,7 @@ export default function AccountPage() {
 
     return (
         <div className="mx-auto w-full py-4 md:w-[min(80%,1400px)]">
+            {/* Account management */}
             <div className="mb-6 flex flex-col gap-4 md:flex-row">
                 <div className="flex-1">
                     <SectionTitle text="Details" />
@@ -97,8 +118,14 @@ export default function AccountPage() {
                     </div>
                 </div>
             </div>
-            <SectionTitle text="Rices" />
-            <RiceList rices={rices} />
+
+            {/* Owned rices list */}
+            <SectionTitle text="Purchased Rices" />
+            <RiceList rices={purchasedRices} />
+
+            {/* Created rices list */}
+            <SectionTitle text="Created Rices" />
+            <RiceList rices={createdRices} />
         </div>
     );
 }
@@ -133,7 +160,7 @@ function RiceList({ rices }: { rices: Signal<PartialRice[]> }) {
     };
 
     return (
-        <div className="bg-bright-background grid grid-cols-1 gap-4 rounded-lg p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="bg-bright-background grid grid-cols-1 gap-4 rounded-lg p-4 not-last:mb-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {rices.value.length > 0 ? (
                 rices.value.map((rice) => (
                     <RicePreview

@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"type": "module",
-	"packageManager": "pnpm@10.28.1",
+	"packageManager": "pnpm@10.32.1",
 	"scripts": {
 		"dev": "vite --host 127.0.0.1",
 		"build": "vite build",
@@ -9,6 +9,7 @@
 	},
 	"dependencies": {
 		"@heroicons/react": "^2.2.0",
+		"@polar-sh/checkout": "^0.2.0",
 		"@preact/signals": "^2.3.1",
 		"@tailwindcss/vite": "^4.1.13",
 		"@types/pluralize": "^0.0.33",
