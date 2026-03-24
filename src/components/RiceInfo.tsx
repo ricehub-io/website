@@ -23,8 +23,14 @@ import SectionTitle from "@/components/SectionTitle";
 import { HttpStatus } from "@/lib/enums";
 import { sanitizeMarkdownInput } from "@/lib/sanitize";
 import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
-import { Rice, RiceDotfiles, RiceScreenshot } from "@/api/schemas";
+import {
+    PurchaseRiceSchema,
+    Rice,
+    RiceDotfiles,
+    RiceScreenshot,
+} from "@/api/schemas";
 import Bullet from "@/components/Bullet";
+import { PolarEmbedCheckout } from "@polar-sh/checkout/embed";
 
 export function RiceInfo({
     id,
@@ -50,11 +56,12 @@ export function RiceInfo({
         okayModalCtx,
     } = useContext(AppState);
 
+    const _isOwned = useSignal(isOwned);
     const isAuthor = useComputed(
         () => user.value !== null && user.value.id === author.id
     );
     const toPurchase = useComputed(
-        () => !isAuthor.value && dotfiles.type !== "free" && !isOwned
+        () => !isAuthor.value && dotfiles.type !== "free" && !_isOwned.value
     );
 
     const _isStarred = useSignal(isStarred);
@@ -114,7 +121,27 @@ export function RiceInfo({
     /** onDownloadClick callback is triggered when user either presses download or purchase button */
     const onDownloadClick = () => {
         if (toPurchase.value) {
-            // TODO: send request to API
+            apiFetchV2(
+                "POST",
+                `/rices/${id}/purchase`,
+                null,
+                PurchaseRiceSchema
+            )
+                .then(([_, body]) =>
+                    openCheckout(
+                        body.checkoutUrl,
+                        () => (_isOwned.value = true)
+                    )
+                )
+                .catch((e) => {
+                    if (e instanceof Error) {
+                        addNotification(
+                            "Something went wrong",
+                            `Failed to fetch checkout session: ${e.message}`,
+                            "error"
+                        );
+                    }
+                });
             return;
         }
 
@@ -322,7 +349,7 @@ function HeaderButton({
 }
 
 function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
-    const zoom = useSignal<string>(null); // holds preview URL if any image is zoomed
+    const zoom = useSignal<string>(null); // holds screenshot URL if any image is zoomed
     const imageRef = useRef<HTMLDivElement>(); // reference to container holding the zoomed image
 
     // disable page scrolling when zoomed
@@ -378,7 +405,7 @@ function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
                         <img
                             className="border-background-2 h-full w-full rounded-md border-2 object-cover"
                             src={scr.url}
-                            alt="preview"
+                            alt="screenshot"
                         />
                     </div>
                 ))}
@@ -398,7 +425,7 @@ function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
                         <img
                             className="w-full"
                             src={zoom.value}
-                            alt="zoomed preview"
+                            alt="zoomed screenshot"
                         />
                         <a
                             className="text-foreground/70 hover:text-foreground bg-dark-background/80 border-foreground/40 hover:bg-bright-background/80 absolute left-1/2 mt-2 flex -translate-x-1/2 items-center justify-center gap-1 rounded-md border px-2 py-1 text-sm whitespace-nowrap transition-colors sm:text-base md:text-lg"
@@ -455,3 +482,20 @@ function DownloadButton({
         </div>
     );
 }
+
+const openCheckout = async (url: string, onSuccess: () => void) => {
+    try {
+        const checkout = await PolarEmbedCheckout.create(url, {
+            theme: "dark",
+        });
+
+        checkout.addEventListener("success", (_) => {
+            console.log("success");
+            onSuccess();
+        });
+    } catch (e) {
+        if (e instanceof Error) {
+            addNotification("Failed to open checkout", e.message, "error");
+        }
+    }
+};

@@ -13,7 +13,6 @@ import { useContext } from "preact/hooks";
 
 export default function NewRicePage() {
     const { route } = useLocation();
-
     const { currentModal, okayModalCtx, modalCallback } = useContext(AppState);
 
     const onSubmit = async (e: SubmitEvent) => {

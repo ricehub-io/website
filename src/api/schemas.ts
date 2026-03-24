@@ -221,3 +221,7 @@ export const ReportCreatedSchema = z.object({
 export const NewAvatarSchema = z.object({
     avatarUrl: z.url(),
 });
+
+export const PurchaseRiceSchema = z.object({
+    checkoutUrl: z.url(),
+});
