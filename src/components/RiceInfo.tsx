@@ -50,11 +50,13 @@ export function RiceInfo({
         okayModalCtx,
     } = useContext(AppState);
 
-    const toPurchase = dotfiles.type !== "free" && !isOwned;
-
     const isAuthor = useComputed(
         () => user.value !== null && user.value.id === author.id
     );
+    const toPurchase = useComputed(
+        () => !isAuthor.value && dotfiles.type !== "free" && !isOwned
+    );
+
     const _isStarred = useSignal(isStarred);
     const starCount = useSignal(stars);
 
@@ -111,7 +113,7 @@ export function RiceInfo({
 
     /** onDownloadClick callback is triggered when user either presses download or purchase button */
     const onDownloadClick = () => {
-        if (toPurchase) {
+        if (toPurchase.value) {
             // TODO: send request to API
             return;
         }
@@ -275,7 +277,7 @@ export function RiceInfo({
 
                 {/* dotfiles */}
                 <DownloadButton
-                    showPurchase={toPurchase}
+                    showPurchase={toPurchase.value}
                     onClick={onDownloadClick}
                     {...dotfiles}
                 />
