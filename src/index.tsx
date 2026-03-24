@@ -19,6 +19,7 @@ import PrivacyPolicyPage from "@/pages/privacy-policy";
 import ProfilePage from "@/pages/profile";
 import RicePage from "@/pages/rice";
 import TermsOfServicePage from "@/pages/terms-of-service";
+import SubscriptionPage from "@/pages/subscription";
 
 export function App() {
     // const [theme, setTheme] = useState<"default" | "everforest">("default");
@@ -34,6 +35,7 @@ export function App() {
                 <main className="m-4 h-full flex-col">
                     <Router>
                         <Route path="/" component={HomePage} />
+                        <Route path="/sub" component={SubscriptionPage} />
                         <AuthRoute path="/account" component={AccountPage} />
                         <AuthRoute
                             path="/edit-rice/:riceId"

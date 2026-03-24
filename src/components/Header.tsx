@@ -107,6 +107,7 @@ const HeaderLinks = ({
     return (
         <>
             <HeaderLink url="/" content="Home" />
+            <HeaderLink url="/sub" content="Subscription" />
             {accessToken.value === null ? (
                 <>
                     <TextButton
