@@ -53,8 +53,6 @@ export default function EditRicePage() {
             });
     }, []);
 
-    // ugh i need to find a better way of wrapping apiFetch with error catching
-    // too many try {} catch blocks - tho still less than `if let Some()` or `?` in Rust
     const onSubmit = (e: TargetedEvent<HTMLFormElement, SubmitEvent>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -66,7 +64,7 @@ export default function EditRicePage() {
         ) {
             addNotification(
                 "Oh no!",
-                "At least one rice preview is required!",
+                "At least one screenshot is required!",
                 "error"
             );
             return;
@@ -120,16 +118,16 @@ export default function EditRicePage() {
             }
 
             const deleteScreenshots = async () => {
-                for (const pId of deletedScreenshots.value) {
+                for (const screenshotId of deletedScreenshots.value) {
                     try {
                         await apiFetchV2(
                             "DELETE",
-                            `/rices/${riceId}/screenshots/${pId}`
+                            `/rices/${riceId}/screenshots/${screenshotId}`
                         );
                     } catch (e) {
                         if (e instanceof Error) {
                             addNotification(
-                                "Failed to delete preview",
+                                "Failed to delete screenshot",
                                 e.message,
                                 "error"
                             );
@@ -143,10 +141,13 @@ export default function EditRicePage() {
             if (newScreenshots) {
                 const screenshots = formData.getAll("screenshots[]") as File[];
 
-                for (const preview of screenshots) {
-                    const tempData = new FormData();
-                    tempData.set("file", preview);
+                const uploadScreenshots = async (files: File[]) => {
                     try {
+                        const tempData = new FormData();
+                        for (const file of files) {
+                            tempData.append("files[]", file);
+                        }
+
                         await apiFetchV2(
                             "POST",
                             `/rices/${riceId}/screenshots`,
@@ -155,16 +156,29 @@ export default function EditRicePage() {
                     } catch (e) {
                         if (e instanceof Error) {
                             addNotification(
-                                "Failed to add preview",
+                                "Failed to upload new screenshot",
                                 e.message,
                                 "error"
                             );
                         }
-                        return;
                     }
-                }
+                };
 
+                // FIXME: if rice has reached the screenshot limit
+                // and user deletes one and adds one in a single edit session
+                // an error from API will be thrown that the user has reached
+                // screenshot limit because we're uploading before deleting
+
+                // upload first screenshot so that
+                // there's any left if deleting all other screenshots
+                const firstScreenshot = screenshots.shift();
+                await uploadScreenshots([firstScreenshot]);
+
+                // delete screenshots
                 await deleteScreenshots();
+
+                // upload remaining screenshots at once
+                await uploadScreenshots(screenshots);
             } else {
                 await deleteScreenshots();
             }
@@ -253,7 +267,7 @@ function CustomCarousel() {
         images.value = newFiles;
     };
 
-    const deleteExistingPreview = (
+    const deleteExistingScreenshot = (
         e: Event,
         targetIndex: number,
         id: string
@@ -298,12 +312,16 @@ function CustomCarousel() {
                     </div>
                 ) : (
                     <>
-                        {rice.value.screenshots.map((preview, index) => (
+                        {rice.value.screenshots.map((screenshot, index) => (
                             <CarouselImage
-                                key={preview.id}
-                                url={preview.url}
+                                key={screenshot.id}
+                                url={screenshot.url}
                                 onDelete={(e) =>
-                                    deleteExistingPreview(e, index, preview.id)
+                                    deleteExistingScreenshot(
+                                        e,
+                                        index,
+                                        screenshot.id
+                                    )
                                 }
                             />
                         ))}
@@ -329,7 +347,7 @@ function CustomCarousel() {
                 />
             </div>
             <p className="text-gray text-right text-sm sm:text-base">
-                Max preview image size: 5MB
+                Max screenshot size: 5MB
             </p>
         </div>
     );

@@ -302,7 +302,7 @@ function HeaderButton({
 }
 
 function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
-    const zoom = useSignal<string>(null); // holds preview URL if any image is zoomed
+    const zoom = useSignal<string>(null); // holds screenshot URL if any image is zoomed
     const imageRef = useRef<HTMLDivElement>(); // reference to container holding the zoomed image
 
     // disable page scrolling when zoomed
@@ -358,7 +358,7 @@ function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
                         <img
                             className="border-background-2 h-full w-full rounded-md border-2 object-cover"
                             src={scr.url}
-                            alt="preview"
+                            alt="screenshot"
                         />
                     </div>
                 ))}
@@ -378,7 +378,7 @@ function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
                         <img
                             className="w-full"
                             src={zoom.value}
-                            alt="zoomed preview"
+                            alt="zoomed screenshot"
                         />
                         <a
                             className="text-foreground/70 hover:text-foreground bg-dark-background/80 border-foreground/40 hover:bg-bright-background/80 absolute left-1/2 mt-2 flex -translate-x-1/2 items-center justify-center gap-1 rounded-md border px-2 py-1 text-sm whitespace-nowrap transition-colors sm:text-base md:text-lg"
