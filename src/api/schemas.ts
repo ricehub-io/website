@@ -223,10 +223,9 @@ export const NewAvatarSchema = z.object({
 });
 
 export const PurchaseRiceSchema = z.object({
-    // This is a checkout URL! Not a checkout link.
     checkoutUrl: z.url(),
 });
 
 export const SubscriptionLinkSchema = z.object({
-    checkoutLink: z.url(),
+    checkoutUrl: z.url(),
 });
