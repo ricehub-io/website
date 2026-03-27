@@ -2,7 +2,7 @@ import { useLocation, useRoute } from "preact-iso";
 import { useContext, useEffect, useRef } from "preact/hooks";
 import { signal, useComputed, useSignal } from "@preact/signals";
 import { ChangeEvent, createRef, TargetedEvent } from "preact/compat";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import FilePreview from "@/components/form/FilePreview";
 import { FormButton } from "@/components/form/FormButton";
 import FormFileUpload from "@/components/form/FormFileUpload";
@@ -33,7 +33,7 @@ export default function EditRicePage() {
     const submitted = useSignal(false);
 
     useEffect(() => {
-        apiFetchV2("GET", `/rices/${riceId}`, null, RiceSchema)
+        apiFetch("GET", `/rices/${riceId}`, null, RiceSchema)
             .then(([status, body]) => {
                 if (status !== HttpStatus.Ok) {
                     throw new Error(
@@ -78,7 +78,7 @@ export default function EditRicePage() {
                 description !== rice.value.description
             ) {
                 try {
-                    await apiFetchV2(
+                    await apiFetch(
                         "PATCH",
                         `/rices/${riceId}`,
                         JSON.stringify({ title, description })
@@ -100,7 +100,7 @@ export default function EditRicePage() {
                 const tempData = new FormData();
                 tempData.set("file", file);
                 try {
-                    await apiFetchV2(
+                    await apiFetch(
                         "POST",
                         `/rices/${riceId}/dotfiles`,
                         tempData
@@ -120,7 +120,7 @@ export default function EditRicePage() {
             const deleteScreenshots = async () => {
                 for (const screenshotId of deletedScreenshots.value) {
                     try {
-                        await apiFetchV2(
+                        await apiFetch(
                             "DELETE",
                             `/rices/${riceId}/screenshots/${screenshotId}`
                         );
@@ -148,7 +148,7 @@ export default function EditRicePage() {
                             tempData.append("files[]", file);
                         }
 
-                        await apiFetchV2(
+                        await apiFetch(
                             "POST",
                             `/rices/${riceId}/screenshots`,
                             tempData

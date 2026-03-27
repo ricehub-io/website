@@ -1,4 +1,4 @@
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { NewAvatarSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import FormFileUpload from "@/components/form/FormFileUpload";
@@ -16,7 +16,7 @@ export default function ChangeAvatarModal() {
         const formData = new FormData(target);
 
         try {
-            const [status, body] = await apiFetchV2(
+            const [status, body] = await apiFetch(
                 "POST",
                 `/users/${user.value.id}/avatar`,
                 formData,

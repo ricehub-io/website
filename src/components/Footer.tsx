@@ -1,7 +1,7 @@
 import { useEffect } from "preact/hooks";
 import { Signal, useSignal } from "@preact/signals";
 import { addNotification } from "@/lib/appState";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import Bullet from "@/components/Bullet";
 import Link, { LinkProps } from "@/components/Link";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
@@ -17,7 +17,7 @@ export default function Footer() {
 
     useEffect(() => {
         const fetchLink = (linkName: string, linkSignal: Signal<string>) =>
-            apiFetchV2("GET", `/links/${linkName}`, null, ExternalLinkSchema)
+            apiFetch("GET", `/links/${linkName}`, null, ExternalLinkSchema)
                 .then(([_, body]) => (linkSignal.value = body.url))
                 .catch((e) => {
                     if (e instanceof Error) {

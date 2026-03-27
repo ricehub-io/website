@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "preact/hooks";
 import moment from "moment";
 import { Signal, useSignal } from "@preact/signals";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { PartialRice, PartialRiceSchema } from "@/api/schemas";
 import RicePreview from "@/components/RicePreview";
 import SectionTitle from "@/components/SectionTitle";
@@ -14,7 +14,7 @@ export default function AccountPage() {
     const createdRices = useSignal<PartialRice[]>([]);
 
     useEffect(() => {
-        apiFetchV2(
+        apiFetch(
             "GET",
             `/users/${user.value.id}/purchased`,
             null,
@@ -33,7 +33,7 @@ export default function AccountPage() {
     }, []);
 
     useEffect(() => {
-        apiFetchV2(
+        apiFetch(
             "GET",
             `/users/${user.value.id}/rices`,
             null,

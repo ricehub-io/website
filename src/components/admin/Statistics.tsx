@@ -1,6 +1,6 @@
 import { useEffect } from "preact/hooks";
 import { useSignal } from "@preact/signals";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { ServiceStatistics, ServiceStatisticsSchema } from "@/api/schemas";
 import { addNotification } from "@/lib/appState";
 
@@ -8,7 +8,7 @@ export default function Statistics() {
     const stats = useSignal<ServiceStatistics>(null);
 
     useEffect(() => {
-        apiFetchV2("GET", "/admin/stats", null, ServiceStatisticsSchema)
+        apiFetch("GET", "/admin/stats", null, ServiceStatisticsSchema)
             .then(([_, body]) => (stats.value = body))
             .catch((e) => {
                 if (e instanceof Error) {

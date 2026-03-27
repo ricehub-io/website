@@ -1,4 +1,4 @@
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { ReportWithUser, ReportWithUserSchema } from "@/api/schemas";
 import ListWrapper from "@/components/admin/ListWrapper";
 import Report from "@/components/admin/Report";
@@ -32,7 +32,7 @@ export default function ReportList({ refreshInterval }: ReportListProps) {
     useEffect(filterReports, [reports.value, filter.value]);
 
     const fetchReports = () => {
-        apiFetchV2("GET", "/reports", null, ReportWithUserSchema.array())
+        apiFetch("GET", "/reports", null, ReportWithUserSchema.array())
             .then(([_, body]) => (reports.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
@@ -60,7 +60,7 @@ export default function ReportList({ refreshInterval }: ReportListProps) {
 
     const closeReport = async (reportId: string) => {
         try {
-            const [status, _] = await apiFetchV2(
+            const [status, _] = await apiFetch(
                 "POST",
                 `/reports/${reportId}/close`
             );

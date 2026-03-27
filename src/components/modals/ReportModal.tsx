@@ -1,4 +1,4 @@
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { CreateReport, ReportCreatedSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import FormTextArea from "@/components/form/FormTextArea";
@@ -23,7 +23,7 @@ export default function ReportModal() {
                     ? { riceId: report.value.resourceId }
                     : { commentId: report.value.resourceId }),
             };
-            const [status, body] = await apiFetchV2(
+            const [status, body] = await apiFetch(
                 "POST",
                 "/reports",
                 JSON.stringify(reqBody),

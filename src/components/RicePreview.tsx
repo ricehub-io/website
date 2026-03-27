@@ -1,4 +1,4 @@
-import { ApiError, FetchMethod, apiFetchV2 } from "@/api/apiFetch";
+import { ApiError, FetchMethod, apiFetch } from "@/api/apiFetch";
 import { PartialRice } from "@/api/schemas";
 import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
 import { addNotification, AppState } from "@/lib/appState";
@@ -157,7 +157,7 @@ function StarButton({ id, ...props }: PartialRice) {
         const method: FetchMethod = isStarred.value ? "DELETE" : "POST";
 
         try {
-            const [status, _] = await apiFetchV2(method, `/rices/${id}/star`);
+            const [status, _] = await apiFetch(method, `/rices/${id}/star`);
 
             if (status === HttpStatus.Created) {
                 starCount.value += 1;

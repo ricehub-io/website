@@ -4,7 +4,7 @@ import moment from "moment";
 import { For, Show } from "@preact/signals/utils";
 import { InputHTMLAttributes } from "preact/compat";
 import { addNotification, AppState } from "@/lib/appState";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import Bullet from "@/components/Bullet";
 import { HttpStatus } from "@/lib/enums";
 import { TrashIcon, NoSymbolIcon } from "@heroicons/react/24/solid";
@@ -29,7 +29,7 @@ export default function CommentSection({
     const comments = useSignal<CommentWithUser[]>([]);
 
     useEffect(() => {
-        apiFetchV2(
+        apiFetch(
             "GET",
             `/rices/${riceId}/comments`,
             null,
@@ -88,7 +88,7 @@ function CommentCreator({
         const formData = new FormData(target);
 
         try {
-            const [status, comment] = await apiFetchV2(
+            const [status, comment] = await apiFetch(
                 "POST",
                 "/comments",
                 JSON.stringify({
@@ -167,7 +167,7 @@ function Comment({
 
     const deleteComment = async () => {
         try {
-            const [status, _] = await apiFetchV2(
+            const [status, _] = await apiFetch(
                 "DELETE",
                 `/comments/${commentId}`
             );

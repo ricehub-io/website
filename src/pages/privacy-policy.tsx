@@ -1,7 +1,7 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import moment from "moment";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import PageTitle from "@/components/PageTitle";
 import { addNotification } from "@/lib/appState";
 import { sanitizeMarkdownInput } from "@/lib/sanitize";
@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
 
     // fetch privacy policy content from db
     useEffect(() => {
-        apiFetchV2(
+        apiFetch(
             "GET",
             "/vars/privacy_policy_text",
             null,

@@ -2,7 +2,7 @@ import { useEffect } from "preact/hooks";
 import { useSignal } from "@preact/signals";
 import { addNotification } from "@/lib/appState";
 import { For } from "@preact/signals/utils";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { formatLocaleDate } from "@/lib/math";
 import { User, UserSchema } from "@/api/schemas";
 
@@ -14,7 +14,7 @@ export default function UserList({ userLimit }: UserListProps) {
     const users = useSignal<User[]>([]);
 
     useEffect(() => {
-        apiFetchV2("GET", `/users?limit=${userLimit}`, null, UserSchema.array())
+        apiFetch("GET", `/users?limit=${userLimit}`, null, UserSchema.array())
             .then(([_, body]) => (users.value = body))
             .catch((e) => {
                 if (e instanceof Error) {

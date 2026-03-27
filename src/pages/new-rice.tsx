@@ -1,4 +1,4 @@
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { RiceSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import FormFileUpload from "@/components/form/FormFileUpload";
@@ -21,7 +21,7 @@ export default function NewRicePage() {
         const formData = new FormData(target);
 
         try {
-            const [status, _] = await apiFetchV2("POST", "/rices", formData);
+            const [status, _] = await apiFetch("POST", "/rices", formData);
 
             if (status !== HttpStatus.Created) {
                 throw new Error(

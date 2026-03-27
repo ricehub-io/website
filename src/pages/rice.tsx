@@ -1,4 +1,4 @@
-import { apiFetchV2, ApiError } from "@/api/apiFetch";
+import { apiFetch, ApiError } from "@/api/apiFetch";
 import { Rice, RiceSchema } from "@/api/schemas";
 import { Placeholder } from "@/components/Placeholder";
 import { RiceInfo } from "@/components/RiceInfo";
@@ -23,7 +23,7 @@ export default function RicePage() {
             return;
         }
 
-        apiFetchV2("GET", `/users/${username}/rices/${slug}`, null, RiceSchema)
+        apiFetch("GET", `/users/${username}/rices/${slug}`, null, RiceSchema)
             .then(([_, body]) => (riceInfo.value = body))
             .catch((e) => {
                 if (e instanceof ApiError) {

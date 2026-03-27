@@ -2,7 +2,7 @@ import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { addNotification } from "@/lib/appState";
 import { For } from "@preact/signals/utils";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { formatLocaleDate } from "@/lib/math";
 import moment from "moment";
 import { CommentWithUser, CommentWithUserSchema } from "@/api/schemas";
@@ -15,7 +15,7 @@ export default function CommentList({ commentLimit }: CommentListProps) {
     const comments = useSignal<CommentWithUser[]>([]);
 
     useEffect(() => {
-        apiFetchV2(
+        apiFetch(
             "GET",
             `/comments?limit=${commentLimit}`,
             null,

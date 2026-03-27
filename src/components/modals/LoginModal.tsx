@@ -1,4 +1,4 @@
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { LoginSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import { FormInput } from "@/components/form/FormInput";
@@ -19,7 +19,7 @@ export default function LoginModal() {
         const password = formData.get("password").toString();
 
         try {
-            const [status, body] = await apiFetchV2(
+            const [status, body] = await apiFetch(
                 "POST",
                 "/auth/login",
                 JSON.stringify({ username, password }),

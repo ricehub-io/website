@@ -1,4 +1,4 @@
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { FormButton } from "@/components/form/FormButton";
 import { FormInput } from "@/components/form/FormInput";
 import { AppState, addNotification } from "@/lib/appState";
@@ -16,7 +16,7 @@ export default function ChangeDisplayNameModal() {
         const displayName = formData.get("displayName") as string;
 
         try {
-            const [status, _] = await apiFetchV2(
+            const [status, _] = await apiFetch(
                 "PATCH",
                 `/users/${user.value.id}/displayName`,
                 JSON.stringify({

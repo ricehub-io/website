@@ -3,7 +3,7 @@ import { useEffect } from "preact/hooks";
 import { useSignal } from "@preact/signals";
 import moment from "moment";
 import { NoSymbolIcon } from "@heroicons/react/24/solid";
-import { apiFetchV2, ApiError } from "@/api/apiFetch";
+import { apiFetch, ApiError } from "@/api/apiFetch";
 import { PartialRice, Profile, ProfileSchema, User } from "@/api/schemas";
 import RicePreview from "@/components/RicePreview";
 import { addNotification } from "@/lib/appState";
@@ -18,7 +18,7 @@ export default function ProfilePage() {
     const notFound = useSignal(false);
 
     useEffect(() => {
-        apiFetchV2("GET", `/profiles/${username}`, null, ProfileSchema)
+        apiFetch("GET", `/profiles/${username}`, null, ProfileSchema)
             .then(([_, body]) => (profile.value = body))
             .catch((e) => {
                 if (e instanceof ApiError) {

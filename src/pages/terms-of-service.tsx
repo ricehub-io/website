@@ -1,7 +1,7 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import moment from "moment";
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import PageTitle from "@/components/PageTitle";
 import { addNotification } from "@/lib/appState";
 import { sanitizeMarkdownInput } from "@/lib/sanitize";
@@ -11,7 +11,7 @@ export default function TermsOfServicePage() {
     const data = useSignal<WebsiteVariable>(null);
 
     useEffect(() => {
-        apiFetchV2(
+        apiFetch(
             "GET",
             "/vars/terms_of_service_text",
             null,

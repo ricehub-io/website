@@ -8,7 +8,7 @@ import Bullet from "@/components/Bullet";
 import moment from "moment";
 import TextButton from "@/components/admin/TextButton";
 import WaitingRiceList from "@/components/admin/WaitingRiceList";
-import { apiFetchV2, ApiError } from "@/api/apiFetch";
+import { apiFetch, ApiError } from "@/api/apiFetch";
 import ReportList from "@/components/admin/ReportList";
 import ResourceList from "@/components/admin/ResourceList";
 import Statistics from "@/components/admin/Statistics";
@@ -104,7 +104,7 @@ function BanUserForm() {
         if (username !== "") {
             // fetch user id
             try {
-                const [_, body] = await apiFetchV2(
+                const [_, body] = await apiFetch(
                     "GET",
                     `/users?username=${username}`,
                     null,
@@ -151,7 +151,7 @@ function BanUserForm() {
         }
 
         try {
-            const [status, _] = await apiFetchV2(
+            const [status, _] = await apiFetch(
                 "POST",
                 `/users/${userId}/ban`,
                 JSON.stringify({
@@ -213,12 +213,7 @@ function BanList() {
     const bans = useSignal<UserWithBan[]>([]);
 
     useEffect(() => {
-        apiFetchV2(
-            "GET",
-            "/users?status=banned",
-            null,
-            UserWithBanSchema.array()
-        )
+        apiFetch("GET", "/users?status=banned", null, UserWithBanSchema.array())
             .then(([_, body]) => (bans.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
@@ -242,7 +237,7 @@ function BanList() {
         }
 
         try {
-            const [status, _] = await apiFetchV2(
+            const [status, _] = await apiFetch(
                 "DELETE",
                 `/users/${unbanCtx.value.id}/ban`
             );

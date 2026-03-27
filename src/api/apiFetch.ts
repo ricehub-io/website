@@ -77,7 +77,7 @@ async function sendRequest(
 }
 
 /** API Fetch function for Zod schemas */
-export async function apiFetchV2<T extends z.ZodType>(
+export async function apiFetch<T extends z.ZodType>(
     method: FetchMethod,
     endpoint: string,
     reqBody?: string | FormData,
@@ -95,9 +95,7 @@ export async function apiFetchV2<T extends z.ZodType>(
         withoutToken
     );
     if (!isStatusOk(status)) {
-        const err =
-            resBody?.errors?.[0] || resBody?.error || "Failed to reach API";
-
+        const err = resBody?.errors?.[0] || "Failed to reach API";
         throw new ApiError(err, status);
     }
 

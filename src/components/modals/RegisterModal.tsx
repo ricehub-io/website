@@ -1,10 +1,11 @@
 import { useContext } from "preact/hooks";
 import { useSignal } from "@preact/signals";
-import { API_URL } from "@/api/apiFetch";
+import { API_URL, apiFetch } from "@/api/apiFetch";
 import { FormButton } from "@/components/form/FormButton";
 import { FormInput } from "@/components/form/FormInput";
 import FormTitle from "@/components/form/FormTitle";
 import { AppState, addNotification } from "@/lib/appState";
+import { HttpStatus } from "@/lib/enums";
 
 interface FormError {
     source: "username" | "displayName" | "password";
@@ -17,24 +18,17 @@ async function register(
     password: string
 ) {
     try {
-        const res = await fetch(`${API_URL}/auth/register`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username,
-                displayName,
-                password,
-            }),
-        });
+        const [status, _] = await apiFetch(
+            "POST",
+            "/auth/register",
+            JSON.stringify({ username, displayName, password })
+        );
 
-        if (!res.ok) {
-            const data = await res.json();
-            throw new Error(data.error || "Failed to register");
+        if (status !== HttpStatus.Created) {
+            throw new Error("Unexpected status code received from API");
         }
-    } catch (err) {
-        throw err;
+    } catch (e) {
+        throw e;
     }
 }
 

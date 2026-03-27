@@ -1,4 +1,4 @@
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { FormButton } from "@/components/form/FormButton";
 import { FormInput } from "@/components/form/FormInput";
 import { AppState, addNotification } from "@/lib/appState";
@@ -17,7 +17,7 @@ export default function ChangePasswordModal() {
         const newPassword = formData.get("newPassword");
 
         try {
-            const [status, _] = await apiFetchV2(
+            const [status, _] = await apiFetch(
                 "PATCH",
                 `/users/${user.value.id}/password`,
                 JSON.stringify({

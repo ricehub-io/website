@@ -17,7 +17,7 @@ import {
 import { FlagIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { formatBytes } from "@/lib/math";
-import { apiFetchV2, API_URL } from "@/api/apiFetch";
+import { apiFetch, API_URL } from "@/api/apiFetch";
 import CommentSection from "@/components/CommentSection";
 import SectionTitle from "@/components/SectionTitle";
 import { HttpStatus } from "@/lib/enums";
@@ -95,7 +95,7 @@ export function RiceInfo({
 
     const onStar = async () => {
         try {
-            const [status, _] = await apiFetchV2(
+            const [status, _] = await apiFetch(
                 _isStarred.value ? "DELETE" : "POST",
                 `/rices/${id}/star`
             );
@@ -121,12 +121,7 @@ export function RiceInfo({
     /** onDownloadClick callback is triggered when user either presses download or purchase button */
     const onDownloadClick = () => {
         if (toPurchase.value) {
-            apiFetchV2(
-                "POST",
-                `/rices/${id}/purchase`,
-                null,
-                PurchaseRiceSchema
-            )
+            apiFetch("POST", `/rices/${id}/purchase`, null, PurchaseRiceSchema)
                 .then(([_, body]) =>
                     openCheckout(
                         body.checkoutUrl,

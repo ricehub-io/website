@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { clamp } from "@/lib/math";
 import { RadioButton, RadioButtonProps } from "@/components/RadioButton";
-import { ApiError, apiFetchV2 } from "@/api/apiFetch";
+import { ApiError, apiFetch } from "@/api/apiFetch";
 import { Placeholder } from "@/components/Placeholder";
 import RicePreview from "@/components/RicePreview";
 import { AppState, addNotification } from "@/lib/appState";
@@ -55,7 +55,7 @@ export default function HomePage() {
     const isLoaded = useComputed(() => rices.value.length > 0);
 
     const fetchRices = () => {
-        apiFetchV2("GET", `/rices?sort=${sortBy.value}`, null, FetchRicesSchema)
+        apiFetch("GET", `/rices?sort=${sortBy.value}`, null, FetchRicesSchema)
             .then(([_, data]) => {
                 rices.value = data.rices;
                 pageCount.value = data.pageCount;
@@ -150,7 +150,7 @@ export default function HomePage() {
                     );
             }
 
-            const [status, data] = await apiFetchV2(
+            const [status, data] = await apiFetch(
                 "GET",
                 endpoint,
                 null,

@@ -1,4 +1,4 @@
-import { apiFetchV2 } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { FormButton } from "@/components/form/FormButton";
 import { AppState, addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
@@ -17,7 +17,7 @@ export default function DeleteResourceModal() {
                 reportCtx.value.resourceType === "rice"
                     ? `/rices/${resId}`
                     : `/comments/${resId}`;
-            const [status, body] = await apiFetchV2("DELETE", endpoint);
+            const [status, body] = await apiFetch("DELETE", endpoint);
             if (status !== HttpStatus.NoContent) {
                 console.log(`unexpected status: ${status}`);
                 console.log(body);
