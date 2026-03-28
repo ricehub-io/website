@@ -1,9 +1,10 @@
 import { apiFetch } from "@/api/apiFetch";
-import { RiceSchema } from "@/api/schemas";
+import { Tag, TagSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import FormFileUpload from "@/components/form/FormFileUpload";
 import { FormImageCarousel } from "@/components/form/FormImageCarousel";
 import { FormInput } from "@/components/form/FormInput";
+import FormTagSelector from "@/components/form/FormTagSelector";
 import FormTextArea from "@/components/form/FormTextArea";
 import PageTitle from "@/components/PageTitle";
 import { addNotification, AppState } from "@/lib/appState";
@@ -21,6 +22,9 @@ export default function NewRicePage() {
         const formData = new FormData(target);
 
         try {
+            const formTags = formData.getAll("tags").map((tag) => +tag);
+            formData.set("tags", JSON.stringify(formTags));
+
             const [status, _] = await apiFetch("POST", "/rices", formData);
 
             if (status !== HttpStatus.Created) {
@@ -57,6 +61,7 @@ export default function NewRicePage() {
             <form onSubmit={onSubmit} className="flex flex-col gap-2 md:gap-4">
                 <FormInput label="Title" name="title" type="text" />
                 <FormTextArea label="Description" name="description" />
+                <FormTagSelector />
                 <FormFileUpload
                     label="Dotfiles"
                     name="dotfiles"

@@ -34,6 +34,7 @@ export default function RicePreview(props: RicePreviewProps) {
         downloads,
         state,
         isFree,
+        tags,
     } = props;
 
     const { route } = useLocation();
@@ -70,7 +71,7 @@ export default function RicePreview(props: RicePreviewProps) {
                     />
                 </div>
                 <div
-                    className={`flex items-center px-3 pb-2 ${isWaiting ? "opacity-70" : ""}`}
+                    className={`flex items-center gap-x-3 px-3 pb-2 ${isWaiting ? "opacity-70" : ""}`}
                 >
                     <div>
                         <h1 className="-mb-1 text-lg font-medium">{title}</h1>
@@ -89,6 +90,16 @@ export default function RicePreview(props: RicePreviewProps) {
                         </div>
                         <StarButton {...props} />
                     </div>
+                </div>
+                <div className="mb-2 flex flex-wrap gap-1 px-3">
+                    {tags.map((tag, idx) => (
+                        <p
+                            key={idx}
+                            className="bg-dark-background border-blue text-foreground/90 rounded-sm border px-4 py-0.5 text-sm font-semibold"
+                        >
+                            {tag}
+                        </p>
+                    ))}
                 </div>
                 {!hideActions &&
                     user.value !== null &&

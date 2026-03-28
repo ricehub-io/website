@@ -42,6 +42,7 @@ export function RiceInfo({
     isOwned,
     downloads,
     dotfiles,
+    tags,
     author,
     createdAt,
     updatedAt,
@@ -244,6 +245,17 @@ export function RiceInfo({
                 </div>
             </div>
 
+            <div className="flex gap-1">
+                {tags.map(({ id, name }) => (
+                    <p
+                        key={id}
+                        className="bg-dark-background border-blue text-foreground/90 rounded-sm border px-4 py-0.5 text-sm font-semibold"
+                    >
+                        {name}
+                    </p>
+                ))}
+            </div>
+
             <div className="bg-dark-background rounded-lg p-6">
                 {/* author + creation date */}
                 <div className="flex items-center gap-2">
@@ -391,9 +403,9 @@ function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
     return (
         <>
             <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-                {screenshots.map((scr) => (
+                {screenshots.map((scr, idx) => (
                     <div
-                        key={scr.id}
+                        key={idx}
                         className="aspect-video cursor-pointer"
                         onClick={() => (zoom.value = scr.url)}
                     >

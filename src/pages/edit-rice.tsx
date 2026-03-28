@@ -18,6 +18,7 @@ import {
     CarouselPlusButton,
 } from "@/components/form/FormImageCarousel";
 import { Rice, RiceSchema } from "@/api/schemas";
+import FormTagSelector from "@/components/form/FormTagSelector";
 
 const deletedScreenshots = signal<string[]>([]);
 const rice = signal<Rice>(null);
@@ -92,6 +93,44 @@ export default function EditRicePage() {
                         );
                     }
                     return;
+                }
+            }
+
+            try {
+                const formTags = formData.getAll("tags").map((tag) => +tag);
+                if (formTags.length > 0) {
+                    // attach new tags
+                    const newTags = formTags.filter(
+                        (tagId) =>
+                            !rice.value.tags.map(({ id }) => id).includes(tagId)
+                    );
+                    if (newTags.length > 0) {
+                        await apiFetch(
+                            "POST",
+                            `/rices/${riceId}/tags`,
+                            JSON.stringify({ tags: newTags })
+                        );
+                    }
+
+                    // unattach removed tags
+                    const removedTags = rice.value.tags
+                        .filter(({ id }) => !formTags.includes(id))
+                        .map(({ id }) => id);
+                    if (removedTags.length > 0) {
+                        await apiFetch(
+                            "DELETE",
+                            `/rices/${riceId}/tags`,
+                            JSON.stringify({ tags: removedTags })
+                        );
+                    }
+                }
+            } catch (e) {
+                if (e instanceof Error) {
+                    addNotification(
+                        "Failed to update tags",
+                        e.message,
+                        "error"
+                    );
                 }
             }
 
@@ -211,6 +250,9 @@ export default function EditRicePage() {
                     label="Description"
                     name="description"
                     value={rice.value.description}
+                />
+                <FormTagSelector
+                    selected={rice.value.tags.map((tag) => tag.id)}
                 />
                 {!newDotfiles.value ? (
                     // show existing dotfiles

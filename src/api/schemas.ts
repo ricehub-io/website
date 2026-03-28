@@ -27,6 +27,13 @@ export const UserBanSchema = z.object({
     expiresAt: z.coerce.date().optional(),
 });
 
+// -- TAGS
+export const TagSchema = z.object({
+    id: z.int(),
+    name: z.string(),
+});
+export type Tag = z.infer<typeof TagSchema>;
+
 // -- RICES
 export const RiceStateSchema = z.enum(["waiting", "accepted"]);
 // export type RiceState = z.infer<typeof RiceStateSchema>;
@@ -64,6 +71,7 @@ export const RiceSchema = z.object({
 
     screenshots: RiceScreenshotSchema.array(),
     dotfiles: RiceDotfilesSchema,
+    tags: TagSchema.array(),
 
     author: UserSchema,
 });
@@ -87,6 +95,7 @@ export const PartialRiceSchema = z.object({
     // not coercing to date because then it loses precision which is needed for pagination
     createdAt: z.string(),
     score: z.float32(),
+    tags: z.string().array(),
 });
 export type PartialRice = z.infer<typeof PartialRiceSchema>;
 
