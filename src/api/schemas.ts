@@ -140,6 +140,27 @@ export const ServiceStatisticsSchema = z.object({
 });
 export type ServiceStatistics = z.infer<typeof ServiceStatisticsSchema>;
 
+// -- LEADERBOARD
+export const LeaderboardRiceSchema = z.object({
+    position: z.number(),
+    id: z.uuidv4(),
+    title: z.string(),
+    slug: z.string(),
+    displayName: z.string(),
+    username: z.string(),
+    thumbnail: z.string(),
+    stars: z.number(),
+    comments: z.number(),
+    downloads: z.number(),
+    isStarred: z.boolean(),
+    isFree: z.boolean(),
+    state: RiceStateSchema,
+    createdAt: z.coerce.date(),
+    score: z.float32(),
+    tags: z.string().array(),
+});
+export type LeaderboardRice = z.infer<typeof LeaderboardRiceSchema>;
+
 // DTOs with relations/merged fields
 export const UserWithBanSchema = z.object({
     user: UserSchema,

@@ -1,6 +1,7 @@
 import { ApiError, FetchMethod, apiFetch } from "@/api/apiFetch";
 import { PartialRice } from "@/api/schemas";
 import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
+import StarButton from "@/components/StarButton";
 import { addNotification, AppState } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
 import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
@@ -88,7 +89,11 @@ export default function RicePreview(props: RicePreviewProps) {
                             <ArrowDownTrayIcon className="size-4 sm:size-5" />
                             <p>{downloads}</p>
                         </div>
-                        <StarButton {...props} />
+                        <StarButton
+                            riceId={props.id}
+                            stars={props.stars}
+                            isStarred={props.isStarred}
+                        />
                     </div>
                 </div>
                 <div className="mb-2 flex flex-wrap gap-1 px-3">
@@ -151,67 +156,5 @@ function FloatingButton({
         >
             {icon}
         </button>
-    );
-}
-
-function StarButton({ id, ...props }: PartialRice) {
-    const starCount = useSignal(props.stars);
-    const isStarred = useSignal(props.isStarred);
-
-    useEffect(() => {
-        isStarred.value = props.isStarred;
-    }, [props.isStarred]);
-
-    const onStar = async (e: MouseEvent) => {
-        e.stopPropagation();
-
-        const method: FetchMethod = isStarred.value ? "DELETE" : "POST";
-
-        try {
-            const [status, _] = await apiFetch(method, `/rices/${id}/star`);
-
-            if (status === HttpStatus.Created) {
-                starCount.value += 1;
-                isStarred.value = true;
-            } else if (status === HttpStatus.NoContent) {
-                starCount.value -= 1;
-                isStarred.value = false;
-            }
-        } catch (e) {
-            if (e instanceof ApiError) {
-                if (e.statusCode === HttpStatus.Forbidden) {
-                    addNotification(
-                        "Forbidden",
-                        "You must be logged in to do that",
-                        "error"
-                    );
-                } else {
-                    addNotification(
-                        "Failed to star/unstar rice",
-                        e.message,
-                        "error"
-                    );
-                }
-            }
-        }
-    };
-
-    return (
-        <div
-            onClick={onStar}
-            className="flex items-center gap-0.5 transition-colors duration-300 hover:cursor-pointer"
-        >
-            <ReactiveStarIcon
-                solid={isStarred.value}
-                className="size-4 sm:size-5"
-            />
-            <p
-                className={`transition-colors duration-300 sm:text-lg ${
-                    isStarred.value && "text-accent"
-                }`}
-            >
-                {starCount}
-            </p>
-        </div>
     );
 }

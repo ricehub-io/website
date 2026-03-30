@@ -19,6 +19,7 @@ import PrivacyPolicyPage from "@/pages/privacy-policy";
 import ProfilePage from "@/pages/profile";
 import RicePage from "@/pages/rice";
 import TermsOfServicePage from "@/pages/terms-of-service";
+import LeaderboardPage from "@/pages/leaderboard";
 
 export function App() {
     // const [theme, setTheme] = useState<"default" | "everforest">("default");
@@ -47,6 +48,10 @@ export function App() {
                         <Route
                             path="/terms-of-service"
                             component={TermsOfServicePage}
+                        />
+                        <Route
+                            path="/leaderboard"
+                            component={LeaderboardPage}
                         />
                         {/* elite ball knowledge */}
                         <AdminRoute path="/mastermind" component={AdminPage} />
