@@ -66,7 +66,7 @@ export default function LeaderboardPage() {
     return (
         <div className="flex flex-col items-center gap-4">
             <PageTitle text="Leaderboard" />
-            <div className="hidden md:flex">
+            <div>
                 {PERIOD_BUTTONS.map((props) => (
                     <RadioButton
                         key={props.value}
@@ -77,7 +77,7 @@ export default function LeaderboardPage() {
                     />
                 ))}
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex w-full flex-col items-center gap-2">
                 {rices.value.map((rice) => (
                     <Rice key={rice.id} {...rice} />
                 ))}
@@ -97,15 +97,19 @@ const Rice = ({
     downloads,
     isStarred,
 }: LeaderboardRice) => (
-    <div className="bg-bright-background hover:outline-blue cursor-pointer rounded-md p-4 outline-2 outline-transparent transition-colors duration-300">
-        <div className="flex items-center gap-2 text-lg">
-            <p className="text-xl font-bold">{numberWithOrdinal(position)}</p>
-            <p>{title}</p>
-            <p className="ml-auto">by {displayName}</p>
+    <div className="bg-bright-background hover:outline-blue cursor-pointer rounded-md p-2 outline-2 outline-transparent transition-colors duration-300 sm:p-4">
+        <div className="flex items-center gap-2 text-base sm:text-base md:text-lg">
+            <p className="text-lg font-bold sm:text-xl md:text-2xl">
+                {numberWithOrdinal(position)}
+            </p>
+            <p className="w-50 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                {title}
+            </p>
+            <p className="ml-auto text-nowrap">by {displayName}</p>
         </div>
         <div className="my-2">
             <img
-                className="h-60 rounded-sm object-cover"
+                className="w-full rounded-sm object-cover md:h-60 md:w-auto"
                 src={thumbnail}
                 alt="thumbnail"
             />
