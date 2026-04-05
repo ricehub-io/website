@@ -117,7 +117,6 @@ export type Profile = z.infer<typeof ProfileSchema>;
 // -- WEBSITE VARIABLES
 export const WebsiteVariableSchema = z.object({
     value: z.string(),
-    createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
 });
 export type WebsiteVariable = z.infer<typeof WebsiteVariableSchema>;
