@@ -1,39 +1,40 @@
 {
-	"private": true,
-	"type": "module",
-	"packageManager": "pnpm@10.32.1",
-	"scripts": {
-		"dev": "vite --host 127.0.0.1",
-		"build": "vite build",
-		"preview": "vite preview"
-	},
-	"dependencies": {
-		"@heroicons/react": "^2.2.0",
-		"@polar-sh/checkout": "^0.2.0",
-		"@preact/signals": "^2.3.1",
-		"@tailwindcss/vite": "^4.1.13",
-		"@types/pluralize": "^0.0.33",
-		"dompurify": "^3.3.1",
-		"jwt-decode": "^4.0.0",
-		"marked": "^17.0.3",
-		"moment": "^2.30.1",
-		"pluralize": "^8.0.0",
-		"preact": "^10.26.9",
-		"preact-iso": "^2.10.0",
-		"prettier-plugin-tailwindcss": "^0.7.2",
-		"tailwindcss": "^4.1.13",
-		"uuid": "^13.0.0",
-		"zod": "^4.3.6"
-	},
-	"devDependencies": {
-		"@preact/preset-vite": "^2.10.2",
-		"eslint": "^9.35.0",
-		"eslint-config-preact": "^2.0.0",
-		"typescript": "^5.9.2",
-		"vite": "^7.0.4",
-		"vite-tsconfig-paths": "^6.1.1"
-	},
-	"eslintConfig": {
-		"extends": "preact"
-	}
+    "version": "1.19.1",
+    "private": true,
+    "type": "module",
+    "packageManager": "pnpm@10.32.1",
+    "scripts": {
+        "dev": "vite --host 127.0.0.1",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@heroicons/react": "^2.2.0",
+        "@polar-sh/checkout": "^0.2.0",
+        "@preact/signals": "^2.3.1",
+        "@tailwindcss/vite": "^4.1.13",
+        "@types/pluralize": "^0.0.33",
+        "dompurify": "^3.3.1",
+        "jwt-decode": "^4.0.0",
+        "marked": "^17.0.3",
+        "moment": "^2.30.1",
+        "pluralize": "^8.0.0",
+        "preact": "^10.26.9",
+        "preact-iso": "^2.10.0",
+        "prettier-plugin-tailwindcss": "^0.7.2",
+        "tailwindcss": "^4.1.13",
+        "uuid": "^13.0.0",
+        "zod": "^4.3.6"
+    },
+    "devDependencies": {
+        "@preact/preset-vite": "^2.10.2",
+        "eslint": "^9.35.0",
+        "eslint-config-preact": "^2.0.0",
+        "typescript": "^5.9.2",
+        "vite": "^7.0.4",
+        "vite-tsconfig-paths": "^6.1.1"
+    },
+    "eslintConfig": {
+        "extends": "preact"
+    }
 }

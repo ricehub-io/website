@@ -8,9 +8,6 @@ import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import DiscordIcon from "@/components/icons/DiscordIcon";
 import { ExternalLinkSchema } from "@/api/schemas";
 
-const VERSION_MAJOR: number = 1;
-const VERSION_MINOR: number = 19;
-
 export default function Footer() {
     const discord = useSignal("");
     const github = useSignal("");
@@ -36,9 +33,7 @@ export default function Footer() {
     return (
         <footer className="bg-dark-background text-foreground/60 mt-auto flex flex-col items-center justify-between gap-y-4 px-10 py-6 sm:px-6 lg:flex-row lg:py-3">
             <div>
-                <p className="inline">
-                    v{VERSION_MAJOR}.{VERSION_MINOR}
-                </p>
+                <p className="inline">v{__APP_VERSION__}</p>
                 <Bullet />
                 <p className="inline break-keep whitespace-nowrap">
                     made by{" "}
