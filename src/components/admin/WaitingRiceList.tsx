@@ -40,7 +40,7 @@ export default function WaitingRiceList({
 
     const acceptRice = async (rice: PartialRice) => {
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "PATCH",
                 `/rices/${rice.id}/state`,
                 JSON.stringify({
@@ -65,7 +65,7 @@ export default function WaitingRiceList({
 
     const rejectRice = async (rice: PartialRice) => {
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "PATCH",
                 `/rices/${rice.id}/state`,
                 JSON.stringify({

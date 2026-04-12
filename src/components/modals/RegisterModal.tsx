@@ -1,6 +1,6 @@
 import { useContext } from "preact/hooks";
 import { useSignal } from "@preact/signals";
-import { API_URL, apiFetch } from "@/api/apiFetch";
+import { apiFetch } from "@/api/apiFetch";
 import { FormButton } from "@/components/form/FormButton";
 import { FormInput } from "@/components/form/FormInput";
 import FormTitle from "@/components/form/FormTitle";
@@ -18,7 +18,7 @@ async function register(
     password: string
 ) {
     try {
-        const [status, _] = await apiFetch(
+        const [status] = await apiFetch(
             "POST",
             "/auth/register",
             JSON.stringify({ username, displayName, password })

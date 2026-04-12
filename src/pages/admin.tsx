@@ -151,7 +151,7 @@ function BanUserForm() {
         }
 
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "POST",
                 `/users/${userId}/ban`,
                 JSON.stringify({
@@ -237,7 +237,7 @@ function BanList() {
         }
 
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "DELETE",
                 `/users/${unbanCtx.value.id}/ban`
             );

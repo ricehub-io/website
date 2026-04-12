@@ -96,7 +96,7 @@ export function RiceInfo({
 
     const onStar = async () => {
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 _isStarred.value ? "DELETE" : "POST",
                 `/rices/${id}/star`
             );

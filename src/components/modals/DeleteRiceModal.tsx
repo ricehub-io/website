@@ -1,5 +1,4 @@
 import { useContext } from "preact/hooks";
-import { useLocation } from "preact-iso";
 import { apiFetch } from "@/api/apiFetch";
 import { FormButton } from "@/components/form/FormButton";
 import { AppState, addNotification } from "@/lib/appState";
@@ -13,7 +12,7 @@ export default function DeleteRiceModal() {
         const target = e.currentTarget as HTMLFormElement;
 
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "DELETE",
                 `/rices/${currentRiceId.value}`
             );

@@ -303,7 +303,7 @@ function CustomCarousel() {
             (_, index) => index !== targetIndex
         );
 
-        let dt = new DataTransfer();
+        const dt = new DataTransfer();
         newFiles.forEach((file) => dt.items.add(file));
         carouselInput.current.files = dt.files;
         images.value = newFiles;

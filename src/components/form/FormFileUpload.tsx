@@ -26,7 +26,7 @@ export default function FormFileUpload({
     const hasSelected = useComputed(() => selectedFile.value !== null);
 
     useEffect(() => {
-        let dt = new DataTransfer();
+        const dt = new DataTransfer();
 
         if (selectedFile.value) {
             // set new file

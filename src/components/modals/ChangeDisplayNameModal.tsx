@@ -16,7 +16,7 @@ export default function ChangeDisplayNameModal() {
         const displayName = formData.get("displayName") as string;
 
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "PATCH",
                 `/users/${user.value.id}/displayName`,
                 JSON.stringify({

@@ -143,7 +143,7 @@ function UserDetail(props: { label: string; value: string }) {
     );
 }
 
-function Button(props: { label: string; red?: boolean; onClick?: () => {} }) {
+function Button(props: { label: string; red?: boolean; onClick?: () => void }) {
     return (
         <input
             onClick={props.onClick}

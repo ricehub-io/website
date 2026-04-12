@@ -1,18 +1,14 @@
-import { ApiError, FetchMethod, apiFetch } from "@/api/apiFetch";
 import { PartialRice } from "@/api/schemas";
-import ReactiveStarIcon from "@/components/icons/ReactiveStarIcon";
 import StarButton from "@/components/StarButton";
-import { addNotification, AppState } from "@/lib/appState";
-import { HttpStatus } from "@/lib/enums";
+import { AppState } from "@/lib/appState";
 import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
 import {
     TrashIcon,
     PencilSquareIcon,
     ArrowDownTrayIcon,
 } from "@heroicons/react/24/solid";
-import { useSignal } from "@preact/signals";
 import { useLocation } from "preact-iso";
-import { useContext, useEffect } from "preact/hooks";
+import { useContext } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 
 interface RicePreviewProps extends PartialRice {

@@ -39,7 +39,7 @@ export function FormImageCarousel({ label, name }: Props) {
             (_, index) => index !== targetIndex
         );
 
-        let dt = new DataTransfer();
+        const dt = new DataTransfer();
         newFiles.forEach((file) => dt.items.add(file));
         input.current.files = dt.files;
         images.value = newFiles;

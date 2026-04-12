@@ -17,7 +17,7 @@ export default function ChangePasswordModal() {
         const newPassword = formData.get("newPassword");
 
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "PATCH",
                 `/users/${user.value.id}/password`,
                 JSON.stringify({

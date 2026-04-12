@@ -29,9 +29,7 @@ export default function UserList({ userLimit }: UserListProps) {
 
     return (
         // same as in rice list, we can assume that at least one user exists
-        <For each={users}>
-            {(user, _) => <UserInfo key={user.id} {...user} />}
-        </For>
+        <For each={users}>{(user) => <UserInfo key={user.id} {...user} />}</For>
     );
 }
 

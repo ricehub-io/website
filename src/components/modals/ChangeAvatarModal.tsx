@@ -2,7 +2,6 @@ import { apiFetch } from "@/api/apiFetch";
 import { NewAvatarSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import FormFileUpload from "@/components/form/FormFileUpload";
-import { FormInput } from "@/components/form/FormInput";
 import { AppState, addNotification } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
 import { useContext } from "preact/hooks";

@@ -167,10 +167,7 @@ function Comment({
 
     const deleteComment = async () => {
         try {
-            const [status, _] = await apiFetch(
-                "DELETE",
-                `/comments/${commentId}`
-            );
+            const [status] = await apiFetch("DELETE", `/comments/${commentId}`);
             if (status !== HttpStatus.NoContent) {
                 throw new Error(
                     "Something went wrong, please try again later."

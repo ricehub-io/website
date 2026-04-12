@@ -18,7 +18,7 @@ export default function DeleteAccountModal() {
         const password = formData.get("password");
 
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "DELETE",
                 `/users/${user.value.id}`,
                 JSON.stringify({

@@ -1,5 +1,4 @@
 import { apiFetch } from "@/api/apiFetch";
-import { Tag, TagSchema } from "@/api/schemas";
 import { FormButton } from "@/components/form/FormButton";
 import FormFileUpload from "@/components/form/FormFileUpload";
 import { FormImageCarousel } from "@/components/form/FormImageCarousel";
@@ -25,7 +24,7 @@ export default function NewRicePage() {
             const formTags = formData.getAll("tags").map((tag) => +tag);
             formData.set("tags", JSON.stringify(formTags));
 
-            const [status, _] = await apiFetch("POST", "/rices", formData);
+            const [status] = await apiFetch("POST", "/rices", formData);
 
             if (status !== HttpStatus.Created) {
                 throw new Error(

@@ -25,7 +25,7 @@ export default function StarButton({ riceId, ...props }: StarButtonProps) {
         const method: FetchMethod = isStarred.value ? "DELETE" : "POST";
 
         try {
-            const [status, _] = await apiFetch(method, `/rices/${riceId}/star`);
+            const [status] = await apiFetch(method, `/rices/${riceId}/star`);
 
             if (status === HttpStatus.Created) {
                 starCount.value += 1;
