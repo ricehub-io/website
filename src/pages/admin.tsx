@@ -102,9 +102,8 @@ function BanUserForm() {
         }
 
         if (username !== "") {
-            // fetch user id
             try {
-                const [_, body] = await apiFetch(
+                const [, body] = await apiFetch(
                     "GET",
                     `/users?username=${username}`,
                     null,
@@ -214,7 +213,7 @@ function BanList() {
 
     useEffect(() => {
         apiFetch("GET", "/users?status=banned", null, UserWithBanSchema.array())
-            .then(([_, body]) => (bans.value = body))
+            .then(([, body]) => (bans.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(
@@ -276,7 +275,7 @@ function BanList() {
                     </p>
                 }
             >
-                {({ user, ban }, _) => (
+                {({ user, ban }) => (
                     <div className="bg-background-2 rounded-md p-4 text-sm sm:text-base">
                         <div className="mx-1 flex items-center justify-between gap-x-2">
                             <div className="flex flex-col items-center md:flex-row">

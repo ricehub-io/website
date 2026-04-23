@@ -35,7 +35,7 @@ export default function CommentSection({
             null,
             CommentWithUserSchema.array()
         )
-            .then(([_, body]) => {
+            .then(([, body]) => {
                 comments.value = body;
                 onLoad();
             })

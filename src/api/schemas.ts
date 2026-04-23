@@ -3,6 +3,10 @@
 import * as z from "zod";
 
 // DTOs
+export const ErrorSchema = z.object({
+    errors: z.string().array(),
+});
+
 // -- USERS
 export const UserSchema = z.object({
     id: z.uuidv4(),

@@ -1,8 +1,10 @@
 import { AppState } from "@/lib/appState";
-import { Route, useLocation } from "preact-iso";
+import { Route, RouteProps, useLocation } from "preact-iso";
 import { useContext, useEffect } from "preact/hooks";
 
-export default function AuthRoute(props: any) {
+export default function AuthRoute<Props>(
+    props: RouteProps<Props> & Partial<Props>
+) {
     const { route } = useLocation();
     const { user, userLoading } = useContext(AppState);
 

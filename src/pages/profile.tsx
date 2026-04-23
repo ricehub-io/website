@@ -19,7 +19,7 @@ export default function ProfilePage() {
 
     useEffect(() => {
         apiFetch("GET", `/profiles/${username}`, null, ProfileSchema)
-            .then(([_, body]) => (profile.value = body))
+            .then(([, body]) => (profile.value = body))
             .catch((e) => {
                 if (e instanceof ApiError) {
                     if (e.statusCode === HttpStatus.NotFound) {

@@ -18,7 +18,7 @@ export default function WaitingRiceList({
 
     const fetchRices = async () => {
         apiFetch("GET", "/rices?state=waiting", null, PartialRiceSchema.array())
-            .then(([_, body]) => (rices.value = body))
+            .then(([, body]) => (rices.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(
@@ -98,7 +98,7 @@ export default function WaitingRiceList({
                     </p>
                 }
             >
-                {(rice, _) => (
+                {(rice) => (
                     <WaitingRice
                         key={rice.id}
                         {...rice}

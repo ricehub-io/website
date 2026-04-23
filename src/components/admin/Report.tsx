@@ -39,7 +39,7 @@ export default function Report({
         try {
             if (isRice) {
                 // fetch rice details by ID to get the slug
-                const [_, body] = await apiFetch(
+                const [, body] = await apiFetch(
                     "GET",
                     `/rices/${riceId}`,
                     null,
@@ -49,7 +49,7 @@ export default function Report({
                 route(`/${body.author.username}/${body.slug}`);
             } else {
                 // fetch comment details to get rice slug so we can anchor link :333
-                const [_, body] = await apiFetch(
+                const [, body] = await apiFetch(
                     "GET",
                     `/comments/${commentId}`,
                     null,

@@ -11,7 +11,6 @@ import { useSignal } from "@preact/signals";
 import { TargetedEvent } from "preact/compat";
 import { useEffect } from "preact/hooks";
 
-const PERIOD_OPTIONS = ["week", "month", "year"] as const;
 const PERIOD_BUTTONS: RadioButtonProps[] = [
     {
         text: "This Week",
@@ -28,7 +27,7 @@ const PERIOD_BUTTONS: RadioButtonProps[] = [
     },
 ] as const;
 
-type PeriodOption = (typeof PERIOD_OPTIONS)[number];
+type PeriodOption = "week" | "month" | "year";
 
 export default function LeaderboardPage() {
     const period = useSignal<PeriodOption>("week");
@@ -36,7 +35,7 @@ export default function LeaderboardPage() {
 
     const fetchLeaderboard = async (period: PeriodOption) => {
         try {
-            const [_, body] = await apiFetch(
+            const [, body] = await apiFetch(
                 "GET",
                 `/leaderboard/${period}`,
                 null,

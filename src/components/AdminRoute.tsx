@@ -1,8 +1,10 @@
 import { useContext, useEffect } from "preact/hooks";
-import { Route, useLocation } from "preact-iso";
+import { Route, RouteProps, useLocation } from "preact-iso";
 import { AppState } from "@/lib/appState";
 
-export default function AdminRoute(props: any) {
+export default function AdminRoute<Props>(
+    props: RouteProps<Props> & Partial<Props>
+) {
     const { route } = useLocation();
     const { user, userLoading } = useContext(AppState);
 

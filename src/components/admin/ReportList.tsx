@@ -33,7 +33,7 @@ export default function ReportList({ refreshInterval }: ReportListProps) {
 
     const fetchReports = () => {
         apiFetch("GET", "/reports", null, ReportWithUserSchema.array())
-            .then(([_, body]) => (reports.value = body))
+            .then(([, body]) => (reports.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification("API Error", e.message, "error");
@@ -60,7 +60,7 @@ export default function ReportList({ refreshInterval }: ReportListProps) {
 
     const closeReport = async (reportId: string) => {
         try {
-            const [status, _] = await apiFetch(
+            const [status] = await apiFetch(
                 "POST",
                 `/reports/${reportId}/close`
             );

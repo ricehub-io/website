@@ -123,7 +123,7 @@ export function RiceInfo({
     const onDownloadClick = () => {
         if (toPurchase.value) {
             apiFetch("POST", `/rices/${id}/purchase`, null, PurchaseRiceSchema)
-                .then(([_, body]) =>
+                .then(([, body]) =>
                     openCheckout(
                         body.checkoutUrl,
                         () => (_isOwned.value = true)
@@ -496,8 +496,7 @@ const openCheckout = async (url: string, onSuccess: () => void) => {
             theme: "dark",
         });
 
-        checkout.addEventListener("success", (_) => {
-            console.log("success");
+        checkout.addEventListener("success", () => {
             onSuccess();
         });
     } catch (e) {

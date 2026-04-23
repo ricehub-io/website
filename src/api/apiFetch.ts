@@ -1,3 +1,4 @@
+import { ErrorSchema } from "@/api/schemas";
 import { accessToken, addNotification } from "@/lib/appState";
 import { HttpStatus, isStatusOk } from "@/lib/enums";
 import { jwtDecode } from "jwt-decode";
@@ -55,12 +56,14 @@ async function checkTokenExpired() {
     }
 }
 
+type RequestBody = string | FormData;
+
 async function sendRequest(
     method: FetchMethod,
     endpoint: string,
-    body?: any,
+    body?: RequestBody,
     withoutToken?: boolean
-): Promise<[HttpStatus, any]> {
+): Promise<[HttpStatus, unknown]> {
     const res = await fetch(`${API_URL}${endpoint}`, {
         method,
         headers: {
@@ -80,7 +83,7 @@ async function sendRequest(
 export async function apiFetch<T extends z.ZodType>(
     method: FetchMethod,
     endpoint: string,
-    reqBody?: string | FormData,
+    reqBody?: RequestBody,
     schema?: T,
     withoutToken?: boolean
 ): Promise<[HttpStatus, z.infer<T>]> {
@@ -95,7 +98,10 @@ export async function apiFetch<T extends z.ZodType>(
         withoutToken
     );
     if (!isStatusOk(status)) {
-        const err = resBody?.errors?.[0] || "Failed to reach API";
+        const parsed = ErrorSchema.safeParse(resBody);
+        const err = parsed.success
+            ? parsed.data.errors[0]
+            : "Failed to reach API";
         throw new ApiError(err, status);
     }
 

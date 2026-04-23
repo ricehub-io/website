@@ -20,7 +20,7 @@ export default function AccountPage() {
             null,
             PartialRiceSchema.array()
         )
-            .then(([_, body]) => (purchasedRices.value = body))
+            .then(([, body]) => (purchasedRices.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(
@@ -39,7 +39,7 @@ export default function AccountPage() {
             null,
             PartialRiceSchema.array()
         )
-            .then(([_, body]) => (createdRices.value = body))
+            .then(([, body]) => (createdRices.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(

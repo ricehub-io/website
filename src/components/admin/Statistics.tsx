@@ -9,7 +9,7 @@ export default function Statistics() {
 
     useEffect(() => {
         apiFetch("GET", "/admin/stats", null, ServiceStatisticsSchema)
-            .then(([_, body]) => (stats.value = body))
+            .then(([, body]) => (stats.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(

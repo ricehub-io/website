@@ -16,12 +16,6 @@ import { AppState, addNotification } from "@/lib/appState";
 import { FetchRicesSchema, PartialRice } from "@/api/schemas";
 import { HttpStatus } from "@/lib/enums";
 
-const SORT_OPTIONS = [
-    "recent",
-    "trending",
-    "mostStars",
-    "mostDownloads",
-] as const;
 const SORT_BUTTONS: RadioButtonProps[] = [
     {
         text: "Trending",
@@ -42,7 +36,7 @@ const SORT_BUTTONS: RadioButtonProps[] = [
     },
 ] as const;
 
-type SortOption = (typeof SORT_OPTIONS)[number];
+type SortOption = "recent" | "trending" | "mostStars" | "mostDownloads";
 
 export default function HomePage() {
     const { accessToken } = useContext(AppState);
@@ -56,7 +50,7 @@ export default function HomePage() {
 
     const fetchRices = () => {
         apiFetch("GET", `/rices?sort=${sortBy.value}`, null, FetchRicesSchema)
-            .then(([_, data]) => {
+            .then(([, data]) => {
                 rices.value = data.rices;
                 pageCount.value = data.pageCount;
             })

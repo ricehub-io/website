@@ -15,7 +15,7 @@ export default function Footer() {
     useEffect(() => {
         const fetchLink = (linkName: string, linkSignal: Signal<string>) =>
             apiFetch("GET", `/links/${linkName}`, null, ExternalLinkSchema)
-                .then(([_, body]) => (linkSignal.value = body.url))
+                .then(([, body]) => (linkSignal.value = body.url))
                 .catch((e) => {
                     if (e instanceof Error) {
                         addNotification(

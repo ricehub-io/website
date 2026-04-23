@@ -24,7 +24,7 @@ export default function RicePage() {
         }
 
         apiFetch("GET", `/users/${username}/rices/${slug}`, null, RiceSchema)
-            .then(([_, body]) => (riceInfo.value = body))
+            .then(([, body]) => (riceInfo.value = body))
             .catch((e) => {
                 if (e instanceof ApiError) {
                     if (e.statusCode === HttpStatus.NotFound) {

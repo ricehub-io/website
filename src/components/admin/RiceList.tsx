@@ -12,7 +12,7 @@ export default function RiceList() {
 
     useEffect(() => {
         apiFetch("GET", "/rices?sort=recent", null, FetchRicesSchema)
-            .then(([_, data]) => (rices.value = data.rices))
+            .then(([, data]) => (rices.value = data.rices))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(
@@ -27,9 +27,7 @@ export default function RiceList() {
     return (
         // we can assume that the website has AT LEAST one rice
         // added so no need to add fallback here
-        <For each={rices}>
-            {(rice, _) => <RiceInfo key={rice.id} {...rice} />}
-        </For>
+        <For each={rices}>{(rice) => <RiceInfo key={rice.id} {...rice} />}</For>
     );
 }
 

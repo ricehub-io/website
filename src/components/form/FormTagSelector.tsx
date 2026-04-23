@@ -14,7 +14,7 @@ export default function FormTagSelector({ selected }: FormTagSelectorProps) {
 
     useEffect(() => {
         apiFetch("GET", "/tags", null, TagSchema.array())
-            .then(([_, body]) => (tags.value = body))
+            .then(([, body]) => (tags.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(

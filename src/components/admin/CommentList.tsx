@@ -21,7 +21,7 @@ export default function CommentList({ commentLimit }: CommentListProps) {
             null,
             CommentWithUserSchema.array()
         )
-            .then(([_, body]) => (comments.value = body))
+            .then(([, body]) => (comments.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(
@@ -42,7 +42,7 @@ export default function CommentList({ commentLimit }: CommentListProps) {
                 </p>
             }
         >
-            {(comment, _) => <Comment key={comment.commentId} {...comment} />}
+            {(comment) => <Comment key={comment.commentId} {...comment} />}
         </For>
     );
 }

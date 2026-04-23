@@ -17,7 +17,7 @@ export default function TermsOfServicePage() {
             null,
             WebsiteVariableSchema
         )
-            .then(([_, body]) => (data.value = body))
+            .then(([, body]) => (data.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification("Something went wrong", e.message, "error");

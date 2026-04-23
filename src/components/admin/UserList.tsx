@@ -15,7 +15,7 @@ export default function UserList({ userLimit }: UserListProps) {
 
     useEffect(() => {
         apiFetch("GET", `/users?limit=${userLimit}`, null, UserSchema.array())
-            .then(([_, body]) => (users.value = body))
+            .then(([, body]) => (users.value = body))
             .catch((e) => {
                 if (e instanceof Error) {
                     addNotification(
