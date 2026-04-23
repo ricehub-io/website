@@ -9,7 +9,9 @@ export interface FormTagSelectorProps {
     selected?: number[];
 }
 
-export default function FormTagSelector({ selected }: FormTagSelectorProps) {
+export default function FormTagSelector({
+    selected = [],
+}: FormTagSelectorProps) {
     const tags = useSignal<Tag[]>([]);
 
     useEffect(() => {

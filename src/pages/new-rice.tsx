@@ -9,16 +9,16 @@ import PageTitle from "@/components/PageTitle";
 import { addNotification, AppState } from "@/lib/appState";
 import { HttpStatus } from "@/lib/enums";
 import { useLocation } from "preact-iso";
+import { TargetedEvent } from "preact/compat";
 import { useContext } from "preact/hooks";
 
 export default function NewRicePage() {
     const { route } = useLocation();
     const { currentModal, okayModalCtx, modalCallback } = useContext(AppState);
 
-    const onSubmit = async (e: SubmitEvent) => {
+    const onSubmit = async (e: TargetedEvent<HTMLFormElement, SubmitEvent>) => {
         e.preventDefault();
-        const target = e.currentTarget as HTMLFormElement;
-        const formData = new FormData(target);
+        const formData = new FormData(e.currentTarget);
 
         try {
             const formTags = formData.getAll("tags").map((tag) => +tag);
