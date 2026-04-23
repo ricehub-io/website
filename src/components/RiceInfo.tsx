@@ -48,14 +48,8 @@ export function RiceInfo({
     updatedAt,
 }: Rice) {
     const { route } = useLocation();
-    const {
-        user,
-        currentModal,
-        currentRiceId,
-        reportCtx,
-        modalCallback,
-        okayModalCtx,
-    } = useContext(AppState);
+    const { user, currentModal, currentRiceId, reportCtx, modalCallback } =
+        useContext(AppState);
 
     const _isOwned = useSignal(isOwned);
     const isAuthor = useComputed(
@@ -138,56 +132,6 @@ export function RiceInfo({
                         );
                     }
                 });
-            return;
-        }
-
-        // only trusted people can be admins therefore
-        // no reason to show this warning when downloading
-        // rices posted by admin
-        if (!author.isAdmin) {
-            okayModalCtx.value = {
-                content: (
-                    <>
-                        <h1 className="text-center text-2xl font-bold sm:text-3xl md:text-4xl">
-                            Security Warning!
-                        </h1>
-                        <p>
-                            The dotfiles you are about to download were uploaded
-                            by other users. These files <b>may</b> contain
-                            malicious or harmful content.
-                        </p>
-                        <p>
-                            Before using any downloaded files, please take the
-                            time to inspect them carefully. In particular:
-                        </p>
-                        <ul className="list-disc pl-4 font-medium">
-                            <li className="mb-1">
-                                Review all scripts (e.g. .sh, .bash, .zsh, .py,
-                                etc.) to understand what commands they execute.
-                            </li>
-                            <li className="mb-1">
-                                Do not run compiled executables or binaries
-                                included in the download. Unlike scripts, their
-                                contents cannot be easily inspected, and you
-                                cannot be certain what they do.
-                            </li>
-                            <li>
-                                Be cautious of files that automatically execute
-                                commands, modify system settings, download
-                                additional software, or request elevated
-                                privileges (sudo).
-                            </li>
-                        </ul>
-                        <p>
-                            Always verify the contents before applying them to
-                            your system.
-                        </p>
-                    </>
-                ),
-            };
-            modalCallback.value = () =>
-                window.open(`${API_URL}/rices/${id}/dotfiles`);
-            currentModal.value = "okay";
             return;
         }
 
