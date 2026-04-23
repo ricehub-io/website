@@ -33,7 +33,7 @@ jobs:
 
       - run: pnpm format
       - run: pnpm lint
-      - run: pnpm exec tsx --noEmit
+      - run: pnpm exec tsc --noEmit
       - run: pnpm build
 
   deploy:
