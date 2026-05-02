@@ -53,7 +53,6 @@ export function App() {
                             path="/leaderboard"
                             component={LeaderboardPage}
                         />
-                        {/* elite ball knowledge */}
                         <AdminRoute path="/mastermind" component={AdminPage} />
                         <Route path="/:username" component={ProfilePage} />
                         <Route path="/:username/:slug" component={RicePage} />
@@ -68,4 +67,4 @@ export function App() {
     );
 }
 
-render(<App />, document.getElementById("app"));
+render(<App />, document.getElementById("app")!);

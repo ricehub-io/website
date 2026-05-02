@@ -58,6 +58,9 @@ export function RiceInfo({
     const toPurchase = useComputed(
         () => !isAuthor.value && dotfiles.type !== "free" && !_isOwned.value
     );
+    useEffect(() => {
+        console.log(isAuthor.value, dotfiles.type, _isOwned.value);
+    }, [toPurchase.value]);
 
     const _isStarred = useSignal(isStarred);
     const starCount = useSignal(stars);
@@ -300,8 +303,8 @@ function HeaderButton({
 }
 
 function RiceScreenshots({ screenshots }: { screenshots: RiceScreenshot[] }) {
-    const zoom = useSignal<string>(null); // holds screenshot URL if any image is zoomed
-    const imageRef = useRef<HTMLDivElement>(); // reference to container holding the zoomed image
+    const zoom = useSignal<string | null>(null);
+    const imageRef = useRef<HTMLDivElement>();
 
     // disable page scrolling when zoomed
     useEffect(() => {
